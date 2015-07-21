@@ -1,0 +1,24 @@
+[
+  {
+    "id": 999,
+    "name": "SMART_ACTION_EXAMPLE",
+    "parameters": [
+      {
+        "type": "SwitchParameter",
+        "name": "Type",
+        "values": {
+          "0": "SELECT 1",
+          "1": "SELECT 2",
+          "2": "SELECT 3",
+          "3": "SELECT 4"
+        }
+      },
+      {
+        "type": "CreatureParameter",
+        "name": "Creature",
+        "description": "Example desc"
+      }
+    ],
+    "description": "{target}, {targetcoords}, {targetid}, {pram1}, {pram2}, {pram1value}, {pram2value}",
+  },
+]

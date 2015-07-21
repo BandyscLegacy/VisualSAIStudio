@@ -1,0 +1,47 @@
+Always
+Logical OR
+Has aura,CONDITION_AURA
+Has item,CONDITION_ITEM
+Has item equipped,CONDITION_ITEM_EQUIPPED
+In zone,CONDITION_ZONEID
+Has minimum rank for faction,CONDITION_REPUTATION_RANK
+Is horde/ally,CONDITION_TEAM
+Has skill value for skill,CONDITION_SKILL
+Has quest already rewarded,CONDITION_QUESTREWARDED
+Has quest active,CONDITION_QUESTTAKEN
+Is drunk enough,CONDITION_DRUNKENSTATE
+World has the value for the index,CONDITION_WORLD_STATE
+Is event active,CONDITION_ACTIVE_EVENT
+the instance info defined by type (enum InstanceInfo) equals data.,CONDITION_INSTANCE_INFO
+Has quest never taken,CONDITION_QUEST_NONE
+Is class,CONDITION_CLASS
+Is race,CONDITION_RACE
+Is achievement complete,CONDITION_ACHIEVEMENT
+Has player title,CONDITION_TITLE
+Is in spawnMask,CONDITION_SPAWNMASK
+Is gender,CONDITION_GENDER
+Creature is specific type,CONDITION_CREATURE_TYPE
+Is in map,CONDITION_MAPID
+Is in area,CONDITION_AREAID
+Has spell learned,CONDITION_SPELL
+Is in phasemask,CONDITION_PHASEMASK
+Is level,CONDITION_LEVEL
+Has quest completed and active,CONDITION_QUEST_COMPLETE
+There is a creature of entry in range,CONDITION_NEAR_CREATURE
+There is a gameobject of entry in range,CONDITION_NEAR_GAMEOBJECT
+object is type TypeID and the entry is 0 or matches entry of the object,CONDITION_OBJECT_ENTRY
+object is type object's TypeMask matches provided TypeMask,CONDITION_TYPE_MASK
+Object is in given relation with target,CONDITION_RELATION_TO
+Object's reaction to target is,CONDITION_REACTION_TO
+Object and target are within distance,CONDITION_DISTANCE_TO
+Is alive,CONDITION_ALIVE
+HP is between,CONDITION_HP_VAL
+HP is between (percentage),CONDITION_HP_PCT
+Player target's SAI is in phase,CONDITION_SMART_PHASE
+There isn't a creature of entry in range,CONDITION_NOT_NEAR_CREATURE
+There isn't a gameobject of entry in range,CONDITION_NOT_NEAR_GAMEOBJECT
+Does not have aura,CONDITION_TARGET_NO_AURA_IN_RANGE
+Has quest in status,CONDITION_QUEST_STATUS
+Has spell,CONDITION_HAS_SPELL
+Unit has a summon,CONDITION_HAS_SUMMON
+Owner has aura,CONDITION_OWNER_AURA
