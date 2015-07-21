@@ -200,6 +200,10 @@ namespace VisualSAIStudio
             {
                 events.Insert(ExtendedFactories.EventFactory(strEvent), 0);
             }
+            else if (mouse.Y > events[events.Count-1].rect.Bottom )
+            {
+                events.Insert(ExtendedFactories.EventFactory(strEvent), events.Count);
+            }
             else
             {
                 for (int i = 0; i < events.Count; ++i)
