@@ -19,7 +19,7 @@ Gameobject
  Gameobject by guid,SMART_TARGET_GAMEOBJECT_GUID
  Gameobject within distance,SMART_TARGET_GAMEOBJECT_DISTANCE
  Closest gameobject,SMART_TARGET_CLOSEST_GAMEOBJECT
-Player 
+Player
  Player in range,SMART_TARGET_PLAYER_RANGE
  Player within distance,SMART_TARGET_PLAYER_DISTANCE
  Closet player,SMART_TARGET_CLOSEST_PLAYER

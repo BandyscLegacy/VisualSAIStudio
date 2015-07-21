@@ -36,7 +36,7 @@ namespace VisualSAIStudio
 
             LoadCustomEventsAndActions();
             dockPanel1.Theme = new WeifenLuo.WinFormsUI.Docking.VS2012LightTheme();
-            //DBCFind dbcFind = new DBCFind(StringsDB.GetInstance().movies);
+
             scratch = new ScratchWindow();
             scratch.Show(dockPanel1);
 

@@ -13,10 +13,10 @@ namespace VisualSAIStudio
         private Dictionary<int, string> spells = new Dictionary<int,string>();
         private Dictionary<int, string> emotes= new Dictionary<int,string>();
         private Dictionary<int, string> sounds = new Dictionary<int, string>();
-        public Dictionary<int, string> creatures= new Dictionary<int,string>();
-        public Dictionary<int, string> quests= new Dictionary<int,string>();
+        private Dictionary<int, string> creatures = new Dictionary<int, string>();
+        private Dictionary<int, string> quests = new Dictionary<int, string>();
         private Dictionary<int, string> items = new Dictionary<int, string>();
-        public Dictionary<int, string> movies = new Dictionary<int, string>();
+        private Dictionary<int, string> movies = new Dictionary<int, string>();
         private Dictionary<int, string> areas = new Dictionary<int, string>();
         private Dictionary<int, string> classes = new Dictionary<int, string>();
 
