@@ -1,4 +1,4 @@
-# VisualSAIStudio
+# VisualSAIStudio ![build](https://travis-ci.org/BAndysc/VisualSAIStudio.svg)
 Smart Script Editor for WoW Cores including TrinityCore and SkyFire
 
 ## Description
