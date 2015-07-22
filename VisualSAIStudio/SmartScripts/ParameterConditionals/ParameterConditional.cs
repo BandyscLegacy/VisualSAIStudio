@@ -53,6 +53,13 @@ namespace VisualSAIStudio.SmartScripts
             this.description = compared.name + " must be " + compareType.GetDescription() + " " + compareTo;
         }
 
+        public ParameterConditionalCompareValue(Parameter compared, int compareTo, CompareType compareType, string description)
+            : base(compared, compareTo, WarningType.INVALID_PARAMETER)
+        {
+            this.compareType = compareType;
+            this.description = description;
+        }
+
         public ParameterConditionalCompareValue(Parameter compared, int min, int max)
             : base(compared, min, WarningType.INVALID_PARAMETER)
         {

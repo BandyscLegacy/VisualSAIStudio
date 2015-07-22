@@ -16,6 +16,7 @@ namespace VisualSAIStudio.SmartScripts
             SetParameter(3, new Parameter("Repeat Max", "Maximum time to trigger event (after first time)"));
             AddConditional(new ParameterConditionalCompareValue(parameters[0], parameters[1], CompareType.LOWER_OR_EQUALS));
             AddConditional(new ParameterConditionalCompareValue(parameters[2], parameters[3], CompareType.LOWER_OR_EQUALS));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], 0,  CompareType.GREATER_THAN, "Event will never fire"));
         }
 
         public override string GetReadableString()
