@@ -11,6 +11,7 @@ namespace VisualSAIStudio
     {
         public List<DrawableElement> children = new List<DrawableElement>();
         protected DrawableElement selectedChildren;
+        public EventHandler ChildrenModified = delegate { };
         
         public override void setSelected(Point mouse)
         {

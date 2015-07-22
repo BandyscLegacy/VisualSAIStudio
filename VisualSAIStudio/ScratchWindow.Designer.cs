@@ -42,6 +42,7 @@
             this.scratch1.TabIndex = 0;
             this.scratch1.DragDrop += new System.Windows.Forms.DragEventHandler(this.scratch1_DragDrop);
             this.scratch1.DragOver += new System.Windows.Forms.DragEventHandler(this.scratch1_DragOver);
+            this.scratch1.Paint += new System.Windows.Forms.PaintEventHandler(this.scratch1_Paint);
             // 
             // ScratchWindow
             // 

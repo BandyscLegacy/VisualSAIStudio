@@ -15,9 +15,11 @@ namespace VisualSAIStudio
     public partial class ScratchWindow : DockContent
     {
 
-         SmartEventsCollection events = new SmartEventsCollection();
+        SmartEventsCollection events = new SmartEventsCollection();
 
-         public EventHandler ElementSelected = delegate { };
+        public EventHandler ElementSelected = delegate { };
+        public EventHandler RequestWarnings = delegate { };
+
 
         public ScratchWindow()
         {
@@ -28,6 +30,13 @@ namespace VisualSAIStudio
         {
             scratch1.SetElements(events);
             scratch1.ElementSelected += new EventHandler(this.EventSelected);
+            events.ElementsChanged += this_elementChanged;
+        }
+
+        private void this_elementChanged(object sender, EventArgs e)
+        {
+            if (((ChangedEventArgs)e).change != ChangedType.Selected)  
+                RequestWarnings(sender, e);
         }
 
         public SmartEvent Selected()
@@ -327,6 +336,11 @@ namespace VisualSAIStudio
         public void EnsureVisible(DrawableElement drawableElement)
         {
             scratch1.EnsureVisible(drawableElement);
+        }
+
+        private void scratch1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

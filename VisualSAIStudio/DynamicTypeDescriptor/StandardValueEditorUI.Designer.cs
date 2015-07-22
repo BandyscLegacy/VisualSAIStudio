@@ -35,6 +35,7 @@ namespace DynamicTypeDescriptor
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lblDesc = new System.Windows.Forms.Label();
             this.lblDispName = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -62,6 +63,7 @@ namespace DynamicTypeDescriptor
             this.splitContainer1.SplitterDistance = 114;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 1;
+            this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             this.splitContainer1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewEnum_MouseDoubleClick);
             // 
             // listViewEnum
@@ -126,6 +128,7 @@ namespace DynamicTypeDescriptor
             this.Load += new System.EventHandler(this.StandardValueEditorUI_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 

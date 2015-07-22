@@ -12,7 +12,7 @@ namespace VisualSAIStudio
 {
     public partial class Scratch : UserControl
     {
-        public event EventHandler ElementSelected;
+        public event EventHandler ElementSelected = delegate { };
 
         public DrawableElement selectedElement;
 
@@ -205,7 +205,7 @@ namespace VisualSAIStudio
         public void EnsureVisible(DrawableElement drawableElement)
         {
             if (drawableElement.rect.Top < 0 || drawableElement.rect.Top > this.Height)
-                vScrollBar.Value += drawableElement.rect.Top ;
+                vScrollBar.Value += Math.Min(vScrollBar.Maximum, drawableElement.rect.Top);
         }
     }
     public static class MyExtensionMethods

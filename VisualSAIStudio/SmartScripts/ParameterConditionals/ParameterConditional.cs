@@ -129,6 +129,8 @@ namespace VisualSAIStudio.SmartScripts
 
         public override bool Validate()
         {
+            if (compared.GetValue() == 0)
+                return true;
             return StringsDB.GetInstance().Exists(storage, compared.GetValue());
         }
     }

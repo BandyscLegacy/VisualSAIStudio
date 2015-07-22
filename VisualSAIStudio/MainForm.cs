@@ -64,10 +64,21 @@ namespace VisualSAIStudio
             errors.WarningSelected += this_warningSelected;
 
             scratch.ElementSelected += this_callback;
+            scratch.RequestWarnings += this_RequestWarnings;
+        }
+
+        private void this_RequestWarnings(object sender, EventArgs e)
+        {
+            errors.Clear();
+            foreach (SmartEvent ev in scratch.GetEvents())
+            {
+                errors.AddWarnings(ev.Validate());
+            }
         }
 
         private void this_warningSelected(object sender, EventArgs e)
         {
+
             if (!(e is WarningSelectedEventArgs))
                 return;
 
@@ -77,6 +88,10 @@ namespace VisualSAIStudio
             {
                 elem.parent.setSelected(true);
                 scratch.EnsureVisible(elem.parent);
+            } else
+            {
+                elem.setSelected(true);
+                scratch.EnsureVisible(elem);
             }
 
         }

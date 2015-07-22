@@ -849,6 +849,10 @@ namespace DynamicTypeDescriptor
           }  // end of foreach..loop
           return Enum.Parse(propType, sb.ToString( ), true);
         }
+        else if ((context.PropertyDescriptor is CustomPropertyDescriptor && (((CustomPropertyDescriptor)context.PropertyDescriptor).PropertyFlags & PropertyFlags.IsFlag) != 0))
+        {
+            return int.Parse(value.ToString());
+        }
         foreach (StandardValueAttribute sva in col)
         {
           if (String.Compare(value.ToString( ), sva.DisplayName, true, culture) == 0 ||
@@ -954,6 +958,23 @@ namespace DynamicTypeDescriptor
 
             }  // end of foreach..loop
             return sb.ToString( );
+          }
+          else if (context.PropertyDescriptor is CustomPropertyDescriptor && (((CustomPropertyDescriptor)context.PropertyDescriptor).PropertyFlags & PropertyFlags.IsFlag) != 0)
+          {
+
+              StringBuilder sb = new StringBuilder();
+              foreach (StandardValueAttribute sva in col)
+              {
+                  if ((int.Parse(sva.Value.ToString()) & int.Parse(value.ToString())) > 0)
+                  {
+                      if (sb.Length > 0)
+                      {
+                          sb.Append(", ");
+                      }
+                      sb.Append(sva.DisplayName);
+                  }
+              }
+              return sb.ToString();
           }
           foreach (StandardValueAttribute sva in col)
           {

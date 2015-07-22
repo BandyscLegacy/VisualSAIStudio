@@ -37,15 +37,21 @@ namespace VisualSAIStudio
         public void Clear()
         {
             collection.Clear();
-            ElementsChanged(this, new EventArgs());
+            ElementsChanged(this, new ChangedEventArgs(ChangedType.Cleared));
         }
 
         public void Add(DrawableElement element)
         {
             collection.Add(element);
             element.Selected += this_ElementSelected;
+            ((DrawableContainerElement)element).ChildrenModified += this_ChildrenModified;
             ElementAdded(this, new EventArgs());
-            ElementsChanged(this, new EventArgs());
+            ElementsChanged(this, new ChangedEventArgs(ChangedType.Added));
+        }
+
+        private void this_ChildrenModified(object sender, EventArgs e)
+        {
+            ElementsChanged(this, new ChangedEventArgs(ChangedType.ChildrenModified));
         }
 
         private void this_ElementSelected(object sender, EventArgs e)
@@ -55,7 +61,7 @@ namespace VisualSAIStudio
                 if (element != sender)
                     element.setSelected(false);
             }
-            ElementsChanged(this, new EventArgs());
+            ElementsChanged(this, new ChangedEventArgs(ChangedType.Selected));
         }
 
         public DrawableElement ElementAt(int x, int y)
@@ -72,7 +78,7 @@ namespace VisualSAIStudio
         {
             collection.RemoveAt(index);
             ElementRemoved(this, new EventArgs());
-            ElementsChanged(this, new EventArgs());
+            ElementsChanged(this, new ChangedEventArgs(ChangedType.Removed));
         }
 
         public void Replace(DrawableElement search, DrawableElement replace)
@@ -80,30 +86,32 @@ namespace VisualSAIStudio
             int index = collection.IndexOf(search);
             collection.Remove(search);
             collection.Insert(index, replace);
+            ((DrawableContainerElement)replace).ChildrenModified += this_ChildrenModified;
             replace.Selected += this_ElementSelected;
-            ElementsChanged(this, new EventArgs());
+            ElementsChanged(this, new ChangedEventArgs(ChangedType.Replaced));
         }
 
         public void MoveTo(DrawableElement element, int index)
         {
             collection.Remove(element);
             collection.Insert(index, element);
-            ElementsChanged(this, new EventArgs());
+            ElementsChanged(this, new ChangedEventArgs(ChangedType.Moved));
         }
 
         public void Insert(DrawableElement element, int index)
         {
             collection.Insert(index, element);
             element.Selected += this_ElementSelected;
+            ((DrawableContainerElement)element).ChildrenModified += this_ChildrenModified;
             ElementInserted(this, new EventArgs());
-            ElementsChanged(this, new EventArgs());
+            ElementsChanged(this, new ChangedEventArgs(ChangedType.Inserted));
         }
 
         public void Remove(DrawableElement element)
         {
             collection.Remove(element);
             ElementRemoved(this, new EventArgs());
-            ElementsChanged(this, new EventArgs());
+            ElementsChanged(this, new ChangedEventArgs(ChangedType.Removed));
         }
 
         public DrawableElement Get(int index)
@@ -120,6 +128,27 @@ namespace VisualSAIStudio
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+    }
+
+    public enum ChangedType
+    {
+        Added,
+        Removed,
+        Cleared,
+        Inserted,
+        Moved,
+        Replaced,
+        Selected,
+        ChildrenModified
+    }
+
+    public class ChangedEventArgs : EventArgs
+    {
+        public ChangedType change { get;set;}
+        public ChangedEventArgs(ChangedType type)
+        {
+            change = type;
         }
     }
 

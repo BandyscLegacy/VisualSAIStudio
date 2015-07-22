@@ -124,6 +124,7 @@ namespace VisualSAIStudio
 
         private void ActionRequestUpdateCallback(object sender, EventArgs e)
         {
+            ChildrenModified(sender, e);
             Invalide();
         }
 
