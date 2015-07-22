@@ -31,8 +31,9 @@
             System.Windows.Forms.ColumnHeader columnHeader1;
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
@@ -46,12 +47,13 @@
             columnHeader1,
             this.columnHeader2,
             this.columnHeader4,
-            this.columnHeader3});
+            this.columnHeader3,
+            this.columnHeader5});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(504, 261);
+            this.listView1.Size = new System.Drawing.Size(760, 287);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -63,21 +65,25 @@
             this.columnHeader2.Text = "Type";
             this.columnHeader2.Width = 95;
             // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Line";
-            this.columnHeader3.Width = 400;
-            // 
             // columnHeader4
             // 
             this.columnHeader4.Text = "Description";
-            this.columnHeader4.Width = 300;
+            this.columnHeader4.Width = 188;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Line";
+            this.columnHeader3.Width = 156;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Element";
             // 
             // ErrorsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(504, 261);
+            this.ClientSize = new System.Drawing.Size(760, 287);
             this.Controls.Add(this.listView1);
             this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft) 
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
@@ -97,5 +103,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
     }
 }

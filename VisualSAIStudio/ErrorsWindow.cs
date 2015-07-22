@@ -39,6 +39,7 @@ namespace VisualSAIStudio
                 lvi.SubItems.Add(GetWarningLocale(warning.warning));
                 lvi.SubItems.Add(warning.description);
                 lvi.SubItems.Add(warning.element.ToString());
+                lvi.SubItems.Add(warning.element.name);
                 lvi.Tag = warning.element;
                 listView1.Items.Add(lvi);
                 index++;
@@ -50,9 +51,11 @@ namespace VisualSAIStudio
         {
             switch (warningType)
             {
-                case WarningType.IGNORED_TARGET:
-                    return "Target will be ignored.";
+                case WarningType.INVALID_TARGET:
+                    return "Invalid target";
                 case WarningType.INVALID_PARAMETER:
+                    return "Invalid parameter";
+                case WarningType.INVALID_VALUE:
                     return "Invalid parameter value";
             }
             return "Other error "+warningType.ToString();

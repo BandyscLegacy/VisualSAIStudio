@@ -204,15 +204,20 @@ namespace VisualSAIStudio
     abstract class StringParameter : Parameter
     {
         private string str;
-        public StringParameter(String name) : base(name) { }
-        public StringParameter(String name, String description) : base(name, description) { }
-
-        protected abstract String StringValue();
+        protected StorageType storageType;
+        public StringParameter(String name, StorageType storageType) : base(name) 
+        {
+            this.storageType = storageType;
+        }
+        public StringParameter(String name, String description, StorageType storageType) : base(name, description) 
+        {
+            this.storageType = storageType;
+        }
 
         public override void SetValue(int value)
         {
             base.SetValue(value);
-            str = StringValue();
+            str = StringsDB.GetInstance().Get(storageType, value);
             if (str == null)
                 str = value.ToString();
             else
@@ -223,94 +228,66 @@ namespace VisualSAIStudio
         {
             return str;
         }
+
+        public SmartScripts.ParameterConditional GetValidator()
+        {
+            return new SmartScripts.ParameterConditionalDBExists(this, storageType);
+        }
     }
 
     class SpellParameter : StringParameter
     {
-        public SpellParameter(String name) : base(name) {}
-        public SpellParameter(String name, String description) : base(name, description) { }
-
-        protected override string StringValue()
-        {
-            return StringsDB.GetInstance().GetSpellName(GetValue());
-        }
+        public SpellParameter(String name) : base(name, StorageType.Spell) {}
+        public SpellParameter(String name, String description) : base(name, description, StorageType.Spell) { }
     }
 
     class EmoteParameter : StringParameter
     {
-        public EmoteParameter(String name) : base(name) { }
-        public EmoteParameter(String name, String description) : base(name, description) { }
-
-        protected override string StringValue()
-        {
-            return StringsDB.GetInstance().GetEmoteName(GetValue());
-        }
+        public EmoteParameter(String name) : base(name, StorageType.Emote) { }
+        public EmoteParameter(String name, String description) : base(name, description, StorageType.Emote) { }
     }
 
     class CreatureParameter : StringParameter
     {
-        public CreatureParameter(String name) : base(name) { }
-        public CreatureParameter(String name, String description) : base(name, description) { }
-
-        protected override string StringValue()
-        {
-            return StringsDB.GetInstance().GetCreatureName(GetValue());
-        }
+        public CreatureParameter(String name) : base(name, StorageType.Creature) { }
+        public CreatureParameter(String name, String description) : base(name, description, StorageType.Creature) { }
     }
 
     class QuestParameter : StringParameter
     {
-        public QuestParameter(String name) : base(name) { }
-        public QuestParameter(String name, String description) : base(name, description) { }
-
-        protected override string StringValue()
-        {
-            return StringsDB.GetInstance().GetQuestName(GetValue());
-        }
+        public QuestParameter(String name) : base(name, StorageType.Quest) { }
+        public QuestParameter(String name, String description) : base(name, description, StorageType.Quest) { }
     }
 
     class SoundParameter : StringParameter
     {
-        public SoundParameter(String name) : base(name) { }
-        public SoundParameter(String name, String description) : base(name, description) { }
-
-        protected override string StringValue()
-        {
-            return StringsDB.GetInstance().GetSoundName(GetValue());
-        }
+        public SoundParameter(String name) : base(name, StorageType.Sound) { }
+        public SoundParameter(String name, String description) : base(name, description, StorageType.Sound) { }
     }
 
     class ItemParameter : StringParameter
     {
-        public ItemParameter(String name) : base(name) { }
-        public ItemParameter(String name, String description) : base(name, description) { }
-
-        protected override string StringValue()
-        {
-            return StringsDB.GetInstance().GetItemName(GetValue());
-        }
+        public ItemParameter(String name) : base(name, StorageType.Item) { }
+        public ItemParameter(String name, String description) : base(name, description, StorageType.Item) { }
     }
 
     class MovieParameter : StringParameter
     {
-        public MovieParameter(String name) : base(name) { }
-        public MovieParameter(String name, String description) : base(name, description) { }
-
-        protected override string StringValue()
-        {
-            return StringsDB.GetInstance().GetMovieName(GetValue());
-        }
+        public MovieParameter(String name) : base(name, StorageType.Movie) { }
+        public MovieParameter(String name, String description) : base(name, description, StorageType.Movie) { }
     }
 
 
     class ZoneAreaParameter : StringParameter
     {
-        public ZoneAreaParameter(String name) : base(name) { }
-        public ZoneAreaParameter(String name, String description) : base(name, description) { }
-
-        protected override string StringValue()
-        {
-            return StringsDB.GetInstance().GetZoneAreaName(GetValue());
-        }
+        public ZoneAreaParameter(String name) : base(name, StorageType.Area) { }
+        public ZoneAreaParameter(String name, String description) : base(name, description, StorageType.Area) { }
     }
+
+    class GameObjectParameter : StringParameter
+    {
+        public GameObjectParameter(String name) : base(name, StorageType.GameObject) { }
+        public GameObjectParameter(String name, String description) : base(name, description, StorageType.GameObject) { }
+    }
+
 }

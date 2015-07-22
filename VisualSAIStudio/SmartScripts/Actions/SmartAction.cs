@@ -101,7 +101,7 @@ namespace VisualSAIStudio
             if (!(target is SMART_TARGET_NONE || target is SMART_TARGET_SELF) &&
                 !GetReadableString().Contains("{target}") && !GetReadableString().Contains("{targetcoords}")
                 )
-                warnings.Add(new Warning(WarningType.IGNORED_TARGET, "Invalid target", this));
+                warnings.Add(new Warning(WarningType.INVALID_TARGET, "Target will be ignored", this));
 
             return warnings;
         }

@@ -27,6 +27,10 @@ namespace VisualSAIStudio
         public void SetParameter(int index, Parameter parameter)
         {
             parameters[index] = parameter;
+
+            if (parameter is StringParameter)
+                AddConditional(((StringParameter)parameter).GetValidator());
+
             Invalide();
         }
 

@@ -10,135 +10,58 @@ namespace VisualSAIStudio
 {
     public class StringsDB
     {
-        private Dictionary<int, string> spells = new Dictionary<int,string>();
-        private Dictionary<int, string> emotes= new Dictionary<int,string>();
-        private Dictionary<int, string> sounds = new Dictionary<int, string>();
-        private Dictionary<int, string> creatures = new Dictionary<int, string>();
-        private Dictionary<int, string> quests = new Dictionary<int, string>();
-        private Dictionary<int, string> items = new Dictionary<int, string>();
-        private Dictionary<int, string> movies = new Dictionary<int, string>();
-        private Dictionary<int, string> areas = new Dictionary<int, string>();
-        private Dictionary<int, string> classes = new Dictionary<int, string>();
+        private Dictionary<StorageType, ClientData> database = new Dictionary<StorageType, ClientData>();
+
+        public EventHandler CurrentAction = delegate { };
 
         public void LoadAll()
         {
-            LoadCreatures();
-            LoadQuests();
-            LoadDBCIntAndString(emotes, "Emotes.dbc");
-            LoadDBCIntAndString(spells, "Spell.dbc", 20);
-            LoadDBCIntAndString(sounds, "SoundEntries.dbc", 1);
-            LoadDBCIntAndString(items, "item-sparse.db2", 98);
-            LoadDBCIntAndString(areas, "AreaTable.dbc", 10);
-            LoadDBCIntAndString(classes, "chrClasses.dbc", 2);
-            LoadMovies();
+            CurrentAction(this, new LoadingEventArgs("spells"));
+            database.Add(StorageType.Spell, new ClientDataDBC("spell.dbc", 20));
+
+            CurrentAction(this, new LoadingEventArgs("quests"));
+            database.Add(StorageType.Quest, new ClientDataDB("entry", "title", "quest_template"));
+
+            CurrentAction(this, new LoadingEventArgs("quests"));
+            database.Add(StorageType.Creature, new ClientDataDB("entry", "name", "creature_template"));
+
+            CurrentAction(this, new LoadingEventArgs("gameobjects"));
+            database.Add(StorageType.GameObject, new ClientDataDB("entry", "name", "gameobject_template"));
+
+            CurrentAction(this, new LoadingEventArgs("items"));
+            database.Add(StorageType.Item, new ClientDataDBC("item-sparse.db2", 98));
+
+            CurrentAction(this, new LoadingEventArgs("sounds"));
+            database.Add(StorageType.Sound, new ClientDataDBC("SoundEntries.dbc", 1));
+
+            CurrentAction(this, new LoadingEventArgs("movies"));
+            database.Add(StorageType.Movie, new ClientDataDBC("movie.dbc", 0));
+
+            CurrentAction(this, new LoadingEventArgs("classes"));
+            database.Add(StorageType.Class, new ClientDataDBC("chrClasses.dbc", 2));
+
+            CurrentAction(this, new LoadingEventArgs("areas"));
+            database.Add(StorageType.Area, new ClientDataDBC("AreaTable.dbc", 10));
+
+            CurrentAction(this, new LoadingEventArgs("emotes"));
+            database.Add(StorageType.Emote, new ClientDataDBC("Emotes.dbc", 0));
         }
 
         private void LoadMovies()
         {
-            LoadDBCIntAndString(movies, "movie.dbc", 0);
-            foreach (int key in movies.Keys.ToList())
-                movies[key] = movies[key].Substring(movies[key].LastIndexOf("\\") + 1);
+            //LoadDBCIntAndString(movies, "movie.dbc", 0);
+            ///foreach (int key in movies.Keys.ToList())
+            //    movies[key] = movies[key].Substring(movies[key].LastIndexOf("\\") + 1);
         }
 
-        private void LoadQuests()
+        public string Get(StorageType storage, int id)
         {
-            MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query("SELECT entry, title FROM quest_template order by entry");
-            using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    quests.Add(Convert.ToInt32(reader["entry"]), Convert.ToString(reader["title"]));
-                }
-            }
+            return database[storage].GetString(id);
         }
 
-        private void LoadCreatures()
+        public bool Exists(StorageType storage, int id)
         {
-            MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query("SELECT entry, name FROM creature_template order by entry");
-            using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    creatures.Add(Convert.ToInt32(reader["entry"]), Convert.ToString(reader["name"]));
-                }
-            }
-        }
-
-
-        private void LoadDBCIntAndString(Dictionary<int, string> dict, String filename, int fields_to_skip = 0)
-        {
-            if (!File.Exists("dbc\\" + filename))
-                return;
-            IWowClientDBReader m_reader;
-            if (filename.IndexOf(".dbc") > 0)
-                m_reader = new DBCReader(@"dbc\" + filename);
-            else
-                m_reader = new DB2Reader(@"dbc\" + filename);
-
-            for (int i = 0; i < m_reader.RecordsCount; ++i) 
-            {
-                BinaryReader br = m_reader[i];
-                int id = br.ReadInt32();
-                for (int j = 0; j < fields_to_skip; ++j)
-                    br.ReadInt32();
-                string name = m_reader.StringTable[br.ReadInt32()];
-                dict[id] = name;
-            }
-        }
-
-        private String GetStringOrNull(Dictionary<int, string> dict, int key)
-        {
-            if (dict.ContainsKey(key))
-                return dict[key];
-            else
-                return null;
-        }
-
-
-
-        public String GetSpellName(int id)
-        {
-            return GetStringOrNull(spells, id);
-        }
-
-        public string GetEmoteName(int id)
-        {
-            return GetStringOrNull(emotes, id);
-        }
-
-        public string GetCreatureName(int entry)
-        {
-            return GetStringOrNull(creatures, entry);
-        }
-
-        public string GetQuestName(int entry)
-        {
-            return GetStringOrNull(quests, entry);
-        }
-
-        public string GetSoundName(int id)
-        {
-            return GetStringOrNull(sounds, id);
-        }
-
-        public string GetItemName(int id)
-        {
-            return GetStringOrNull(items, id);
-        }
-
-        public String GetMovieName(int id)
-        {
-            return GetStringOrNull(movies, id);
-        }
-
-        public String GetZoneAreaName(int id)
-        {
-            return GetStringOrNull(areas, id);
-        }
-
-        public String GetClassName(int id)
-        {
-            return GetStringOrNull(classes, id);
+            return database[storage].IdExists(id);
         }
 
         private static StringsDB instance;
@@ -152,4 +75,86 @@ namespace VisualSAIStudio
             return instance;
         }
     }
+
+    public class LoadingEventArgs : EventArgs
+    {
+        public string loading { get; set; }
+        public LoadingEventArgs (string loading)
+        {
+            this.loading = loading;
+        }
+    }
+
+
+    public enum StorageType
+    {
+        Spell,
+        Quest,
+        Creature ,
+        GameObject ,
+        Item ,
+        Sound ,
+        Movie ,
+        Class ,
+        Area ,
+        Emote ,
+    }
+
+    public abstract class ClientData
+    {
+        protected Dictionary<int, string> values = new Dictionary<int, string>();
+
+        public bool IdExists(int id)
+        {
+            return values.ContainsKey(id);
+        }
+
+        public string GetString(int id)
+        {
+            if (values.ContainsKey(id))
+                return values[id];
+            else
+                return null;
+        }
+    }
+
+    public class ClientDataDB : ClientData
+    {
+        public ClientDataDB(string id_column, string string_column, string table)
+        {
+            MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SELECT {0}, {1} FROM {2} order by {0}", id_column, string_column, table));
+            using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    values.Add(Convert.ToInt32(reader[id_column]), Convert.ToString(reader[string_column]));
+                }
+            }
+        }
+    }
+
+    public class ClientDataDBC : ClientData
+    {
+        public ClientDataDBC(string filename, int fields_to_skip)
+        {
+            if (!File.Exists("dbc\\" + filename))
+                return;
+            IWowClientDBReader m_reader;
+            if (filename.Contains(".dbc"))
+                m_reader = new DBCReader(@"dbc\" + filename);
+            else
+                m_reader = new DB2Reader(@"dbc\" + filename);
+
+            for (int i = 0; i < m_reader.RecordsCount; ++i)
+            {
+                BinaryReader br = m_reader[i];
+                int id = br.ReadInt32();
+                for (int j = 0; j < fields_to_skip; ++j)
+                    br.ReadInt32();
+                string name = m_reader.StringTable[br.ReadInt32()];
+                values[id] = name;
+            }
+        }
+    }
+
 }

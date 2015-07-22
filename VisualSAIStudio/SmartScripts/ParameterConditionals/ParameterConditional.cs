@@ -20,6 +20,12 @@ namespace VisualSAIStudio.SmartScripts
             this.description = description;
         }
 
+        public ParameterConditional(Parameter compared, WarningType warningType)
+        {
+            this.compared = compared;
+            this.warningType = warningType;
+        }
+
         public ParameterConditional(Parameter compared, Parameter compareTo, WarningType warningType, string description = null)
         {
             this.compared = compared;
@@ -108,6 +114,22 @@ namespace VisualSAIStudio.SmartScripts
                     return false;
             }
             return true;
+        }
+    }
+
+    public class ParameterConditionalDBExists : ParameterConditional
+    {
+        private StorageType storage;
+        public ParameterConditionalDBExists(Parameter compared, StorageType storage)
+            : base(compared, WarningType.INVALID_VALUE)
+        {
+            this.storage = storage;
+            this.description = storage.ToString() + " doesn't exist";
+        }
+
+        public override bool Validate()
+        {
+            return StringsDB.GetInstance().Exists(storage, compared.GetValue());
         }
     }
 
