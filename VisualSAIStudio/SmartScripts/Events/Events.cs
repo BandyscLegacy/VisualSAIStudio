@@ -8,7 +8,7 @@ namespace VisualSAIStudio.SmartScripts
 {
     class SMART_EVENT_UPDATE_IC : SmartEvent
     {
-        public SMART_EVENT_UPDATE_IC() : base(0)
+        public SMART_EVENT_UPDATE_IC() : base (0, "SMART_EVENT_UPDATE_IC")
         {
             SetParameter(0, new Parameter("Initial Min", "Minimum time to trigger event (only for the first time)"));
             SetParameter(1, new Parameter("Initial Max", "Maximum time to trigger event (only for the first time)"));
@@ -35,7 +35,7 @@ namespace VisualSAIStudio.SmartScripts
 
     class SMART_EVENT_UPDATE_OOC : SmartEvent
     {
-        public SMART_EVENT_UPDATE_OOC() : base(1)
+        public SMART_EVENT_UPDATE_OOC() : base (1, "SMART_EVENT_UPDATE_OOC")
         {
             SetParameter(0, new Parameter("Initial Min", "Minimum time to trigger event (only for the first time)"));
             SetParameter(1, new Parameter("Initial Max", "Maximum time to trigger event (only for the first time)"));
@@ -60,7 +60,7 @@ namespace VisualSAIStudio.SmartScripts
 
     class SMART_EVENT_HEALT_PCT : SmartEvent
     {
-        public SMART_EVENT_HEALT_PCT() : base(2)
+        public SMART_EVENT_HEALT_PCT() : base (2, "SMART_EVENT_HEALT_PCT")
         {
             SetParameter(0, new PercentageParameter("HP Min"));
             SetParameter(1, new PercentageParameter("HP Max"));
@@ -76,7 +76,7 @@ namespace VisualSAIStudio.SmartScripts
 
     class SMART_EVENT_MANA_PCT : SmartEvent
     {
-        public SMART_EVENT_MANA_PCT() : base(3)
+        public SMART_EVENT_MANA_PCT() : base (3, "SMART_EVENT_MANA_PCT")
         {
             SetParameter(0, new PercentageParameter("Mana Min"));
             SetParameter(1, new PercentageParameter("Mana Max"));
@@ -92,7 +92,7 @@ namespace VisualSAIStudio.SmartScripts
 
     class SMART_EVENT_AGGRO : SmartEvent
     {
-        public SMART_EVENT_AGGRO() : base(4)  { }
+        public SMART_EVENT_AGGRO() : base (4, "SMART_EVENT_AGGRO")  { }
 
         public override string GetReadableString()
         {
@@ -102,7 +102,7 @@ namespace VisualSAIStudio.SmartScripts
 
     class SMART_EVENT_KILL : SmartEvent
     {
-        public SMART_EVENT_KILL() : base(4)
+        public SMART_EVENT_KILL() : base (4, "SMART_EVENT_KILL")
         {
             SetParameter(0, new Parameter("CooldownMin0"));
             SetParameter(1, new Parameter("CooldownMax1"));

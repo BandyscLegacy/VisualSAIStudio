@@ -8,7 +8,7 @@ namespace VisualSAIStudio
 {
     class GenericSmartEvent : SmartEvent
     {
-        public GenericSmartEvent(int id) : base(id) { }
+        public GenericSmartEvent(int id, string name) : base(id, name) { }
 
         protected string description;
 
@@ -30,7 +30,7 @@ namespace VisualSAIStudio
 
         public static GenericSmartEvent Factory(SmartGenericJSONData data)
         {
-            GenericSmartEvent ev = new GenericSmartEvent(data.id);
+            GenericSmartEvent ev = new GenericSmartEvent(data.id, data.name);
             int i = 0;
             foreach (SmartParameterJSONData param_data in data.parameters)
             {

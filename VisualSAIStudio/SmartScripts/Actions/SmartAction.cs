@@ -10,7 +10,6 @@ namespace VisualSAIStudio
 {
     public abstract class SmartAction : SmartElement
     {
-        public string name;
         private SmartTarget _target;
         public SmartTarget target
         { 

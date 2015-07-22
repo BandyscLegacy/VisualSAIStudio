@@ -18,6 +18,15 @@ namespace VisualSAIStudio.SmartScripts
         protected SmartElement element;
         public DynamicCustomTypeDescriptor m_dctd = null;
 
+        [ReadOnly(true)]
+        public string name
+        {
+            get
+            {
+                return element.name;
+            }
+        }
+
         [CategoryAttribute("Parameters"),
         Id(0, 0)]
         public int pram1 {
@@ -100,11 +109,6 @@ namespace VisualSAIStudio.SmartScripts
 
     public class SmartEventProperty : SmartElementProperty
     {
-        [ReadOnly(true),
-        CategoryAttribute("Event"),
-        DisplayName("Event name")]
-        public string event_name { get; set; }
-
         [CategoryAttribute("Event"),
         DisplayName("Phasemask")]
         public SmartPhaseMask phasemask { 
@@ -153,19 +157,14 @@ namespace VisualSAIStudio.SmartScripts
 
         public SmartEventProperty(SmartEvent ev) : base (ev)
         {
-            event_name = ev.GetType().Name;
+            m_dctd.GetProperty("name").SetCategory("Event");
+            m_dctd.GetProperty("name").SetDisplayName("Event name");
         }
     }
 
     public class SmartActionProperty : SmartElementProperty
     {
         SmartAction action;
-
-        [ReadOnly(true),
-        CategoryAttribute("Action"),
-        DisplayName("Action name")]
-        public string action_name { get; set; }
-
         [CategoryAttribute("Target Position"),
          DisplayName("X")]
         public float target_x
@@ -229,7 +228,8 @@ namespace VisualSAIStudio.SmartScripts
             : base(action)
         {
             this.action = action;
-            action_name = action.name;
+            m_dctd.GetProperty("name").SetCategory("Action");
+            m_dctd.GetProperty("name").SetDisplayName("Action name");
             Parameter[] parameters = action.target.parameters;
             for (int i = 0; i < 3; ++i)
             {

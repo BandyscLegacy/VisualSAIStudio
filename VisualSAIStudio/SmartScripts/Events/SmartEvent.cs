@@ -98,6 +98,12 @@ namespace VisualSAIStudio
             this.ID = id;
         }
 
+        public SmartEvent(int id, string name)
+        {
+            this.ID = id;
+            this.name = name;
+        }
+
         public void Copy(SmartEvent prev)
         {
             base.Copy(prev);

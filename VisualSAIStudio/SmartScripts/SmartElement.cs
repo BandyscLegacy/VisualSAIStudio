@@ -15,6 +15,7 @@ namespace VisualSAIStudio
         public Parameter[] parameters {get; set; }
         public int ID;
         protected string readable;
+        public string name;
 
         public SmartElement()
         {
