@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VisualSAIStudio.SmartScripts;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace VisualSAIStudio
@@ -81,7 +82,7 @@ namespace VisualSAIStudio
                 }
             }
 
-            cmd = connect.Query("SELECT * FROM smart_scripts WHERE entryorguid = "+entryorguid + " order by id");
+            cmd = connect.Query("SELECT * FROM smart_scripts WHERE source_type = 0 and entryorguid = "+entryorguid + " order by id");
             SmartEvent prev = null;
             using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
             {
@@ -90,8 +91,9 @@ namespace VisualSAIStudio
                 {
                     //(`entryorguid`,`source_type`,`id`,`link`,`event_type`,`event_phase_mask`,`event_chance`,`event_flags`,`event_param1`,`event_param2`,`event_param3`,`event_param4`,`action_type`,`action_param1`,`action_param2`,`action_param3`,`action_param4`,`action_param5`,`action_param6`,`target_type`,`target_param1`,`target_param2`,`target_param3`,`target_x`,`target_y`,`target_z`,`target_o`,`comment`)
                     int id = Convert.ToInt32(reader["id"]);
-
+                    int entry = Convert.ToInt32(reader["entryorguid"]);
                     SmartAction a = ExtendedFactories.ActionFactory(Convert.ToInt32(reader["action_type"]));
+                    int asad = Convert.ToInt32(reader["target_type"]);
                     SmartTarget target = TargetsFactory.Factory(Convert.ToInt32(reader["target_type"]));
 
                     for (int i = 0; i < 6; i++)
@@ -284,6 +286,47 @@ namespace VisualSAIStudio
                 }
             }
             return resres.ToString();
+        }
+
+        public void DetectConflicts()
+        {
+            StringBuilder conflicts = new StringBuilder();
+
+            for (int i = 0; i < events.Count;++i )
+            {
+                SmartEvent ev = events.GetEvent(i);
+
+                for (int j = 0; j < ev.GetActions().Count; ++j)
+                {
+                    SmartAction a1 = ev.GetAction(j);
+                    SmartAction a2 = ActionsFactory.Factory(a1.ID);
+                    a2.Copy(a1);
+
+                    for (int p = 0; p < 6;++p )
+                    {
+                        if (a1.parameters[p].GetType() != a2.parameters[p].GetType())
+                            conflicts.AppendLine("Instead of parameter: " + a1.parameters[p].GetType() + "\nWe have: " + a2.parameters[p].GetType());
+                    }
+
+                        if (a2.ToString() != a1.ToString())
+                            conflicts.AppendLine("Instead of: \n " + a1.ToString() + "\nWe have:\n " + a2.ToString());
+                }
+
+            }
+
+                if (conflicts.Length > 0)
+                    MessageBox.Show(conflicts.ToString());
+
+        }
+
+        public IEnumerable<SmartEvent> GetEvents()
+        {
+            return events.collection.Cast<SmartEvent>().ToList();
+        }
+
+        public void EnsureVisible(DrawableElement drawableElement)
+        {
+            scratch1.EnsureVisible(drawableElement);
         }
     }
 }

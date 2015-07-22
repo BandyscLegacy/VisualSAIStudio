@@ -62,6 +62,10 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Name = "ToolWindow";
             this.Text = "ToolWindow";
+            this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft)
+| WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight)
+| WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop)
+| WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
             this.Load += new System.EventHandler(this.ToolWindow_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

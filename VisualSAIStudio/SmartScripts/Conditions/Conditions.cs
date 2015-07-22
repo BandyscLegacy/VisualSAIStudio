@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualSAIStudio
+namespace VisualSAIStudio.SmartScripts
 {
     public class CONDITION_LOGICAL_OR : SmartCondition
     {

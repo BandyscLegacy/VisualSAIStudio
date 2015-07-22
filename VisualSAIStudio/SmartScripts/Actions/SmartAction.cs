@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using VisualSAIStudio.SmartScripts;
 
 namespace VisualSAIStudio
 {
     public abstract class SmartAction : SmartElement
     {
-        private string readable;
         public string name;
         private SmartTarget _target;
         public SmartTarget target
@@ -41,29 +41,7 @@ namespace VisualSAIStudio
 
         public string GetCPPCode()
         {
-            string code = Smart.Format(GetCpp(), new
-            {
-                target_creature = "{target_creature}",
-                pram1 = parameters[0],
-                pram2 = parameters[1],
-                pram3 = parameters[2],
-                pram4 = parameters[3],
-                pram5 = parameters[4],
-                pram6 = parameters[5]
-            });
-            StringBuilder ret = new StringBuilder();
-                ret.AppendLine(target.GetCPPCode());
-                ret.AppendLine("for (ObjectList::const_iterator itr = targets->begin(); itr != targets->end(); ++itr)");
-                ret.AppendLine("{");
-            if (code.Contains("{target_creature}"))
-            {
-                ret.AppendLine("if (Creature* creature = (*itr)->ToCreature())");
-                ret.AppendLine(code.Replace("{target_creature}", "creature"));
-            }
-            else
-                ret.AppendLine(code);
-            ret.AppendLine("}");
-            return ret.ToString();
+            return "";
         }
 
         public override void Copy(SmartElement prev)
@@ -117,10 +95,19 @@ namespace VisualSAIStudio
             paramValueChanged(this, new EventArgs());
         }
 
-        public override string ToString()
+
+        public override List<Warning> Validate()
         {
-            return readable;
+            List<Warning> warnings = base.Validate();
+            if (!(target is SMART_TARGET_NONE || target is SMART_TARGET_SELF) &&
+                !GetReadableString().Contains("{target}") && !GetReadableString().Contains("{targetcoords}")
+                )
+                warnings.Add(new Warning(WarningType.IGNORED_TARGET, "Invalid target", this));
+
+            return warnings;
         }
+
+        
     }
 
 }

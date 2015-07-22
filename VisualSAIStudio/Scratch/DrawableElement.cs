@@ -11,6 +11,9 @@ namespace VisualSAIStudio
         public Rectangle rect;
         public bool selected { get; set; }
         public EventHandler RequestUpdate = delegate { };
+        public DrawableElement parent;
+
+        public EventHandler Selected = delegate { };
 
         public bool contains(int x, int y)
         {
@@ -28,11 +31,16 @@ namespace VisualSAIStudio
         public virtual void setSelected(bool value)
         {
             selected = value;
+            if (value)
+                Selected(this, new EventArgs());
         }
         public virtual void setSelected(Point mouse)
         {
             if (rect.Contains(mouse))
+            {
                 selected = true;
+                Selected(this, new EventArgs());
+            }
             else
                 selected = false;
         }

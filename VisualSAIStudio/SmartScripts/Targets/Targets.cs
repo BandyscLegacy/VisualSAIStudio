@@ -4,8 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualSAIStudio
+namespace VisualSAIStudio.SmartScripts
 {
+    public class UNKNOWN_TARGET : SmartTarget
+    {
+        public UNKNOWN_TARGET(int id) : base(id, "") { }
+        public override string GetReadableString()
+        {
+            return "UNKNOWN TARGET " + this.ID;
+        }
+    }
+
     public class SMART_TARGET_NONE : SmartTarget
     {
         public SMART_TARGET_NONE() : base(0, "") { }

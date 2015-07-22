@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VisualSAIStudio.SmartScripts;
 
 namespace VisualSAIStudio
 {
@@ -123,7 +124,7 @@ namespace VisualSAIStudio
                 case 24:
                     return new SMART_TARGET_THREAT_LIST();
             }
-            return null;
+            return new UNKNOWN_TARGET(id);
         }
     }
 }

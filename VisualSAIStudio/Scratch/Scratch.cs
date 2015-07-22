@@ -201,6 +201,12 @@ namespace VisualSAIStudio
             this.Refresh();
         }
 
+
+        public void EnsureVisible(DrawableElement drawableElement)
+        {
+            if (drawableElement.rect.Top < 0 || drawableElement.rect.Top > this.Height)
+                vScrollBar.Value += drawableElement.rect.Top ;
+        }
     }
     public static class MyExtensionMethods
     {

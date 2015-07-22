@@ -8,19 +8,6 @@ using System.Windows.Forms;
 
 namespace VisualSAIStudio
 {
-    static class Extensions
-    {
-        public static R Single<R>(this MySqlDataReader reader, Func<MySqlDataReader, R> selector)
-        {
-            R result = default(R);
-            if (reader.Read())
-                result = selector(reader);
-            if (reader.Read())
-                throw new System.Data.DataException("multiple rows returned from query");
-            return result;
-        }
-    }
-
     class DBConnect
     {
         private MySqlConnection connection;

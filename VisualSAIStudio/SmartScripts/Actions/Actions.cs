@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualSAIStudio
+namespace VisualSAIStudio.SmartScripts
 {
     class SMART_ACTION_NONE : SmartAction
     {
@@ -25,6 +25,8 @@ namespace VisualSAIStudio
         {
             SetParameter(0, new Parameter("Group ID", "Group id from table creature_text. Random text will be said if multiple rows with the same group"));
             SetParameter(1, new Parameter("Delay", "Duration to wait before TEXT_OVER event is triggered"));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], 0, CompareType.GREATER_OR_EQUALS));
+            AddConditional(new ParameterConditionalCompareValue(parameters[1], 0, CompareType.GREATER_OR_EQUALS));
         }
 
         protected override string GetCpp()
@@ -68,6 +70,10 @@ namespace VisualSAIStudio
         {
             SetParameter(0, new CreatureParameter("Creature entry", "Use 0 for both to reset"));
             SetParameter(1, new Parameter("Model id", "Use 0 for both to reset"));
+            List<ParameterConditional> conditions = new List<ParameterConditional>();
+            conditions.Add(new ParameterConditionalCompareValue(parameters[0], 0, CompareType.GREATER_THAN));
+            conditions.Add(new ParameterConditionalCompareValue(parameters[1], 0, CompareType.GREATER_THAN));
+            AddConditional(new ParameterConditionalInversed(new ParameterConditionalGroup(conditions, "Creature entry and model id cannot be set at once")));
         }
 
         protected override string GetCpp()
@@ -85,7 +91,7 @@ namespace VisualSAIStudio
             if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
                 return "{target}: Demorph";
             else if (parameters[0].GetValue() != 0 && parameters[1].GetValue() != 0)
-                return "[!] Invalid morph";
+                return "[!] Invalid morph ({pram1}, {pram2}";
             else if (parameters[0].GetValue() == 0)
                 return "{target}: Morph to model {pram2}";
             else
@@ -98,8 +104,8 @@ namespace VisualSAIStudio
     {
         public SMART_ACTION_SOUND() : base(4, "ACTION_SOUND")
         {
-            SetParameter(0, new SoundParameter("SoundId"));
-            SetParameter(1, new Parameter("TextRange"));
+            SetParameter(0, new SoundParameter("Sound ID"));
+            SetParameter(1, new Parameter("Text Range"));
         }
 
         public override string GetReadableString()
@@ -113,7 +119,7 @@ namespace VisualSAIStudio
     {
         public SMART_ACTION_PLAY_EMOTE() : base(5, "ACTION_PLAY_EMOTE")
         {
-            SetParameter(0, new EmoteParameter("Emote id", "Emote id to play"));
+            SetParameter(0, new EmoteParameter("Emote ID", "Emote id to play"));
         }
 
         public override string GetReadableString()
@@ -156,6 +162,8 @@ namespace VisualSAIStudio
         public SMART_ACTION_SET_REACT_STATE() : base(8, "ACTION_SET_REACT_STATE")
         {
             SetParameter(0, new SwitchParameter("ReactState", new [] {"REACT_PASSIVE", "REACT_DEFENSIVE", "REACT_AGGRESSIVE"}));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], 0, CompareType.GREATER_OR_EQUALS));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], 2, CompareType.LOWER_OR_EQUALS));
         }
         public override string GetReadableString()
         {
@@ -166,9 +174,7 @@ namespace VisualSAIStudio
 
     class SMART_ACTION_ACTIVATE_GOBJECT : SmartAction
     {
-        public SMART_ACTION_ACTIVATE_GOBJECT() : base(9, "ACTION_ACTIVATE_GOBJECT")
-        {
-        }
+        public SMART_ACTION_ACTIVATE_GOBJECT() : base(9, "ACTION_ACTIVATE_GOBJECT")  {   }
 
         public override string GetReadableString()
         {
@@ -181,9 +187,9 @@ namespace VisualSAIStudio
     {
         public SMART_ACTION_RANDOM_EMOTE() : base(10, "ACTION_RANDOM_EMOTE")
         {
-            SetParameter(0, new EmoteParameter("Emote 1"));
-            SetParameter(1, new EmoteParameter("Emote 2"));
-            SetParameter(2, new EmoteParameter("Emote 3"));
+            SetParameter(0, new EmoteParameter("Emote 1", "If 0, the emote will be skipped"));
+            SetParameter(1, new EmoteParameter("Emote 2", "If 0, the emote will be skipped"));
+            SetParameter(2, new EmoteParameter("Emote 3", "If 0, the emote will be skipped"));
         }
 
         public override string GetReadableString()
@@ -198,7 +204,7 @@ namespace VisualSAIStudio
         public SMART_ACTION_CAST() : base(11, "ACTION_CAST")
         {
             SetParameter(0, new SpellParameter("Spell"));
-            SetParameter(1, new CastFlagsParameter("CastFlags"));
+            SetParameter(1, new CastFlagsParameter("Cast Flags"));
         }
 
         public override string GetReadableString()
@@ -213,7 +219,7 @@ namespace VisualSAIStudio
         public SMART_ACTION_SUMMON_CREATURE() : base(12, "ACTION_SUMMON_CREATURE")
         {
             SetParameter(0, new CreatureParameter("Creature"));
-            SetParameter(1, new Parameter("SummonType"));
+            SetParameter(1, new Parameter("Summon Type"));
             SetParameter(2, new Parameter("Duration", "In ms"));
             SetParameter(3, new Parameter("Storage ID", "Target variable id to store summoned creature"));
             SetParameter(4, new BoolParameter("Attack Invoker"));
@@ -370,6 +376,7 @@ namespace VisualSAIStudio
         public SMART_ACTION_AUTO_ATTACK() : base(20, "ACTION_AUTO_ATTACK")
         {
             SetParameter(0, new BoolParameter("Allow Attack State", "0 = stop attack, 1 = attack"));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], 0, 1));
         }
 
         public override string GetReadableString()
@@ -386,6 +393,7 @@ namespace VisualSAIStudio
         public SMART_ACTION_ALLOW_COMBAT_MOVEMENT() : base(21, "ACTION_ALLOW_COMBAT_MOVEMENT")
         {
             SetParameter(0, new BoolParameter("Allow Combat Movement", "0 = stop combat based movement, 1 = enable combat movement"));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], 0, 1));
         }
 
         public override string GetReadableString()
@@ -491,7 +499,7 @@ namespace VisualSAIStudio
             SetParameter(1, new Parameter("Angle","0 = default"));
             SetParameter(2, new Parameter("EndCreatureEntry"));
             SetParameter(3, new Parameter("Credit"));
-            SetParameter(4, new SwitchParameter("Credit Type", new [] {"monster kill",  "event"}));
+            SetParameter(4, new SwitchParameter("Credit Type", new [] {"Monster kill",  "Event"}));
         }
 
         public override string GetReadableString()
@@ -527,6 +535,7 @@ namespace VisualSAIStudio
         {
             SetParameter(0, new Parameter("PhaseMin"));
             SetParameter(1, new Parameter("PhaseMax"));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], parameters[1], CompareType.LOWER_OR_EQUALS));
         }
 
         public override string GetReadableString()
@@ -645,7 +654,8 @@ namespace VisualSAIStudio
     {
         public SMART_ACTION_SET_SHEATH() : base(40, "ACTION_SET_SHEATH")
         {
-            SetParameter(0, new SwitchParameter("Sheath Type",new [] {"unarmed","melee","ranged"}));
+            SetParameter(0, new SwitchParameter("Sheath Type",new [] {"Unarmed","Melee","Ranged"}));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], 0, 2));
         }
 
         public override string GetReadableString()
@@ -691,8 +701,12 @@ namespace VisualSAIStudio
     {
         public SMART_ACTION_MOUNT_TO_ENTRY_OR_MODEL() : base(43, "ACTION_MOUNT_TO_ENTRY_OR_MODEL")
         {
-            SetParameter(0, new CreatureParameter("Creature_template entry"));
+            SetParameter(0, new CreatureParameter("Creature entry"));
             SetParameter(1, new Parameter("Model Id"));
+            List<ParameterConditional> conditions = new List<ParameterConditional>();
+            conditions.Add(new ParameterConditionalCompareValue(parameters[0], 0, CompareType.GREATER_THAN));
+            conditions.Add(new ParameterConditionalCompareValue(parameters[1], 0, CompareType.GREATER_THAN));
+            AddConditional(new ParameterConditionalInversed(new ParameterConditionalGroup(conditions, "Creature entry and model id cannot be set at once")));
         }
 
         public override string GetReadableString()
@@ -799,7 +813,7 @@ namespace VisualSAIStudio
     {
         public SMART_ACTION_SUMMON_GO() : base(50, "ACTION_SUMMON_GO")
         {
-            SetParameter(0, new Parameter("GameObject"));
+            SetParameter(0, new Parameter("Game Object"));
             SetParameter(1, new Parameter("Despawn Time","In ms"));
         }
 
@@ -1053,6 +1067,8 @@ namespace VisualSAIStudio
             SetParameter(3, new Parameter("Repeat Min", "(only if it repeats)"));
             SetParameter(4, new Parameter("Repeat Max", "(only if it repeats)"));
             SetParameter(5, new PercentageParameter("Chance"));
+            AddConditional(new ParameterConditionalCompareValue(parameters[1], parameters[2], CompareType.LOWER_OR_EQUALS));
+            AddConditional(new ParameterConditionalCompareValue(parameters[3], parameters[4], CompareType.LOWER_OR_EQUALS));
         }
 
         public override string GetReadableString()
@@ -1359,6 +1375,7 @@ namespace VisualSAIStudio
         {
             SetParameter(0, new Parameter("Action List ID min"));
             SetParameter(1, new Parameter("Action List ID max"));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], parameters[1], CompareType.LOWER_OR_EQUALS));
         }
 
         public override string GetReadableString()

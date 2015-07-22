@@ -21,6 +21,7 @@ namespace VisualSAIStudio
         public MainForm()
         {
             InitializeComponent();
+
         }
 
         PropertyWindow properties;
@@ -29,6 +30,7 @@ namespace VisualSAIStudio
         ToolWindow actions;
         ToolWindow conditions;
         ToolWindow events;
+        ErrorsWindow errors;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -36,6 +38,8 @@ namespace VisualSAIStudio
 
             LoadCustomEventsAndActions();
             dockPanel1.Theme = new WeifenLuo.WinFormsUI.Docking.VS2012LightTheme();
+            vS2012ToolStripExtender1.SetEnableVS2012Style(this.menuStrip1, true);
+
 
             scratch = new ScratchWindow();
             scratch.Show(dockPanel1);
@@ -55,7 +59,26 @@ namespace VisualSAIStudio
             properties = new PropertyWindow();
             properties.Show(targets.Pane, DockAlignment.Bottom, 0.6);
 
+            errors = new ErrorsWindow();
+            errors.Show(dockPanel1, DockState.DockBottom);
+            errors.WarningSelected += this_warningSelected;
+
             scratch.ElementSelected += this_callback;
+        }
+
+        private void this_warningSelected(object sender, EventArgs e)
+        {
+            if (!(e is WarningSelectedEventArgs))
+                return;
+
+            SmartElement elem = ((WarningSelectedEventArgs)e).element;
+
+            if (elem is SmartAction)
+            {
+                elem.parent.setSelected(true);
+                scratch.EnsureVisible(elem.parent);
+            }
+
         }
 
         private void this_callback(object sender, EventArgs e)
@@ -142,6 +165,20 @@ namespace VisualSAIStudio
         {
             properties = new PropertyWindow();
             properties.Show(dockPanel1, DockState.DockRight);
+        }
+
+        private void detectConflictsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            scratch.DetectConflicts();
+        }
+
+        private void validateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            errors.Clear();
+            foreach (SmartEvent ev in scratch.GetEvents())
+            {
+                errors.AddWarnings(ev.Validate());
+            }
         }
     }
 }

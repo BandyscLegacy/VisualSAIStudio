@@ -1,4 +1,5 @@
 ﻿using DynamicTypeDescriptor;
+using SmartFormat;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -32,6 +33,15 @@ namespace VisualSAIStudio
 
         [StandardValue("Phase 6", Description = "")]
         Phase_6 = 32,
+
+        [StandardValue("Phase 7", Description = "")]
+        Phase_7 = 64,
+
+        [StandardValue("Phase 8", Description = "")]
+        Phase_8 = 128,
+
+        [StandardValue("Phase 9", Description = "")]
+        Phase_9 = 256,
     }
 
     [System.ComponentModel.Editor(typeof(StandardValueEditor), typeof(System.Drawing.Design.UITypeEditor))]
@@ -41,16 +51,16 @@ namespace VisualSAIStudio
         [StandardValue("NOT REPEATABLE", Description = "Event can not repeat")]
         SMART_EVENT_FLAG_NOT_REPEATABLE = 0x001,
 
-        [StandardValue("DIFFICULTY 0", Description = "Event only occurs in instance difficulty 0")]
+        [StandardValue("DIFFICULTY 0", Description = "Event only occurs in normal dungeon")]
         SMART_EVENT_FLAG_DIFFICULTY_0 = 0x002,
 
-        [StandardValue("DIFFICULTY 1", Description = "Event only occurs in instance difficulty 1")]
+        [StandardValue("DIFFICULTY 1", Description = "Event only occurs in heroic dungeon")]
         SMART_EVENT_FLAG_DIFFICULTY_1 = 0x004,
 
-        [StandardValue("DIFFICULTY 2", Description = "Event only occurs in instance difficulty 2")]
+        [StandardValue("DIFFICULTY 2", Description = "Event only occurs in normal raid")]
         SMART_EVENT_FLAG_DIFFICULTY_2 = 0x008,
 
-        [StandardValue("DIFFICULTY 3", Description = "Event only occurs in instance difficulty 3")]
+        [StandardValue("DIFFICULTY 3", Description = "Event only occurs in heroic raid")]
         SMART_EVENT_FLAG_DIFFICULTY_3 = 0x010,
 
         [StandardValue("DEBUG ONLY", Description = "Event only occurs in debug build")]
@@ -102,6 +112,7 @@ namespace VisualSAIStudio
         internal void AddAction(SmartAction smartAction)
         {
             children.Add(smartAction);
+            smartAction.parent = this;
             smartAction.RequestUpdate += ActionRequestUpdateCallback;
         }
 
@@ -138,6 +149,24 @@ namespace VisualSAIStudio
             return children;
         }
 
+        protected override void paramValueChanged(object sender, EventArgs e)
+        {
+            if (GetReadableString() == null)
+                return;
+            readable = Smart.Format(GetReadableString(), new
+            {
+                pram1 = parameters[0],
+                pram2 = parameters[1],
+                pram3 = parameters[2],
+                pram4 = parameters[3],
+                pram1value = parameters[0].GetValue(),
+                pram2value = parameters[1].GetValue(),
+                pram3value = parameters[2].GetValue(),
+                pram4value = parameters[3].GetValue(),
+            });
+            base.paramValueChanged(sender, e);
+        }
+
         public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, bool setRect = true)
         {
             Point start_pos = new Point(x, y);
@@ -146,29 +175,24 @@ namespace VisualSAIStudio
 
             if (selected)
             {
-                brush = new SolidBrush(Color.FromArgb(255, 230,230,230));
+                brush = new SolidBrush(Color.FromArgb(255, 230, 230, 230));
                 graphics.FillRectangle(brush, x, y, width, size.Height);
             }
-
             brush = Brushes.Black;
-            
             graphics.FillEllipse(brush, x + 10, y + 10, 5, 5);
-
             foreach (SmartCondition condition in conditions)
             {
                 graphics.DrawString(condition.GetReadableString(), font, brush, x + 18, y + 5);
                 y += (int)graphics.MeasureString(condition.GetReadableString(), font).Height + 10;
             }
-
-            graphics.DrawString(GetReadableString(), font, brush, x + 18, y + 5);
-            y += (int)graphics.MeasureString(GetReadableString(), font).Height + 10;
-
+            graphics.DrawString(ToString(), font, brush, x + 18, y + 5);
+            y += (int)graphics.MeasureString(ToString(), font).Height + 10;
             foreach (DrawableElement child in children)
             {
-                Size asize = child.Draw(graphics, x+30, y, width, size.Height, brush, pen, font, setRect);
+                Size asize = child.Draw(graphics, x + 30, y, width, size.Height, brush, pen, font, setRect);
                 y += asize.Height;
             }
-
+            
             if (setRect)
                 SetRect(start_pos.X, start_pos.Y, maxX, size.Height);
 
@@ -181,6 +205,7 @@ namespace VisualSAIStudio
             replace.Copy(search);
             children.Remove(search);
             children.Insert(index, replace);
+            replace.parent = this;
             replace.RequestUpdate += ActionRequestUpdateCallback;
             Invalide();
         }
@@ -200,6 +225,7 @@ namespace VisualSAIStudio
         public void InsertAction(SmartAction smartAction, int index)
         {
             children.Insert(index, smartAction);
+            smartAction.parent = this;
             smartAction.RequestUpdate += ActionRequestUpdateCallback;
             Invalide();
         }
@@ -222,6 +248,22 @@ namespace VisualSAIStudio
                     }
                 }
             }
+        }
+
+        public override List<Warning> Validate()
+        {
+            List<Warning> warnings = base.Validate();
+            for (int i = 0; i < children.Count;++i)
+            {
+                SmartAction action = GetAction(i);
+                warnings.AddRange(action.Validate());
+            }
+            return warnings;
+        }
+
+        public override string GetReadableString()
+        {
+            throw new NotImplementedException();
         }
     }
 

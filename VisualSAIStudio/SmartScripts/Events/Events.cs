@@ -4,13 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualSAIStudio
+namespace VisualSAIStudio.SmartScripts
 {
     class SMART_EVENT_UPDATE_IC : SmartEvent
     {
-        public SMART_EVENT_UPDATE_IC() : base()
+        public SMART_EVENT_UPDATE_IC() : base(0)
         {
-            ID = 0;
+            SetParameter(0, new Parameter("Initial Min", "Minimum time to trigger event (only for the first time)"));
+            SetParameter(1, new Parameter("Initial Max", "Maximum time to trigger event (only for the first time)"));
+            SetParameter(2, new Parameter("Repeat Min", "Minimum time to trigger event (after first time)"));
+            SetParameter(3, new Parameter("Repeat Max", "Maximum time to trigger event (after first time)"));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], parameters[1], CompareType.LOWER_OR_EQUALS));
+            AddConditional(new ParameterConditionalCompareValue(parameters[2], parameters[3], CompareType.LOWER_OR_EQUALS));
+        }
+
+        public override string GetReadableString()
+        {
+            if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0 && parameters[2].GetValue() == 0 && parameters[3].GetValue() == 0)
+                return "Never";
+            else if (parameters[1].GetValue() < parameters[0].GetValue() || parameters[3].GetValue() < parameters[2].GetValue())
+                return "Invalid! (max < min!)";
+            else if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
+                return "When in combat and timer between {pram3} and {pram4} ms";
+            else if (parameters[2].GetValue() == 0 && parameters[3].GetValue() == 0)
+                return "When in combat and timer between {pram1} and {pram2} ms";
+            else
+                return "When in combat and timer at the begining between {pram1} and {pram2} ms (and later repeats every {pram3} and {pram4} ms)";
+        }
+    }
+
+    class SMART_EVENT_UPDATE_OOC : SmartEvent
+    {
+        public SMART_EVENT_UPDATE_OOC() : base(1)
+        {
             SetParameter(0, new Parameter("Initial Min", "Minimum time to trigger event (only for the first time)"));
             SetParameter(1, new Parameter("Initial Max", "Maximum time to trigger event (only for the first time)"));
             SetParameter(2, new Parameter("Repeat Min", "Minimum time to trigger event (after first time)"));
@@ -24,80 +50,49 @@ namespace VisualSAIStudio
             else if (parameters[1].GetValue() < parameters[0].GetValue() || parameters[3].GetValue() < parameters[2].GetValue())
                 return "Invalid! (max < min!)";
             else if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
-                return "When in combat and timer between " + parameters[2].ToString() + " and " + parameters[3].ToString();
+                return "When out of combat and timer between {pram3} and {pram4} ms";
             else if (parameters[2].GetValue() == 0 && parameters[3].GetValue() == 0)
-                return "When in combat and timer between " + parameters[0].GetValue() + " and " + parameters[1].GetValue();
+                return "When out of combat and timer between {pram1} and {pram2} ms";
             else
-                return "When in combat and timer at the begining between " + parameters[0].ToString() + " and " + parameters[1].ToString() + " (and then repeat between " + parameters[2].ToString() + " and " + parameters[3].ToString() + ")";
-        }
-    }
-
-    class SMART_EVENT_UPDATE_OOC : SmartEvent
-    {
-        public SMART_EVENT_UPDATE_OOC() : base()
-        {
-            ID = 1;
-            SetParameter(0, new Parameter("InitialMin"));
-            SetParameter(1, new Parameter("InitialMax"));
-            SetParameter(2, new Parameter("RepeatMin"));
-            SetParameter(3, new Parameter("RepeatMax"));
-        }
-
-        public override string GetReadableString()
-        {
-            if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0 && parameters[2].GetValue() == 0 && parameters[3].GetValue() == 0)
-                return "Never";
-            else if (parameters[1].GetValue() < parameters[0].GetValue() || parameters[3].GetValue() < parameters[2].GetValue())
-                return "Invalid! (max < min!)";
-            else if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
-                return "When out of combat and timer between " + parameters[2].ToString() + " and " + parameters[3].ToString();
-            else if (parameters[2].GetValue() == 0 && parameters[3].GetValue() == 0)
-                return "When out of combat and timer between " + parameters[0].GetValue() + " and " + parameters[1].GetValue();
-            else
-                return "When out of combat and timer at the begining between " + parameters[0].ToString() + " and " + parameters[1].ToString() + " (and then repeat between " + parameters[2].ToString() + " and " + parameters[3].ToString() + ")";
+                return "When out of combat and timer at the begining between {pram1} and {pram2} ms (and later repeats every {pram3} and {pram4} ms)";
         }
     }
 
     class SMART_EVENT_HEALT_PCT : SmartEvent
     {
-        public SMART_EVENT_HEALT_PCT() : base()
+        public SMART_EVENT_HEALT_PCT() : base(2)
         {
-            ID = 2;
-            SetParameter(0, new Parameter("HPMin%"));
-            SetParameter(1, new Parameter("HPMax%"));
-            SetParameter(2, new Parameter("RepeatMin"));
-            SetParameter(3, new Parameter("RepeatMax"));
+            SetParameter(0, new PercentageParameter("HP Min"));
+            SetParameter(1, new PercentageParameter("HP Max"));
+            SetParameter(2, new Parameter("Repeat Min", "If set, actions will be processed every min-max miliseconds"));
+            SetParameter(3, new Parameter("Repeat Max", "If set, actions will be processed every min-max miliseconds"));
         }
 
         public override string GetReadableString()
         {
-            return "";
+            return "When health between {pram1} - {pram2} {pram3value:choose(0):|(process every {pram3} - {pram4} ms)}";
         }
     }
 
     class SMART_EVENT_MANA_PCT : SmartEvent
     {
-        public SMART_EVENT_MANA_PCT() : base()
+        public SMART_EVENT_MANA_PCT() : base(3)
         {
-            ID = 3;
-            SetParameter(0, new Parameter("ManaMin%"));
-            SetParameter(1, new Parameter("ManaMax%"));
-            SetParameter(2, new Parameter("RepeatMin"));
-            SetParameter(3, new Parameter("RepeatMax"));
+            SetParameter(0, new PercentageParameter("Mana Min"));
+            SetParameter(1, new PercentageParameter("Mana Max"));
+            SetParameter(2, new Parameter("Repeat Min", "If set, actions will be processed every min-max miliseconds"));
+            SetParameter(3, new Parameter("Repeat Max", "If set, actions will be processed every min-max miliseconds"));
         }
 
         public override string GetReadableString()
         {
-            return "";
+            return "When mana between {pram1} - {pram2} {pram3value:choose(0):|(process every {pram3} - {pram4} ms)}";
         }
     }
 
     class SMART_EVENT_AGGRO : SmartEvent
     {
-        public SMART_EVENT_AGGRO() : base()
-        {
-            ID = 4;
-        }
+        public SMART_EVENT_AGGRO() : base(4)  { }
 
         public override string GetReadableString()
         {
@@ -107,9 +102,8 @@ namespace VisualSAIStudio
 
     class SMART_EVENT_KILL : SmartEvent
     {
-        public SMART_EVENT_KILL() : base()
+        public SMART_EVENT_KILL() : base(4)
         {
-            ID = 5;
             SetParameter(0, new Parameter("CooldownMin0"));
             SetParameter(1, new Parameter("CooldownMax1"));
             SetParameter(2, new Parameter("playerOnly2"));

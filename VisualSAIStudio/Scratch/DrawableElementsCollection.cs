@@ -12,7 +12,7 @@ namespace VisualSAIStudio
         public event EventHandler ElementInserted = delegate { };
         public event EventHandler ElementsChanged = delegate { };
 
-        protected List<DrawableElement> collection = new List<DrawableElement>();
+        public List<DrawableElement> collection = new List<DrawableElement>();
 
         public int Count
         {
@@ -43,7 +43,18 @@ namespace VisualSAIStudio
         public void Add(DrawableElement element)
         {
             collection.Add(element);
+            element.Selected += this_ElementSelected;
             ElementAdded(this, new EventArgs());
+            ElementsChanged(this, new EventArgs());
+        }
+
+        private void this_ElementSelected(object sender, EventArgs e)
+        {
+            foreach (DrawableElement element in this)
+            {
+                if (element != sender)
+                    element.setSelected(false);
+            }
             ElementsChanged(this, new EventArgs());
         }
 
@@ -69,6 +80,7 @@ namespace VisualSAIStudio
             int index = collection.IndexOf(search);
             collection.Remove(search);
             collection.Insert(index, replace);
+            replace.Selected += this_ElementSelected;
             ElementsChanged(this, new EventArgs());
         }
 
@@ -82,6 +94,7 @@ namespace VisualSAIStudio
         public void Insert(DrawableElement element, int index)
         {
             collection.Insert(index, element);
+            element.Selected += this_ElementSelected;
             ElementInserted(this, new EventArgs());
             ElementsChanged(this, new EventArgs());
         }

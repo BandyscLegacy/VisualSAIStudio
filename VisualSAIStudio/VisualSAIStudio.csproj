@@ -47,9 +47,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data, Version=6.9.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+    <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MySql.Data.6.9.7\lib\net45\MySql.Data.dll</HintPath>
+      <HintPath>..\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -89,6 +89,13 @@
     <Compile Include="DynamicTypeDescriptor\StandardValueEditorUI.Designer.cs">
       <DependentUpon>StandardValueEditorUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="ErrorsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ErrorsWindow.Designer.cs">
+      <DependentUpon>ErrorsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions.cs" />
     <Compile Include="PropertyWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,6 +131,7 @@
     <Compile Include="SmartScripts\Actions\GenericSmartAction.cs" />
     <Compile Include="SmartScripts\Events\GenericSmartEvent.cs" />
     <Compile Include="SmartScripts\Conditions\SmartCondition.cs" />
+    <Compile Include="SmartScripts\ParameterConditionals\ParameterConditional.cs" />
     <Compile Include="SmartScripts\ParametersConverter.cs" />
     <Compile Include="SmartScripts\SmartElement.cs" />
     <Compile Include="SmartScripts\Events\Events.cs" />
@@ -150,6 +158,15 @@
     <Compile Include="DB\StringsDB.cs" />
     <Compile Include="SmartScripts\Targets\Targets.cs" />
     <Compile Include="SmartScripts\Targets\TargetsFactory.cs" />
+    <Compile Include="SmartScripts\Warning.cs" />
+    <Compile Include="Style2012\VS2012ColorTable.cs" />
+    <Compile Include="Style2012\VS2012ToolStripExtender.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Style2012\VS2012ToolStripExtender.Designer.cs">
+      <DependentUpon>VS2012ToolStripExtender.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Style2012\VS2012ToolStripRenderer.cs" />
     <Compile Include="ToolWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -164,6 +181,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DynamicTypeDescriptor\StandardValueEditorUI.resx">
       <DependentUpon>StandardValueEditorUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorsWindow.resx">
+      <DependentUpon>ErrorsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
