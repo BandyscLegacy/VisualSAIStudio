@@ -148,7 +148,7 @@ namespace VisualSAIStudio
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutBox about = new AboutBox();
+            SplashScreen about = new SplashScreen(false);
             about.ShowDialog(this);
         }
 

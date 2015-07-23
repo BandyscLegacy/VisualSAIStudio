@@ -21,17 +21,18 @@ namespace VisualSAIStudio
         {
             parameters = new Parameter[6];
             for (int i = 0; i < 6; ++i)
-                parameters[i] = NullParameter.GetInstance();
+                SetParameter(i, new NullParameter(), false);
         }
 
-        public void SetParameter(int index, Parameter parameter)
+        public void SetParameter(int index, Parameter parameter, bool invalide = true)
         {
             parameters[index] = parameter;
 
-            if (parameter is StringParameter)
-                AddConditional(((StringParameter)parameter).GetValidator());
+            if (parameter.HasValidator())
+                AddConditional(parameter.GetValidator());
 
-            Invalide();
+            if (invalide)
+                Invalide();
         }
 
         protected void AddConditional(ParameterConditional conditional)

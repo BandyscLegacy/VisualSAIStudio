@@ -13,10 +13,12 @@ namespace VisualSAIStudio
     public partial class SplashScreen : Form
     {
         bool painted = false;
+        bool startup = true;
         private string loading;
 
-        public SplashScreen()
+        public SplashScreen(bool startup = true)
         {
+            this.startup = startup;
             InitializeComponent();
         }
 
@@ -42,6 +44,12 @@ namespace VisualSAIStudio
             if (loading != null)
                 e.Graphics.DrawString("Loading " + loading, new Font("Tahoma", 10), Brushes.Aqua, 340, 204);
             painted = true;
+        }
+
+        private void SplashScreen_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (!startup)
+                this.Close();
         }
 
     }

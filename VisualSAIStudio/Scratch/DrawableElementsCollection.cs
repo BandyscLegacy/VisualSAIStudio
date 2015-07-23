@@ -45,8 +45,14 @@ namespace VisualSAIStudio
             collection.Add(element);
             element.Selected += this_ElementSelected;
             ((DrawableContainerElement)element).ChildrenModified += this_ChildrenModified;
+            element.RequestRemove += this_elementRequestRemove;
             ElementAdded(this, new EventArgs());
             ElementsChanged(this, new ChangedEventArgs(ChangedType.Added));
+        }
+
+        private void this_elementRequestRemove(object sender, EventArgs e)
+        {
+            Remove((DrawableElement)sender);
         }
 
         private void this_ChildrenModified(object sender, EventArgs e)
@@ -88,6 +94,7 @@ namespace VisualSAIStudio
             collection.Insert(index, replace);
             ((DrawableContainerElement)replace).ChildrenModified += this_ChildrenModified;
             replace.Selected += this_ElementSelected;
+            replace.RequestRemove += this_elementRequestRemove;
             ElementsChanged(this, new ChangedEventArgs(ChangedType.Replaced));
         }
 
@@ -103,6 +110,7 @@ namespace VisualSAIStudio
             collection.Insert(index, element);
             element.Selected += this_ElementSelected;
             ((DrawableContainerElement)element).ChildrenModified += this_ChildrenModified;
+            element.RequestRemove += this_elementRequestRemove;
             ElementInserted(this, new EventArgs());
             ElementsChanged(this, new ChangedEventArgs(ChangedType.Inserted));
         }

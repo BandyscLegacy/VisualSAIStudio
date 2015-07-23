@@ -164,6 +164,12 @@ namespace VisualSAIStudio
                     ElementSelected(this, new EventArgs());
                 }
             }
+
+            if (selectedElement != null)
+            {
+                selectedElement.MouseDown(sender, e);
+            }
+
         }
 
         private void Scratch_MouseUp(object sender, MouseEventArgs e)

@@ -11,7 +11,7 @@ namespace VisualSAIStudio
         public string name { get; set; }
         public string description { get; set; }
         public string type { get; set; }
-        public Dictionary<int, string> values { get; set; }
+        public Dictionary<int, SelectOption> values { get; set; }
     }
 
     class SmartGenericJSONData

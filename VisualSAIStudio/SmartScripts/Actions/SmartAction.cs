@@ -49,6 +49,33 @@ namespace VisualSAIStudio
             this.target = ((SmartAction)prev).target;
         }
 
+        public object[] SerializeToArray()
+        {
+            object[] array = new object[15];
+            array[0] = ID;
+            for (int i = 0; i < 6;++i)
+                array[i+1] = parameters[i].GetValue();
+            array[7] = target.ID;
+            for (int i = 0; i < 3;++i)
+                array[i+8] = target.parameters[i].GetValue();
+            for (int i = 0; i < 4;++i)
+                array[i+11] = target.position[i];
+            return array;
+        }
+
+        public static SmartAction DeserializeFromArray(string[] array)
+        {
+            SmartAction action = ExtendedFactories.ActionFactory(int.Parse(array[0]));
+            action.target = TargetsFactory.Factory(int.Parse(array[7]));
+            for (int i = 0; i < 6; ++i)
+                action.parameters[i].SetValue(int.Parse(array[i + 1]));
+            for (int i = 0; i < 3; ++i)
+                action.target.parameters[i].SetValue(int.Parse(array[i + 8]));
+            for (int i = 0; i < 4; ++i)
+                action.target.position[i] = float.Parse(array[i + 11]);
+            return action;
+        }
+
         public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, bool setRect = true)
         {
             SizeF size = graphics.MeasureString(ToString(), font);

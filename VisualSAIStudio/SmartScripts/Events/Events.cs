@@ -21,11 +21,7 @@ namespace VisualSAIStudio.SmartScripts
 
         public override string GetReadableString()
         {
-            if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0 && parameters[2].GetValue() == 0 && parameters[3].GetValue() == 0)
-                return "Never";
-            else if (parameters[1].GetValue() < parameters[0].GetValue() || parameters[3].GetValue() < parameters[2].GetValue())
-                return "Invalid! (max < min!)";
-            else if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
+            if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
                 return "When in combat and timer between {pram3} and {pram4} ms";
             else if (parameters[2].GetValue() == 0 && parameters[3].GetValue() == 0)
                 return "When in combat and timer between {pram1} and {pram2} ms";
@@ -42,15 +38,14 @@ namespace VisualSAIStudio.SmartScripts
             SetParameter(1, new Parameter("Initial Max", "Maximum time to trigger event (only for the first time)"));
             SetParameter(2, new Parameter("Repeat Min", "Minimum time to trigger event (after first time)"));
             SetParameter(3, new Parameter("Repeat Max", "Maximum time to trigger event (after first time)"));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], parameters[1], CompareType.LOWER_OR_EQUALS));
+            AddConditional(new ParameterConditionalCompareValue(parameters[2], parameters[3], CompareType.LOWER_OR_EQUALS));
+            AddConditional(new ParameterConditionalCompareValue(parameters[0], 0, CompareType.GREATER_THAN, "Event will never fire"));
         }
 
         public override string GetReadableString()
         {
-            if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0 && parameters[2].GetValue() == 0 && parameters[3].GetValue() == 0)
-                return "Never";
-            else if (parameters[1].GetValue() < parameters[0].GetValue() || parameters[3].GetValue() < parameters[2].GetValue())
-                return "Invalid! (max < min!)";
-            else if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
+            if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
                 return "When out of combat and timer between {pram3} and {pram4} ms";
             else if (parameters[2].GetValue() == 0 && parameters[3].GetValue() == 0)
                 return "When out of combat and timer between {pram1} and {pram2} ms";

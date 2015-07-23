@@ -7,10 +7,10 @@
         "type": "SwitchParameter",
         "name": "Type",
         "values": {
-          "0": "SELECT 1",
-          "1": "SELECT 2",
-          "2": "SELECT 3",
-          "3": "SELECT 4"
+          "0": {"name": "SELECT 1", "description": ""},
+          "1": {"name": "SELECT 2", "description": ""},
+          "2": {"name": "SELECT 3", "description": ""},
+          "3": {"name": "SELECT 4", "description": ""}
         }
       },
       {

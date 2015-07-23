@@ -17,7 +17,7 @@ namespace VisualSAIStudio
             this.ID = id;
             this.help = help;
             for (int i = 0; i < 3;++i )
-                parameters[i] = NullParameter.GetInstance();
+                parameters[i] = new NullParameter();
         }
 
         public abstract String GetReadableString();

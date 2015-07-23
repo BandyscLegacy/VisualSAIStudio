@@ -52,6 +52,16 @@ namespace VisualSAIStudio
             return value.ToString();
         }
 
+        public virtual bool HasValidator()
+        {
+            return false;
+        }
+
+        public virtual SmartScripts.ParameterConditional GetValidator()
+        {
+            return null;
+        }
+
         public static Parameter Factory(string param)
         {
             switch (param)
@@ -79,45 +89,49 @@ namespace VisualSAIStudio
                 case "Parameter":
                     return new Parameter("");
             }
-            return NullParameter.GetInstance();
+            return new NullParameter();
         }
     }
 
     public class NullParameter : Parameter
     {
-        private static NullParameter instance;
         public NullParameter() : base("") { }
-        public static NullParameter GetInstance()
+
+        public override bool HasValidator()
         {
-            if (instance == null)
-                instance = new NullParameter();
-            return instance;
+            return true;
         }
+
+        public override SmartScripts.ParameterConditional GetValidator()
+        {
+            return new SmartScripts.ParameterConditionalCompareValue(this, 0, SmartScripts.CompareType.EQUALS, "Unused parameter has set value");
+        }
+
     }
 
     public class SwitchParameter : Parameter
     {
-        public Dictionary<int, string> select;
+        public Dictionary<int, SelectOption> select;
 
-        public SwitchParameter(String name, Dictionary<int, string> select) : base(name)
+        public SwitchParameter(String name, Dictionary<int, SelectOption> select) : base(name)
         {
             this.select = select;
         }
-        public SwitchParameter(String name, String description, Dictionary<int, string> select) : base(name, description) 
+        public SwitchParameter(String name, String description, Dictionary<int, SelectOption> select) : base(name, description) 
         {
             this.select = select;
         }
         public SwitchParameter(String name, String[] values) : base(name)
         {
-            select = new Dictionary<int, string>();
+            select = new Dictionary<int, SelectOption>();
             for (int i = 0; i < values.Length; ++i )
-                select.Add(i, values[i]);
+                select.Add(i, new SelectOption(values[i]));
         }
         public SwitchParameter(String name, String description, String[] values) : base(name, description)
         {
-            select = new Dictionary<int, string>();
+            select = new Dictionary<int, SelectOption>();
             for (int i = 0; i < values.Length; ++i)
-                select.Add(i, values[i]);
+                select.Add(i, new SelectOption(values[i]));
         }
 
         public SwitchParameter(String name, String description) : base(name, description) {  }
@@ -129,7 +143,8 @@ namespace VisualSAIStudio
             DynamicTypeDescriptor.StandardValueAttribute value = null; 
             foreach (int key in select.Keys)
             {
-                value = new DynamicTypeDescriptor.StandardValueAttribute(key, select[key]);
+                value = new DynamicTypeDescriptor.StandardValueAttribute(key, select[key].name);
+                value.Description = select[key].description;
                 property.StatandardValues.Add(value);
             }
         }
@@ -137,7 +152,7 @@ namespace VisualSAIStudio
         public override string ToString()
         {
             if (select.ContainsKey(this.value))
-                return select[this.value];
+                return select[this.value].name;
             return value.ToString() +" (unknown value)";
         }
     }
@@ -146,33 +161,28 @@ namespace VisualSAIStudio
     {
         public FlagParameter(String name) : base(name) { }
 
-        public FlagParameter(String name, Dictionary<int, string> select) : base(name, select) { }
+        public FlagParameter(String name, Dictionary<int, SelectOption> select) : base(name, select) { }
 
-        public FlagParameter(String name, String description, Dictionary<int, string> select) : base(name, description, select)  { }
+        public FlagParameter(String name, String description, Dictionary<int, SelectOption> select) : base(name, description, select)  { }
 
-        public FlagParameter(String name, String[] values) : base(name)
-        {
-            select = new Dictionary<int, string>();
-            for (int i = 0; i < values.Length; ++i)
-                select.Add((int)Math.Pow(2, i), values[i]);
-        }
+        public FlagParameter(String name, String[] values) : this(name, null, values) { }
 
         public FlagParameter(String name, String description, String[] values) : base(name, description)
         {
-            select = new Dictionary<int, string>();
+            select = new Dictionary<int, SelectOption>();
             for (int i = 0; i < values.Length; ++i)
-                select.Add((int)Math.Pow(2, i), values[i]);
+                select.Add((int)Math.Pow(2, i), new SelectOption(values[i]));
         }
 
         public override string ToString()
         {
             if (value == 0)
-                return (select.ContainsKey(0)?select[0]:"NONE");
+                return (select.ContainsKey(0)?select[0].name:"NONE");
             List<string> flags = new List<string>();
             foreach (int key in select.Keys)
             {
                 if ((value & key) > 0)
-                    flags.Add(select[key]);
+                    flags.Add(select[key].name);
             }
             return String.Join(", ", flags);
         }
@@ -180,13 +190,33 @@ namespace VisualSAIStudio
 
     public class CastFlagsParameter : FlagParameter
     {
-        private static Dictionary<int, string> flags = new Dictionary<int, string>() {{1, "SMARTCAST_INTERRUPT_PREVIOUS"}, {2, "SMARTCAST_TRIGGERED"}, {0x20, "SMARTCAST_AURA_NOT_PRESENT"}, {0x40, "SMARTCAST_COMBAT_MOVE"}};
+        private static Dictionary<int, SelectOption> flags = new Dictionary<int, SelectOption>() {
+            {1, new SelectOption("SMARTCAST_INTERRUPT_PREVIOUS")}, 
+            {2, new SelectOption("SMARTCAST_TRIGGERED")}, 
+            {0x20, new SelectOption("SMARTCAST_AURA_NOT_PRESENT")}, 
+            {0x40, new SelectOption("SMARTCAST_COMBAT_MOVE")}
+        };
         public CastFlagsParameter(string name) : base (name, flags) { }
+    }
+
+    public class SummonTypeParameter : SwitchParameter
+    {
+        private static Dictionary<int, SelectOption> types = new Dictionary<int, SelectOption>() {
+            {1, new SelectOption("TEMPSUMMON_TIMED_OR_DEAD_DESPAWN", "despawns after a specified time OR when the creature disappears")},
+            {2, new SelectOption("TEMPSUMMON_TIMED_OR_CORPSE_DESPAWN", "despawns after a specified time OR when the creature dies")},
+            {3, new SelectOption("TEMPSUMMON_TIMED_DESPAWN", "despawns after a specified time")},
+            {4, new SelectOption("TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT", "despawns after a specified time after the creature is out of combat")},
+            {5, new SelectOption("TEMPSUMMON_CORPSE_DESPAWN", "despawns instantly after death")},
+            {6, new SelectOption("TEMPSUMMON_CORPSE_TIMED_DESPAWN", "despawns after a specified time after death")},
+            {7, new SelectOption("TEMPSUMMON_DEAD_DESPAWN", "despawns when the creature disappears")},
+            {8, new SelectOption("TEMPSUMMON_MANUAL_DESPAWN", "despawns when UnSummon() is called")},
+        };
+        public SummonTypeParameter(string name) : base (name, types) { }
     }
 
     public class BoolParameter : SwitchParameter
     {
-        private static Dictionary<int, string> values = new Dictionary<int, string>() { { 0, "False" }, { 1, "True" } };
+        private static Dictionary<int, SelectOption> values = new Dictionary<int, SelectOption>() { { 0,new SelectOption( "False") }, { 1, new SelectOption("True") } };
         public BoolParameter(String name) : base(name, values) { }
         public BoolParameter(String name, String description) : base(name, description, values) { }
     }
@@ -229,7 +259,12 @@ namespace VisualSAIStudio
             return str;
         }
 
-        public SmartScripts.ParameterConditional GetValidator()
+        public override bool HasValidator()
+        {
+ 	         return true;
+        }
+
+        public override SmartScripts.ParameterConditional GetValidator()
         {
             return new SmartScripts.ParameterConditionalDBExists(this, storageType);
         }
@@ -290,4 +325,16 @@ namespace VisualSAIStudio
         public GameObjectParameter(String name, String description) : base(name, description, StorageType.GameObject) { }
     }
 
+    public class SelectOption
+    {
+        public string name {get;set;}
+        public string description {get; set;}
+        public SelectOption(string name, string description)
+        {
+            this.name = name;
+            this.description =description;
+        }
+        public SelectOption(string name) : this (name, null) { }
+        public SelectOption() { }
+    }
 }

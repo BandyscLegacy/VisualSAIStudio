@@ -47,6 +47,7 @@
             this.Text = "SplashScreen";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.SplashScreen_Load);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SplashScreen_MouseClick);
             this.ResumeLayout(false);
 
         }

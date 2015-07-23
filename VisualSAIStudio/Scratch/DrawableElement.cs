@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace VisualSAIStudio
 {
-    public abstract class DrawableElement
+    public abstract class DrawableElement 
     {
         public Rectangle rect;
         public bool selected { get; set; }
         public EventHandler RequestUpdate = delegate { };
+        public EventHandler RequestRemove = delegate { };
         public DrawableElement parent;
 
+        public MouseEventHandler MouseDown = delegate { };
         public EventHandler Selected = delegate { };
 
         public bool contains(int x, int y)

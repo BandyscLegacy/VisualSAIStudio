@@ -851,7 +851,12 @@ namespace DynamicTypeDescriptor
         }
         else if ((context.PropertyDescriptor is CustomPropertyDescriptor && (((CustomPropertyDescriptor)context.PropertyDescriptor).PropertyFlags & PropertyFlags.IsFlag) != 0))
         {
-            return int.Parse(value.ToString());
+            int ret;
+            if (int.TryParse(value.ToString(), out ret))
+            {
+                return ret;
+            }
+            return 0;
         }
         foreach (StandardValueAttribute sva in col)
         {

@@ -68,7 +68,7 @@ namespace VisualSAIStudio.SmartScripts
     {
         public SMART_ACTION_MORPH_TO_ENTRY_OR_MODEL() : base(3, "SMART_ACTION_MORPH_TO_ENTRY_OR_MODEL")
         {
-            SetParameter(0, new CreatureParameter("Creature entry", "Use 0 for both to reset"));
+            SetParameter(0, new CreatureParameter("Creature", "Use 0 for both to reset"));
             SetParameter(1, new Parameter("Model id", "Use 0 for both to reset"));
             List<ParameterConditional> conditions = new List<ParameterConditional>();
             conditions.Add(new ParameterConditionalCompareValue(parameters[0], 0, CompareType.GREATER_THAN));
@@ -91,7 +91,7 @@ namespace VisualSAIStudio.SmartScripts
             if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
                 return "{target}: Demorph";
             else if (parameters[0].GetValue() != 0 && parameters[1].GetValue() != 0)
-                return "[!] Invalid morph ({pram1}, {pram2}";
+                return "{target}: Invalid morph ({pram1}, {pram2}";
             else if (parameters[0].GetValue() == 0)
                 return "{target}: Morph to model {pram2}";
             else
@@ -105,12 +105,12 @@ namespace VisualSAIStudio.SmartScripts
         public SMART_ACTION_SOUND() : base(4, "SMART_ACTION_SOUND")
         {
             SetParameter(0, new SoundParameter("Sound ID"));
-            SetParameter(1, new Parameter("Text Range"));
+            SetParameter(1, new BoolParameter("Only to self", "True - only target will hear the sound, false - everyone in visibility range will hear the sound"));
         }
 
         public override string GetReadableString()
         {
-            return "Play sound {pram1} to {target} {pram2:choose(0):|within range {pram2}}";
+            return "Play sound {pram1} to {pram2value:choose(0):every player in visibility range of {target}|{target}}";
         }
     }
 
@@ -162,8 +162,6 @@ namespace VisualSAIStudio.SmartScripts
         public SMART_ACTION_SET_REACT_STATE() : base(8, "SMART_ACTION_SET_REACT_STATE")
         {
             SetParameter(0, new SwitchParameter("ReactState", new [] {"REACT_PASSIVE", "REACT_DEFENSIVE", "REACT_AGGRESSIVE"}));
-            AddConditional(new ParameterConditionalCompareValue(parameters[0], 0, CompareType.GREATER_OR_EQUALS));
-            AddConditional(new ParameterConditionalCompareValue(parameters[0], 2, CompareType.LOWER_OR_EQUALS));
         }
         public override string GetReadableString()
         {
@@ -190,11 +188,14 @@ namespace VisualSAIStudio.SmartScripts
             SetParameter(0, new EmoteParameter("Emote 1", "If 0, the emote will be skipped"));
             SetParameter(1, new EmoteParameter("Emote 2", "If 0, the emote will be skipped"));
             SetParameter(2, new EmoteParameter("Emote 3", "If 0, the emote will be skipped"));
+            SetParameter(3, new EmoteParameter("Emote 4", "If 0, the emote will be skipped"));
+            SetParameter(4, new EmoteParameter("Emote 5", "If 0, the emote will be skipped"));
+            SetParameter(5, new EmoteParameter("Emote 6", "If 0, the emote will be skipped"));
         }
 
         public override string GetReadableString()
         {
-            return "{target}: Play random emote: {pram1}, {pram2}, {pram3}";
+            return "{target}: Play random emote: {pram1value:choose(0):|{pram1}, }{pram2value:choose(0):|{pram2}, }{pram3value:choose(0):|{pram3}, }{pram4value:choose(0):|{pram4}, }{pram5value:choose(0):|{pram5}, }{pram6value:choose(0):|{pram6}}";
         }
     }
 
@@ -219,7 +220,7 @@ namespace VisualSAIStudio.SmartScripts
         public SMART_ACTION_SUMMON_CREATURE() : base(12, "SMART_ACTION_SUMMON_CREATURE")
         {
             SetParameter(0, new CreatureParameter("Creature"));
-            SetParameter(1, new Parameter("Summon Type"));
+            SetParameter(1, new SummonTypeParameter("Summon Type"));
             SetParameter(2, new Parameter("Duration", "In ms"));
             SetParameter(3, new Parameter("Storage ID", "Target variable id to store summoned creature"));
             SetParameter(4, new BoolParameter("Attack Invoker"));
@@ -309,39 +310,40 @@ namespace VisualSAIStudio.SmartScripts
 
     class SMART_ACTION_SET_UNIT_FLAG : SmartAction
     {
-        public static Dictionary<int, string> flags = new Dictionary<int, string>()
+        public static Dictionary<int, SelectOption> flags = new Dictionary<int, SelectOption>()
         {
-            {0x00000001, "UNIT_FLAG_SERVER_CONTROLLED"}, 
-            {0x00000002, "UNIT_FLAG_NON_ATTACKABLE"}, 
-            {0x00000004, "UNIT_FLAG_DISABLE_MOVE"}, 
-            {0x00000008, "UNIT_FLAG_PVP_ATTACKABLE"}, 
-            {0x00000010, "UNIT_FLAG_RENAME"}, 
-            {0x00000020, "UNIT_FLAG_PREPARATION"}, 
-            {0x00000040, "UNIT_FLAG_UNK_6"}, 
-            {0x00000080, "UNIT_FLAG_NOT_ATTACKABLE_1"}, 
-            {0x00000100, "UNIT_FLAG_IMMUNE_TO_PC"}, 
-            {0x00000200, "UNIT_FLAG_IMMUNE_TO_NPC"}, 
-            {0x00000400, "UNIT_FLAG_LOOTING"}, 
-            {0x00000800, "UNIT_FLAG_PET_IN_COMBAT"}, 
-            {0x00001000, "UNIT_FLAG_PVP"}, 
-            {0x00002000, "UNIT_FLAG_SILENCED"}, 
-            {0x00004000, "UNIT_FLAG_UNK_14"}, 
-            {0x00008000, "UNIT_FLAG_UNK_15"}, 
-            {0x00010000, "UNIT_FLAG_UNK_16"}, 
-            {0x00020000, "UNIT_FLAG_PACIFIED"}, 
-            {0x00040000, "UNIT_FLAG_STUNNED"}, 
-            {0x00080000, "UNIT_FLAG_IN_COMBAT"}, 
-            {0x00100000, "UNIT_FLAG_TAXI_FLIGHT"}, 
-            {0x00200000, "UNIT_FLAG_DISARMED"}, 
-            {0x00400000, "UNIT_FLAG_CONFUSED"}, 
-            {0x00800000, "UNIT_FLAG_FLEEING"}, 
-            {0x01000000, "UNIT_FLAG_PLAYER_CONTROLLED"}, 
-            {0x02000000, "UNIT_FLAG_NOT_SELECTABLE"}, 
-            {0x04000000, "UNIT_FLAG_SKINNABLE"}, 
-            {0x08000000, "UNIT_FLAG_MOUNT"}, 
-            {0x10000000, "UNIT_FLAG_UNK_28"}, 
-            {0x20000000, "UNIT_FLAG_UNK_29"}, 
-            {0x40000000, "UNIT_FLAG_SHEATHE"}, 
+            {0x00000001, new SelectOption("UNIT_FLAG_SERVER_CONTROLLED", "set only when unit movement is controlled by server - by SPLINE/MONSTER_MOVE packets, together with UNIT_FLAG_STUNNED; only set to units controlled by client; client function CGUnit_C::IsClientControlled returns false when set for owner")},
+            {0x00000002, new SelectOption("UNIT_FLAG_NON_ATTACKABLE", "not attackable")},
+            {0x00000004, new SelectOption("UNIT_FLAG_DISABLE_MOVE", "")},
+            {0x00000008, new SelectOption("UNIT_FLAG_PVP_ATTACKABLE", "allow apply pvp rules to attackable state in addition to faction dependent state")},
+            {0x00000010, new SelectOption("UNIT_FLAG_RENAME", "")},
+            {0x00000020, new SelectOption("UNIT_FLAG_PREPARATION", "don't take reagents for spells with SPELL_ATTR5_NO_REAGENT_WHILE_PREP")},
+            {0x00000040, new SelectOption("UNIT_FLAG_UNK_6", "")},
+            {0x00000080, new SelectOption("UNIT_FLAG_NOT_ATTACKABLE_1", "?? (UNIT_FLAG_PVP_ATTACKABLE | UNIT_FLAG_NOT_ATTACKABLE_1) is NON_PVP_ATTACKABLE")},
+            {0x00000100, new SelectOption("UNIT_FLAG_IMMUNE_TO_PC", "disables combat/assistance with PlayerCharacters (PC) - see Unit::_IsValidAttackTarget, Unit::_IsValidAssistTarget")},
+            {0x00000200, new SelectOption("UNIT_FLAG_IMMUNE_TO_NPC", "disables combat/assistance with NonPlayerCharacters (NPC) - see Unit::_IsValidAttackTarget, Unit::_IsValidAssistTarget")},
+            {0x00000400, new SelectOption("UNIT_FLAG_LOOTING", "loot animation")},
+            {0x00000800, new SelectOption("UNIT_FLAG_PET_IN_COMBAT", "in combat?, 2.0.8")},
+            {0x00001000, new SelectOption("UNIT_FLAG_PVP", "changed in 3.0.3")},
+            {0x00002000, new SelectOption("UNIT_FLAG_SILENCED", "silenced, 2.1.1")},
+            {0x00004000, new SelectOption("UNIT_FLAG_UNK_14", "2.0.8")},
+            {0x00008000, new SelectOption("UNIT_FLAG_UNK_15", "")},
+            {0x00010000, new SelectOption("UNIT_FLAG_UNK_16", "")},
+            {0x00020000, new SelectOption("UNIT_FLAG_PACIFIED", "3.0.3 ok")},
+            {0x00040000, new SelectOption("UNIT_FLAG_STUNNED", "3.0.3 ok")},
+            {0x00080000, new SelectOption("UNIT_FLAG_IN_COMBAT", "")},
+            {0x00100000, new SelectOption("UNIT_FLAG_TAXI_FLIGHT", "disable casting at client side spell not allowed by taxi flight (mounted?), probably used with 0x4 flag")},
+            {0x00200000, new SelectOption("UNIT_FLAG_DISARMED", "3.0.3, disable melee spells casting..., \"Required melee weapon\" added to melee spells tooltip.")},
+            {0x00400000, new SelectOption("UNIT_FLAG_CONFUSED", "")},
+            {0x00800000, new SelectOption("UNIT_FLAG_FLEEING", "")},
+            {0x01000000, new SelectOption("UNIT_FLAG_PLAYER_CONTROLLED", "used in spell Eyes of the Beast for pet... let attack by controlled creature")},
+            {0x02000000, new SelectOption("UNIT_FLAG_NOT_SELECTABLE", "")},
+            {0x04000000, new SelectOption("UNIT_FLAG_SKINNABLE", "")},
+            {0x08000000, new SelectOption("UNIT_FLAG_MOUNT", "")},
+            {0x10000000, new SelectOption("UNIT_FLAG_UNK_28", "")},
+            {0x20000000, new SelectOption("UNIT_FLAG_UNK_29", "used in Feing Death spell")},
+            {0x40000000, new SelectOption("UNIT_FLAG_SHEATHE", "")},
+    
         };
         public SMART_ACTION_SET_UNIT_FLAG() : base(18, "SMART_ACTION_SET_UNIT_FLAG")
         {
@@ -1258,7 +1260,39 @@ namespace VisualSAIStudio.SmartScripts
 
     class SMART_ACTION_SET_NPC_FLAG : SmartAction
     {
-        public static Dictionary<int, string> flags = new Dictionary<int, string>() { { 0x00000000, "UNIT_NPC_FLAG_NONE" }, { 0x00000001, "UNIT_NPC_FLAG_GOSSIP" }, { 0x00000002, "UNIT_NPC_FLAG_QUESTGIVER" }, { 0x00000004, "UNIT_NPC_FLAG_UNK1" }, { 0x00000008, "UNIT_NPC_FLAG_UNK2" }, { 0x00000010, "UNIT_NPC_FLAG_TRAINER" }, { 0x00000020, "UNIT_NPC_FLAG_TRAINER_CLASS" }, { 0x00000040, "UNIT_NPC_FLAG_TRAINER_PROFESSION" }, { 0x00000080, "UNIT_NPC_FLAG_VENDOR" }, { 0x00000100, "UNIT_NPC_FLAG_VENDOR_AMMO" }, { 0x00000200, "UNIT_NPC_FLAG_VENDOR_FOOD" }, { 0x00000400, "UNIT_NPC_FLAG_VENDOR_POISON" }, { 0x00000800, "UNIT_NPC_FLAG_VENDOR_REAGENT" }, { 0x00001000, "UNIT_NPC_FLAG_REPAIR" }, { 0x00002000, "UNIT_NPC_FLAG_FLIGHTMASTER" }, { 0x00004000, "UNIT_NPC_FLAG_SPIRITHEALER" }, { 0x00008000, "UNIT_NPC_FLAG_SPIRITGUIDE" }, { 0x00010000, "UNIT_NPC_FLAG_INNKEEPER" }, { 0x00020000, "UNIT_NPC_FLAG_BANKER" }, { 0x00040000, "UNIT_NPC_FLAG_PETITIONER" }, { 0x00080000, "UNIT_NPC_FLAG_TABARDDESIGNER" }, { 0x00100000, "UNIT_NPC_FLAG_BATTLEMASTER" }, { 0x00200000, "UNIT_NPC_FLAG_AUCTIONEER" }, { 0x00400000, "UNIT_NPC_FLAG_STABLEMASTER" }, { 0x00800000, "UNIT_NPC_FLAG_GUILD_BANKER" }, { 0x01000000, "UNIT_NPC_FLAG_SPELLCLICK" }, { 0x02000000, "UNIT_NPC_FLAG_PLAYER_VEHICLE" }, { 0x04000000, "UNIT_NPC_FLAG_MAILBOX" }, { 0x08000000, "UNIT_NPC_FLAG_REFORGER" }, { 0x10000000, "UNIT_NPC_FLAG_TRANSMOGRIFIER" }, { 0x20000000, "UNIT_NPC_FLAG_VAULTKEEPER" } };
+        public static Dictionary<int, SelectOption> flags = new Dictionary<int, SelectOption>() { 
+            {0x00000000, new SelectOption("UNIT_NPC_FLAG_NONE", "")},
+            {0x00000001, new SelectOption("UNIT_NPC_FLAG_GOSSIP", "100%")},
+            {0x00000002, new SelectOption("UNIT_NPC_FLAG_QUESTGIVER", "100%")},
+            {0x00000004, new SelectOption("UNIT_NPC_FLAG_UNK1", "")},
+            {0x00000008, new SelectOption("UNIT_NPC_FLAG_UNK2", "")},
+            {0x00000010, new SelectOption("UNIT_NPC_FLAG_TRAINER", "100%")},
+            {0x00000020, new SelectOption("UNIT_NPC_FLAG_TRAINER_CLASS", "100%")},
+            {0x00000040, new SelectOption("UNIT_NPC_FLAG_TRAINER_PROFESSION", "100%")},
+            {0x00000080, new SelectOption("UNIT_NPC_FLAG_VENDOR", "100%")},
+            {0x00000100, new SelectOption("UNIT_NPC_FLAG_VENDOR_AMMO", "100%, general goods vendor")},
+            {0x00000200, new SelectOption("UNIT_NPC_FLAG_VENDOR_FOOD", "100%")},
+            {0x00000400, new SelectOption("UNIT_NPC_FLAG_VENDOR_POISON", "guessed")},
+            {0x00000800, new SelectOption("UNIT_NPC_FLAG_VENDOR_REAGENT", "100%")},
+            {0x00001000, new SelectOption("UNIT_NPC_FLAG_REPAIR", "100%")},
+            {0x00002000, new SelectOption("UNIT_NPC_FLAG_FLIGHTMASTER", "100%")},
+            {0x00004000, new SelectOption("UNIT_NPC_FLAG_SPIRITHEALER", "guessed")},
+            {0x00008000, new SelectOption("UNIT_NPC_FLAG_SPIRITGUIDE", "guessed")},
+            {0x00010000, new SelectOption("UNIT_NPC_FLAG_INNKEEPER", "100%")},
+            {0x00020000, new SelectOption("UNIT_NPC_FLAG_BANKER", "100%")},
+            {0x00040000, new SelectOption("UNIT_NPC_FLAG_PETITIONER", "100% 0xC0000 = guild petitions, 0x40000 = arena team petitions")},
+            {0x00080000, new SelectOption("UNIT_NPC_FLAG_TABARDDESIGNER", "100%")},
+            {0x00100000, new SelectOption("UNIT_NPC_FLAG_BATTLEMASTER", "100%")},
+            {0x00200000, new SelectOption("UNIT_NPC_FLAG_AUCTIONEER", "100%")},
+            {0x00400000, new SelectOption("UNIT_NPC_FLAG_STABLEMASTER", "100%")},
+            {0x00800000, new SelectOption("UNIT_NPC_FLAG_GUILD_BANKER", "cause client to send 997 opcode")},
+            {0x01000000, new SelectOption("UNIT_NPC_FLAG_SPELLCLICK", "cause client to send 1015 opcode (spell click)")},
+            {0x02000000, new SelectOption("UNIT_NPC_FLAG_PLAYER_VEHICLE", "players with mounts that have vehicle data should have it set")},
+            {0x04000000, new SelectOption("UNIT_NPC_FLAG_MAILBOX", "mailbox")},
+            {0x08000000, new SelectOption("UNIT_NPC_FLAG_REFORGER", "reforging")},
+            {0x10000000, new SelectOption("UNIT_NPC_FLAG_TRANSMOGRIFIER", "transmogrification")},
+            {0x20000000, new SelectOption("UNIT_NPC_FLAG_VAULTKEEPER", "void storage")},
+        };
         public SMART_ACTION_SET_NPC_FLAG() : base(81, "SMART_ACTION_SET_NPC_FLAG")
         {
             SetParameter(0, new FlagParameter("Flags", flags));
@@ -1454,7 +1488,17 @@ namespace VisualSAIStudio.SmartScripts
 
     class SMART_ACTION_SET_DYNAMIC_FLAG : SmartAction
     {
-        public static Dictionary<int, string> flags = new Dictionary<int, string>() { { 0x0000, "UNIT_DYNFLAG_NONE" }, { 0x0001, "UNIT_DYNFLAG_LOOTABLE" }, { 0x0002, "UNIT_DYNFLAG_TRACK_UNIT" }, { 0x0004, "UNIT_DYNFLAG_TAPPED" }, { 0x0008, "UNIT_DYNFLAG_TAPPED_BY_PLAYER" }, { 0x0010, "UNIT_DYNFLAG_SPECIALINFO" }, { 0x0020, "UNIT_DYNFLAG_DEAD" }, { 0x0040, "UNIT_DYNFLAG_REFER_A_FRIEND" }, { 0x0080, "UNIT_DYNFLAG_TAPPED_BY_ALL_THREAT_LIST" }};
+        public static Dictionary<int, SelectOption> flags = new Dictionary<int, SelectOption>() { 
+            { 0x0000, new SelectOption("UNIT_DYNFLAG_NONE") }, 
+            { 0x0001, new SelectOption("UNIT_DYNFLAG_LOOTABLE") }, 
+            { 0x0002, new SelectOption("UNIT_DYNFLAG_TRACK_UNIT") }, 
+            { 0x0004, new SelectOption("UNIT_DYNFLAG_TAPPED") }, 
+            { 0x0008, new SelectOption("UNIT_DYNFLAG_TAPPED_BY_PLAYER") },
+            { 0x0010, new SelectOption("UNIT_DYNFLAG_SPECIALINFO") }, 
+            { 0x0020, new SelectOption("UNIT_DYNFLAG_DEAD") }, 
+            { 0x0040, new SelectOption("UNIT_DYNFLAG_REFER_A_FRIEND") }, 
+            { 0x0080, new SelectOption("UNIT_DYNFLAG_TAPPED_BY_ALL_THREAT_LIST") }
+        };
         public SMART_ACTION_SET_DYNAMIC_FLAG() : base(94, "SMART_ACTION_SET_DYNAMIC_FLAG")
         {
             SetParameter(0, new FlagParameter("Flags", flags));
@@ -1585,17 +1629,17 @@ namespace VisualSAIStudio.SmartScripts
 
     class SMART_ACTION_SET_GO_FLAG : SmartAction
     {
-        public static Dictionary<int, string> flags = new Dictionary<int,string>()
+        public static Dictionary<int, SelectOption> flags = new Dictionary<int, SelectOption>()
         {
-            {0x00000001, "GO_FLAG_IN_USE"}, 
-            {0x00000002, "GO_FLAG_LOCKED"}, 
-            {0x00000004, "GO_FLAG_INTERACT_COND"}, 
-            {0x00000008, "GO_FLAG_TRANSPORT"}, 
-            {0x00000010, "GO_FLAG_NOT_SELECTABLE"}, 
-            {0x00000020, "GO_FLAG_NODESPAWN"}, 
-            {0x00000040, "GO_FLAG_TRIGGERED"}, 
-            {0x00000200, "GO_FLAG_DAMAGED"}, 
-            {0x00000400, "GO_FLAG_DESTROYED"}, 
+            {0x00000001, new SelectOption("GO_FLAG_IN_USE")}, 
+            {0x00000002, new SelectOption("GO_FLAG_LOCKED")}, 
+            {0x00000004, new SelectOption("GO_FLAG_INTERACT_COND")}, 
+            {0x00000008, new SelectOption("GO_FLAG_TRANSPORT")}, 
+            {0x00000010, new SelectOption("GO_FLAG_NOT_SELECTABLE")}, 
+            {0x00000020, new SelectOption("GO_FLAG_NODESPAWN")}, 
+            {0x00000040, new SelectOption("GO_FLAG_TRIGGERED")}, 
+            {0x00000200, new SelectOption("GO_FLAG_DAMAGED")}, 
+            {0x00000400, new SelectOption("GO_FLAG_DESTROYED")}, 
         };
         public SMART_ACTION_SET_GO_FLAG() : base(104, "SMART_ACTION_SET_GO_FLAG") 
         {

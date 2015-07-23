@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace VisualSAIStudio
 {
@@ -81,27 +82,80 @@ namespace VisualSAIStudio
     {
         public event EventHandler ActionSelected = delegate { };
         private List<SmartCondition> conditions = new List<SmartCondition>();
+        ContextMenuStrip contextMenu = new ContextMenuStrip();
 
         public int chance {get; set;}
         public SmartPhaseMask phasemask { get; set; }
         public SmartEventFlag flags { get; set; }
+        private Point mouse;
 
         protected override void UpdateParamsInternal(int index, int value)
         {
             this.parameters[index].SetValue(value);
         }
 
-        public SmartEvent() : base() { }
+        public SmartEvent() : this(0, null) {  }
 
-        public SmartEvent(int id) : base() 
-        {
-            this.ID = id;
-        }
+        public SmartEvent(int id) : this(id, null) {  }
 
         public SmartEvent(int id, string name)
         {
             this.ID = id;
             this.name = name;
+            this.MouseDown += this_mouseDown;
+            contextMenu.Items.Add("Copy", null, this_copyEvent);
+            contextMenu.Items.Add("Paste", null, this_pasteEvent);
+            contextMenu.Items.Add("Cut", null, this_cutEvent);
+            contextMenu.Items.Add("-");
+            contextMenu.Items.Add("Delete", null, this_deleteEvent);
+        }
+
+        private void this_cutEvent(object sender, EventArgs e)
+        {
+            this_copyEvent(sender, e);
+            this_deleteEvent(sender, e);
+        }
+
+        private void this_pasteEvent(object sender, EventArgs e)
+        {
+            string[] array = Clipboard.GetText().Split('|');
+            if (array.Length != 15)
+                return;
+            SmartAction doc = SmartAction.DeserializeFromArray(array);
+            InsertAction(doc, GetInsertIndexFromPos(mouse.X, mouse.Y));
+            doc.Invalide();
+        }
+
+        private void this_copyEvent(object sender, EventArgs e)
+        {
+            if (selectedChildren != null)
+            {
+                Clipboard.SetText(String.Join("|", ((SmartAction)selectedChildren).SerializeToArray()));
+            }
+
+        }
+
+        private void this_deleteEvent(object sender, EventArgs e)
+        {
+            if (selectedChildren != null)
+            {
+                children.Remove(selectedChildren);
+            }
+            else
+            {
+                RequestRemove(this, new EventArgs());
+            }
+            Invalide();
+        }
+
+        private void this_mouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                mouse.X = e.X;
+                mouse.Y = e.Y;
+               contextMenu.Show(System.Windows.Forms.Cursor.Position);
+            }
         }
 
         public void Copy(SmartEvent prev)
@@ -171,6 +225,7 @@ namespace VisualSAIStudio
                 pram3value = parameters[2].GetValue(),
                 pram4value = parameters[3].GetValue(),
             });
+            ChildrenModified(sender, e);
             base.paramValueChanged(sender, e);
         }
 

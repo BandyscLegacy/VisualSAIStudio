@@ -20,7 +20,7 @@ namespace VisualSAIStudio
             this.ID = id;
             this.help = tooltip;
             for (int i = 0; i < 3; ++i)
-                parameters[i] = NullParameter.GetInstance();
+                parameters[i] =new  NullParameter();
         }
 
         public abstract String GetReadableString();
