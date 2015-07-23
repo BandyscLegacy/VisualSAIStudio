@@ -113,7 +113,7 @@
     <Compile Include="ScratchWindow.Designer.cs">
       <DependentUpon>ScratchWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="SmartEventsCollection.cs" />
+    <Compile Include="SmartScripts\SmartEventsCollection.cs" />
     <Compile Include="SmartScripts\Actions\Actions.cs" />
     <Compile Include="DB\BinaryFormatExtensions.cs" />
     <Compile Include="SmartScripts\Actions\ActionsFactory.cs" />

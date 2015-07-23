@@ -29,14 +29,24 @@ namespace VisualSAIStudio
                  return TargetDropResult(x, y);
             else if (type.IndexOf("SMART_ACTION") > -1)
                 return ActionDropResult(x, y);
-            else if (type.IndexOf("CONDITION") > -1)
+            else if (type.IndexOf("CONDITION_") > -1)
                 return ConditionDropResult(x, y);
             return DropResult.NONE;
         }
 
         private DropResult ConditionDropResult(int x, int y)
         {
-            throw new NotImplementedException();
+            SmartEvent ev = EventAt(x, y);
+            if (ev != null)
+            {
+                foreach (SmartCondition element in ev.conditions)
+                {
+                    if (y > (element.rect.Top + 5) && y < (element.rect.Bottom - 5))
+                        return DropResult.REPLACE;
+                }
+                return DropResult.INSERT;
+            }
+            return DropResult.NONE;
         }
 
         private DropResult ActionDropResult(int x, int y)
@@ -44,7 +54,7 @@ namespace VisualSAIStudio
             SmartEvent ev = EventAt(x, y);
             if (ev != null)
             {
-                foreach (DrawableElement element in ev.children)
+                foreach (SmartAction element in ev.actions)
                 {
                     if (y > (element.rect.Top + 5) && y < (element.rect.Bottom - 5))
                         return DropResult.REPLACE;

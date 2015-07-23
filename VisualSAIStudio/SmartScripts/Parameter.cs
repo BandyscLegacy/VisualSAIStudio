@@ -11,31 +11,24 @@ namespace VisualSAIStudio
         protected int value;
         public string name { get; set; }
         public string description { get; set; }
-        public Type type { get; set; }
+        protected List<SmartScripts.ParameterConditional> validators = new List<SmartScripts.ParameterConditional>();
 
-        public Parameter (String name)
-        {
-            this.name = name;
-            this.description = "";
-            this.SetValue(0);
-            this.type = typeof(int);
-        }
+        public Parameter(String name) : this(name, null) {  }
 
-        public Parameter (String name, String description)
+        public Parameter(String name, String description) : this(name, description, 0, false) {  }
+
+        public Parameter(String name, int value) : this(name, null, value, false) { }
+
+        public Parameter(String name, string description, bool required) : this(name, description, 0, required) { }
+
+        public Parameter (String name, String description, int value, bool required)
         {
             this.name = name;
             this.description = description;
-            this.SetValue(0);
-            this.type = typeof(int);
-        }
-
-        public Parameter (String name, int value)
-        {
-            this.name = name;
             this.SetValue(value);
-            this.type = typeof(int);
+            if (required)
+                validators.Add(new SmartScripts.ParameterConditionalCompareValue(this, 0, SmartScripts.CompareType.NOT_EQUALS, name + " is required"));
         }
-
 
         public virtual int GetValue()
         {
@@ -52,14 +45,9 @@ namespace VisualSAIStudio
             return value.ToString();
         }
 
-        public virtual bool HasValidator()
+        public virtual List<SmartScripts.ParameterConditional> GetValidators()
         {
-            return false;
-        }
-
-        public virtual SmartScripts.ParameterConditional GetValidator()
-        {
-            return null;
+            return validators;
         }
 
         public static Parameter Factory(string param)
@@ -95,38 +83,29 @@ namespace VisualSAIStudio
 
     public class NullParameter : Parameter
     {
-        public NullParameter() : base("") { }
-
-        public override bool HasValidator()
+        public NullParameter() : base("") 
         {
-            return true;
+            validators.Add(new SmartScripts.ParameterConditionalCompareValue(this, 0, SmartScripts.CompareType.EQUALS, "Unused parameter has value"));
         }
-
-        public override SmartScripts.ParameterConditional GetValidator()
-        {
-            return new SmartScripts.ParameterConditionalCompareValue(this, 0, SmartScripts.CompareType.EQUALS, "Unused parameter has set value");
-        }
-
     }
 
     public class SwitchParameter : Parameter
     {
         public Dictionary<int, SelectOption> select;
 
-        public SwitchParameter(String name, Dictionary<int, SelectOption> select) : base(name)
+        public SwitchParameter(String name, Dictionary<int, SelectOption> select) : this(name, null, select, false) { }
+
+        public SwitchParameter(String name, String description, Dictionary<int, SelectOption> select) : this(name, description, select, false) { }
+
+        public SwitchParameter(String name, Dictionary<int, SelectOption> select, bool required) : this(name, null, select, required) { }
+
+        public SwitchParameter(String name, String description, Dictionary<int, SelectOption> select, bool required) : base(name, description, required) 
         {
             this.select = select;
         }
-        public SwitchParameter(String name, String description, Dictionary<int, SelectOption> select) : base(name, description) 
-        {
-            this.select = select;
-        }
-        public SwitchParameter(String name, String[] values) : base(name)
-        {
-            select = new Dictionary<int, SelectOption>();
-            for (int i = 0; i < values.Length; ++i )
-                select.Add(i, new SelectOption(values[i]));
-        }
+
+        public SwitchParameter(String name, String[] values) : this(name, null, values) { }
+
         public SwitchParameter(String name, String description, String[] values) : base(name, description)
         {
             select = new Dictionary<int, SelectOption>();
@@ -212,6 +191,7 @@ namespace VisualSAIStudio
             {8, new SelectOption("TEMPSUMMON_MANUAL_DESPAWN", "despawns when UnSummon() is called")},
         };
         public SummonTypeParameter(string name) : base (name, types) { }
+        public SummonTypeParameter(string name, bool required) : base(name, types, required) { }
     }
 
     public class BoolParameter : SwitchParameter
@@ -235,13 +215,13 @@ namespace VisualSAIStudio
     {
         private string str;
         protected StorageType storageType;
-        public StringParameter(String name, StorageType storageType) : base(name) 
+        public StringParameter(String name, StorageType storageType) : this(name, null, storageType)  { }
+        public StringParameter(String name, String description, StorageType storageType) : this(name, description, storageType, false) { }
+
+        public StringParameter(String name, String description, StorageType storageType, bool required) : base(name, description, required) 
         {
             this.storageType = storageType;
-        }
-        public StringParameter(String name, String description, StorageType storageType) : base(name, description) 
-        {
-            this.storageType = storageType;
+            validators.Add(new SmartScripts.ParameterConditionalDBExists(this, storageType));
         }
 
         public override void SetValue(int value)
@@ -258,58 +238,56 @@ namespace VisualSAIStudio
         {
             return str;
         }
-
-        public override bool HasValidator()
-        {
- 	         return true;
-        }
-
-        public override SmartScripts.ParameterConditional GetValidator()
-        {
-            return new SmartScripts.ParameterConditionalDBExists(this, storageType);
-        }
     }
 
+    //this should be deleted I guess...
     class SpellParameter : StringParameter
     {
         public SpellParameter(String name) : base(name, StorageType.Spell) {}
         public SpellParameter(String name, String description) : base(name, description, StorageType.Spell) { }
+        public SpellParameter(String name, String description, bool required) : base(name, description, StorageType.Spell, required) { }
     }
 
     class EmoteParameter : StringParameter
     {
         public EmoteParameter(String name) : base(name, StorageType.Emote) { }
         public EmoteParameter(String name, String description) : base(name, description, StorageType.Emote) { }
+        public EmoteParameter(String name, String description, bool required) : base(name, description, StorageType.Emote, required) { }
     }
 
     class CreatureParameter : StringParameter
     {
         public CreatureParameter(String name) : base(name, StorageType.Creature) { }
         public CreatureParameter(String name, String description) : base(name, description, StorageType.Creature) { }
+        public CreatureParameter(String name, String description, bool required) : base(name, description, StorageType.Creature, required) { }
     }
 
     class QuestParameter : StringParameter
     {
         public QuestParameter(String name) : base(name, StorageType.Quest) { }
         public QuestParameter(String name, String description) : base(name, description, StorageType.Quest) { }
+        public QuestParameter(String name, String description, bool required) : base(name, description, StorageType.Quest, required) { }
     }
 
     class SoundParameter : StringParameter
     {
         public SoundParameter(String name) : base(name, StorageType.Sound) { }
         public SoundParameter(String name, String description) : base(name, description, StorageType.Sound) { }
+        public SoundParameter(String name, String description, bool required) : base(name, description, StorageType.Sound, required) { }
     }
 
     class ItemParameter : StringParameter
     {
         public ItemParameter(String name) : base(name, StorageType.Item) { }
         public ItemParameter(String name, String description) : base(name, description, StorageType.Item) { }
+        public ItemParameter(String name, String description, bool required) : base(name, description, StorageType.Item, required) { }
     }
 
     class MovieParameter : StringParameter
     {
         public MovieParameter(String name) : base(name, StorageType.Movie) { }
         public MovieParameter(String name, String description) : base(name, description, StorageType.Movie) { }
+        public MovieParameter(String name, String description, bool required) : base(name, description, StorageType.Movie, required) { }
     }
 
 
@@ -317,12 +295,21 @@ namespace VisualSAIStudio
     {
         public ZoneAreaParameter(String name) : base(name, StorageType.Area) { }
         public ZoneAreaParameter(String name, String description) : base(name, description, StorageType.Area) { }
+        public ZoneAreaParameter(String name, String description, bool required) : base(name, description, StorageType.Area, required) { }
     }
 
     class GameObjectParameter : StringParameter
     {
         public GameObjectParameter(String name) : base(name, StorageType.GameObject) { }
         public GameObjectParameter(String name, String description) : base(name, description, StorageType.GameObject) { }
+        public GameObjectParameter(String name, String description, bool required) : base(name, description, StorageType.GameObject, required) { }
+    }
+
+    class SkillParameter : StringParameter
+    {
+        public SkillParameter(String name) : base(name, StorageType.Skill) { }
+        public SkillParameter(String name, String description) : base(name, description, StorageType.Skill) { }
+        public SkillParameter(String name, String description, bool required) : base(name, description, StorageType.Skill, required) { }
     }
 
     public class SelectOption

@@ -45,6 +45,9 @@ namespace VisualSAIStudio
 
             CurrentAction(this, new LoadingEventArgs("emotes"));
             database.Add(StorageType.Emote, new ClientDataDBC("Emotes.dbc", 0));
+
+            CurrentAction(this, new LoadingEventArgs("skills"));
+            database.Add(StorageType.Skill, new ClientDataDBC("SkillLine.dbc", 1));
         }
 
         private void LoadMovies()
@@ -90,14 +93,15 @@ namespace VisualSAIStudio
     {
         Spell,
         Quest,
-        Creature ,
-        GameObject ,
-        Item ,
-        Sound ,
-        Movie ,
-        Class ,
-        Area ,
-        Emote ,
+        Creature,
+        GameObject,
+        Item,
+        Sound,
+        Movie,
+        Class,
+        Area,
+        Emote,
+        Skill,
     }
 
     public abstract class ClientData

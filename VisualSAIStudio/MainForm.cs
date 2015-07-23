@@ -84,11 +84,12 @@ namespace VisualSAIStudio
 
             SmartElement elem = ((WarningSelectedEventArgs)e).element;
 
-            if (elem is SmartAction)
+            if (elem is SmartAction || elem is SmartCondition)
             {
                 elem.parent.setSelected(true);
                 scratch.EnsureVisible(elem.parent);
-            } else
+            } 
+            else
             {
                 elem.setSelected(true);
                 scratch.EnsureVisible(elem);
@@ -101,6 +102,10 @@ namespace VisualSAIStudio
             if (scratch.Selected().GetSelectedAction() != null)
             {
                 properties.SetObject(new VisualSAIStudio.SmartScripts.SmartActionProperty(scratch.Selected().GetSelectedAction()));
+            }
+            else if (scratch.Selected().GetSelectedCondition() != null)
+            {
+                properties.SetObject(new VisualSAIStudio.SmartScripts.SmartConditionProperty(scratch.Selected().GetSelectedCondition()));
             }
             else
                 properties.SetObject(new VisualSAIStudio.SmartScripts.SmartEventProperty(scratch.Selected()));

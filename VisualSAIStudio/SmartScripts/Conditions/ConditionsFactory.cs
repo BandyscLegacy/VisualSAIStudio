@@ -206,7 +206,8 @@ namespace VisualSAIStudio
                     return new CONDITION_HAS_SUMMON();
                 case "CONDITION_OWNER_AURA":
                     return new CONDITION_OWNER_AURA();
-
+                case "CONDITION_LOGICAL_OR":
+                    return new CONDITION_LOGICAL_OR();
             }
             return null;
         }

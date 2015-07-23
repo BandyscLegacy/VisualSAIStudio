@@ -163,7 +163,7 @@ namespace VisualSAIStudio
             if (e.Data.GetDataPresent(DataFormats.StringFormat))
             {
                 string str = (string)e.Data.GetData(DataFormats.StringFormat);
-
+                SmartEvent el = events.EventAt(mouse.X, mouse.Y);
                 DropResult drop_result = events.GetDropResult(str, mouse.X, mouse.Y);
                 if (str.IndexOf("SMART_EVENT")>-1)
                 {
@@ -171,11 +171,9 @@ namespace VisualSAIStudio
                 }
                 else if (str.IndexOf("SMART_ACTION")>-1)
                 {
-                    SmartEvent el = events.EventAt(mouse.X, mouse.Y);
-                    
                     if (drop_result == DropResult.INSERT)
                     {
-                        el.InsertAction(ExtendedFactories.ActionFactory(str), el.GetInsertIndexFromPos(mouse.X, mouse.Y));
+                        el.InsertAction(ExtendedFactories.ActionFactory(str), el.GetInsertActionIndexFromPos(mouse.X, mouse.Y));
                     }
                     else if (drop_result == DropResult.REPLACE)
                     {
@@ -183,21 +181,26 @@ namespace VisualSAIStudio
                         el.ReplaceAction(ExtendedFactories.ActionFactory(str), (SmartAction)action);
                     }
                 }
+                else if (str.Contains("CONDITION_"))
+                {
+                    if (drop_result == DropResult.INSERT)
+                    {
+                        el.InsertCondition(ConditionsFactory.Factory(str), el.GetInsertConditionIndexFromPos(mouse.X, mouse.Y));
+                    }
+                    else if (drop_result == DropResult.REPLACE)
+                    {
+                        DrawableElement condition = el.GetElementFromPos(mouse.X, mouse.Y);
+                        el.ReplaceCondition(ConditionsFactory.Factory(str), (SmartCondition)condition);
+                    }
+                }
                 // @TODO rewrite
                 else if (str.IndexOf("SMART_TARGET") > -1)
                 {
-                    foreach (DrawableElement el in events)
-                    {
-                        if (el.contains(mouse.X, mouse.Y))
-                        {
-                            DrawableContainerElement ev = (DrawableContainerElement)el;
-                            SmartAction action = (SmartAction)ev.GetElementFromPos(mouse.X, mouse.Y);
-                            SmartTarget target = TargetsFactory.Factory(str);
-                            target.UpdateParams(action.target);
-                            action.target = target;
-                            break;
-                        }
-                    }
+                        DrawableContainerElement ev = (DrawableContainerElement)el;
+                        SmartAction action = (SmartAction)ev.GetElementFromPos(mouse.X, mouse.Y);
+                        SmartTarget target = TargetsFactory.Factory(str);
+                        target.UpdateParams(action.target);
+                        action.target = target;
                 }
 
             }

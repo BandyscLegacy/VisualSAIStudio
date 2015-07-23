@@ -28,8 +28,7 @@ namespace VisualSAIStudio
         {
             parameters[index] = parameter;
 
-            if (parameter.HasValidator())
-                AddConditional(parameter.GetValidator());
+            this.conditionals.AddRange(parameter.GetValidators());
 
             if (invalide)
                 Invalide();
@@ -47,7 +46,7 @@ namespace VisualSAIStudio
 
         public virtual void Copy(SmartElement prev)
         {
-            for (int i = 0; i < 6; ++i)
+            for (int i = 0; i < parameters.Length; ++i)
                 parameters[i].SetValue(prev.parameters[i].GetValue());
             this.children = prev.children;
         }
@@ -71,15 +70,8 @@ namespace VisualSAIStudio
 
         public override Size ComputeSize(Graphics graphics, Font font)
         {
-            SizeF measure = graphics.MeasureString(GetReadableString(), font);
-            int width = (int)measure.Width + 10;
-            children.ForEach(child => width = Math.Max(width, (int)child.ComputeSize(graphics, font).Width));
-            int height;
-            if (children.Count > 0)
-                height = children.Last().rect.Bottom - rect.Top+5;
-            else
-                height = (int)measure.Height + 10;
-            return new Size(width, height);
+            SizeF measure = graphics.MeasureString(ToString(), font);
+            return new Size((int)measure.Width,(int)measure.Height);
         }
 
         public virtual void UpdateParams(int index, int value)

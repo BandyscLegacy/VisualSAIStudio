@@ -133,7 +133,7 @@ namespace VisualSAIStudio.SmartScripts
     {
         public SMART_ACTION_FAIL_QUEST() : base(6, "SMART_ACTION_FAIL_QUEST")
         {
-            SetParameter(0, new QuestParameter("Quest ID", "Quest ID to mark as failed. Only for players"));
+            SetParameter(0, new QuestParameter("Quest ID", "Quest ID to mark as failed. Only for players", true));
         }
 
         public override string GetReadableString()
@@ -147,7 +147,7 @@ namespace VisualSAIStudio.SmartScripts
     {
         public SMART_ACTION_ADD_QUEST() : base(7, "SMART_ACTION_ADD_QUEST")
         {
-            SetParameter(0, new QuestParameter("Quest ID", "Add quest, only for players"));
+            SetParameter(0, new QuestParameter("Quest ID", "Add quest, only for players", true));
         }
 
         public override string GetReadableString()
@@ -204,7 +204,7 @@ namespace VisualSAIStudio.SmartScripts
     {
         public SMART_ACTION_CAST() : base(11, "SMART_ACTION_CAST")
         {
-            SetParameter(0, new SpellParameter("Spell"));
+            SetParameter(0, new SpellParameter("Spell", "Spell id to cast", true));
             SetParameter(1, new CastFlagsParameter("Cast Flags"));
         }
 
@@ -219,8 +219,8 @@ namespace VisualSAIStudio.SmartScripts
     {
         public SMART_ACTION_SUMMON_CREATURE() : base(12, "SMART_ACTION_SUMMON_CREATURE")
         {
-            SetParameter(0, new CreatureParameter("Creature"));
-            SetParameter(1, new SummonTypeParameter("Summon Type"));
+            SetParameter(0, new CreatureParameter("Creature", "Creature entry to summon" ,true));
+            SetParameter(1, new SummonTypeParameter("Summon Type", true));
             SetParameter(2, new Parameter("Duration", "In ms"));
             SetParameter(3, new Parameter("Storage ID", "Target variable id to store summoned creature"));
             SetParameter(4, new BoolParameter("Attack Invoker"));
@@ -228,9 +228,7 @@ namespace VisualSAIStudio.SmartScripts
 
         public override string GetReadableString()
         {
-            if (target is SMART_TARGET_POSITION)
-                return "Self: Summon creature {pram1} at {targetcoords}";
-            return "{target}: Summon creature {pram1} at my position, moved by offset {targetcoords}";
+            return "Self: Summon creature {pram1} at {targetid:choose(8):{targetcoords}|{target}, moved by offset {targetcoords}}{pram5value:choose(0):| and attack {target}}";
         }
     }
 
@@ -453,7 +451,7 @@ namespace VisualSAIStudio.SmartScripts
     {
         public SMART_ACTION_FLEE_FOR_ASSIST() : base(25, "SMART_ACTION_FLEE_FOR_ASSIST")
         {
-            SetParameter(0, new EmoteParameter("With Emote"));
+            SetParameter(0, new EmoteParameter("With Emote", "If set, creature will flee for assist with emote"));
         }
 
         public override string GetReadableString()
@@ -480,7 +478,7 @@ namespace VisualSAIStudio.SmartScripts
     {
         public SMART_ACTION_REMOVEAURASFROMSPELL() : base(28, "SMART_ACTION_REMOVEAURASFROMSPELL")
         {
-            SetParameter(0, new SpellParameter("Spell"));
+            SetParameter(0, new SpellParameter("Spell", "Spell id to remove aura", true));
         }
 
         public override string GetReadableString()
@@ -535,8 +533,8 @@ namespace VisualSAIStudio.SmartScripts
     {
         public SMART_ACTION_RANDOM_PHASE_RANGE() : base(31, "SMART_ACTION_RANDOM_PHASE_RANGE")
         {
-            SetParameter(0, new Parameter("PhaseMin"));
-            SetParameter(1, new Parameter("PhaseMax"));
+            SetParameter(0, new Parameter("Phase Min", "Minimum phase to random between (SAI phase)"));
+            SetParameter(1, new Parameter("Phase Max", "Maximum phase to random between (SAI phase)"));
             AddConditional(new ParameterConditionalCompareValue(parameters[0], parameters[1], CompareType.LOWER_OR_EQUALS));
         }
 

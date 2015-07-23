@@ -81,23 +81,17 @@ namespace VisualSAIStudio
     public abstract class SmartEvent : SmartElement
     {
         public event EventHandler ActionSelected = delegate { };
-        private List<SmartCondition> conditions = new List<SmartCondition>();
-        ContextMenuStrip contextMenu = new ContextMenuStrip();
+        public List<SmartCondition> conditions = new List<SmartCondition>();
+        public List<SmartAction> actions = new List<SmartAction>();
+        private ContextMenuStrip contextMenu = new ContextMenuStrip();
+        private Point mouse;
 
         public int chance {get; set;}
         public SmartPhaseMask phasemask { get; set; }
         public SmartEventFlag flags { get; set; }
-        private Point mouse;
-
-        protected override void UpdateParamsInternal(int index, int value)
-        {
-            this.parameters[index].SetValue(value);
-        }
 
         public SmartEvent() : this(0, null) {  }
-
         public SmartEvent(int id) : this(id, null) {  }
-
         public SmartEvent(int id, string name)
         {
             this.ID = id;
@@ -108,6 +102,136 @@ namespace VisualSAIStudio
             contextMenu.Items.Add("Cut", null, this_cutEvent);
             contextMenu.Items.Add("-");
             contextMenu.Items.Add("Delete", null, this_deleteEvent);
+        }
+
+        public SmartAction GetAction(int index)
+        {
+            return actions[index];
+        }
+
+        public SmartCondition GetCondition(int index)
+        {
+            return conditions[index];
+        }
+
+        public SmartAction GetSelectedAction()
+        {
+            if (selectedChildren is SmartAction)
+                return (SmartAction)selectedChildren;
+            return null;
+        }
+
+        public SmartCondition GetSelectedCondition()
+        {
+            if (selectedChildren is SmartCondition)
+                return (SmartCondition)selectedChildren;
+            return null;
+        }
+
+        public List<SmartAction> GetActions()
+        {
+            return actions;
+        }
+
+        public void AddAction(SmartAction smartAction)
+        {
+            children.Add(smartAction);
+            actions.Add(smartAction);
+            smartAction.parent = this;
+            smartAction.RequestUpdate += ActionRequestUpdateCallback;
+        }
+
+        public void InsertAction(SmartAction smartAction, int index)
+        {
+            children.Insert(index + conditions.Count, smartAction);
+            actions.Insert(index, smartAction);
+            smartAction.parent = this;
+            smartAction.RequestUpdate += ActionRequestUpdateCallback;
+            Invalide();
+        }
+
+        public void ReplaceAction(SmartAction replace, SmartAction search)
+        {
+            replace.Copy(search);
+
+            int index = children.IndexOf(search);
+            children.Remove(search);
+            children.Insert(index, replace);
+
+            index = actions.IndexOf(search);
+            actions.Remove(search);
+            actions.Insert(index, replace);
+
+            replace.parent = this;
+            replace.RequestUpdate += ActionRequestUpdateCallback;
+            Invalide();
+        }
+
+
+        public void AddCondition(SmartCondition cond)
+        {
+            children.Add(cond);
+            conditions.Add(cond);
+            cond.parent = this;
+            cond.RequestUpdate += ActionRequestUpdateCallback;
+        }
+
+
+        public void InsertCondition(SmartCondition smartCondition, int index)
+        {
+            children.Add(smartCondition);
+            conditions.Insert(index, smartCondition);
+            smartCondition.parent = this;
+            smartCondition.RequestUpdate += ActionRequestUpdateCallback;
+            Invalide();
+        }
+
+
+        public void ReplaceCondition(SmartCondition replace, SmartCondition search)
+        {
+            replace.Copy(search);
+
+            int index = children.IndexOf(search);
+            children.Remove(search);
+            children.Insert(index, replace);
+
+            index = conditions.IndexOf(search);
+            conditions.Remove(search);
+            conditions.Insert(index, replace);
+
+            replace.parent = this;
+            replace.RequestUpdate += ActionRequestUpdateCallback;
+            Invalide();
+        }
+
+
+        public int GetInsertActionIndexFromPos(int x, int y)
+        {
+            if (y > rect.Bottom - 5)
+                return actions.Count;
+            for (int i = actions.Count - 1; i >= 0; --i)
+            {
+                if (y > actions[i].rect.Top - 5 && y < actions[i].rect.Bottom + 5)
+                    return i;
+            }
+            return 0;
+        }
+
+        public int GetInsertConditionIndexFromPos(int x, int y)
+        {
+            if (conditions.Count > 0 && y > conditions[conditions.Count-1].rect.Bottom-5)
+                return conditions.Count;
+            for (int i = conditions.Count - 1; i >= 0; --i)
+            {
+                if (y > conditions[i].rect.Top - 5 && y < conditions[i].rect.Bottom + 5)
+                    return i;
+            }
+            return 0;
+        }
+
+        protected override void UpdateParamsInternal(int index, int value)
+        {
+            this.parameters[index].SetValue(value);
         }
 
         private void this_cutEvent(object sender, EventArgs e)
@@ -122,7 +246,7 @@ namespace VisualSAIStudio
             if (array.Length != 15)
                 return;
             SmartAction doc = SmartAction.DeserializeFromArray(array);
-            InsertAction(doc, GetInsertIndexFromPos(mouse.X, mouse.Y));
+            InsertAction(doc, GetInsertActionIndexFromPos(mouse.X, mouse.Y));
             doc.Invalide();
         }
 
@@ -164,23 +288,7 @@ namespace VisualSAIStudio
             this.conditions = prev.conditions;
         }
 
-        public void AddCondition(SmartCondition cond)
-        {
-            conditions.Add(cond);
-        }
-
-        internal void AddAction(SmartAction smartAction)
-        {
-            children.Add(smartAction);
-            smartAction.parent = this;
-            smartAction.RequestUpdate += ActionRequestUpdateCallback;
-        }
-
-        private void ActionRequestUpdateCallback(object sender, EventArgs e)
-        {
-            ChildrenModified(sender, e);
-            Invalide();
-        }
+  
 
         public string GetCPPCode()
         {
@@ -193,21 +301,6 @@ namespace VisualSAIStudio
             }
 
             return ret.ToString();
-        }
-
-        public SmartAction GetAction(int index)
-        {
-            return (SmartAction)children[index];
-        }
-
-        public SmartAction GetSelectedAction()
-        {
-            return (SmartAction)selectedChildren;
-        }
-
-        public List<DrawableElement> GetActions()
-        {
-            return children;
         }
 
         protected override void paramValueChanged(object sender, EventArgs e)
@@ -229,6 +322,25 @@ namespace VisualSAIStudio
             base.paramValueChanged(sender, e);
         }
 
+        public override Size ComputeSize(Graphics graphics, Font font)
+        {
+            SizeF measure = graphics.MeasureString(ToString(), font);
+            int width = (int)measure.Width + 10;
+            children.ForEach(child => width = Math.Max(width, (int)child.ComputeSize(graphics, font).Width));
+            int height = (int)measure.Height + 10;
+            int children_height = 0;
+            if (children.Count>0)
+            {
+                children_height = children.Max(i => i.rect.Bottom) - rect.Top + 5;
+                if (actions.Count > 0)
+                    height = children_height;
+                else if (conditions.Count > 0)
+                    height += children_height;
+            }
+
+            return new Size(width, height);
+        }
+
         public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, bool setRect = true)
         {
             Point start_pos = new Point(x, y);
@@ -241,17 +353,22 @@ namespace VisualSAIStudio
                 graphics.FillRectangle(brush, x, y, width, size.Height);
             }
             brush = Brushes.Black;
-            graphics.FillEllipse(brush, x + 10, y + 10, 5, 5);
+            
+
             foreach (SmartCondition condition in conditions)
             {
-                graphics.DrawString(condition.GetReadableString(), font, brush, x + 18, y + 5);
-                y += (int)graphics.MeasureString(condition.GetReadableString(), font).Height + 10;
+                Size asize = condition.Draw(graphics, x+18, y+5, width, size.Height, brush, pen, font, setRect);
+                y += asize.Height;
             }
+
+            graphics.FillEllipse(brush, x + 10, y + 10, 5, 5);
             graphics.DrawString(ToString(), font, brush, x + 18, y + 5);
             y += (int)graphics.MeasureString(ToString(), font).Height + 10;
-            foreach (DrawableElement child in children)
+
+
+            foreach (SmartAction action in actions)
             {
-                Size asize = child.Draw(graphics, x + 30, y, width, size.Height, brush, pen, font, setRect);
+                Size asize = action.Draw(graphics, x + 30, y, width, size.Height, brush, pen, font, setRect);
                 y += asize.Height;
             }
             
@@ -261,34 +378,9 @@ namespace VisualSAIStudio
             return size;
         }
 
-        public void ReplaceAction(SmartAction replace, SmartAction search)
+        private void ActionRequestUpdateCallback(object sender, EventArgs e)
         {
-            int index = children.IndexOf(search);
-            replace.Copy(search);
-            children.Remove(search);
-            children.Insert(index, replace);
-            replace.parent = this;
-            replace.RequestUpdate += ActionRequestUpdateCallback;
-            Invalide();
-        }
-
-        public int GetInsertIndexFromPos(int x, int y)
-        {
-            if (y > rect.Bottom - 5)
-                return children.Count;
-            for (int i = children.Count - 1; i >= 0; --i )
-            {
-                if (y > children[i].rect.Top - 5 && y < children[i].rect.Bottom + 5)
-                    return i;
-            }
-            return 0;
-        }
-
-        public void InsertAction(SmartAction smartAction, int index)
-        {
-            children.Insert(index, smartAction);
-            smartAction.parent = this;
-            smartAction.RequestUpdate += ActionRequestUpdateCallback;
+            ChildrenModified(sender, e);
             Invalide();
         }
 
@@ -315,7 +407,12 @@ namespace VisualSAIStudio
         public override List<Warning> Validate()
         {
             List<Warning> warnings = base.Validate();
-            for (int i = 0; i < children.Count;++i)
+            for (int i = 0; i < conditions.Count; ++i)
+            {
+                SmartCondition condition = GetCondition(i);
+                warnings.AddRange(condition.Validate());
+            }
+            for (int i = 0; i < actions.Count;++i)
             {
                 SmartAction action = GetAction(i);
                 warnings.AddRange(action.Validate());
@@ -323,10 +420,6 @@ namespace VisualSAIStudio
             return warnings;
         }
 
-        public override string GetReadableString()
-        {
-            throw new NotImplementedException();
-        }
     }
 
 
