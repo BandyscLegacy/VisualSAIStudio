@@ -20,7 +20,7 @@ namespace VisualSAIStudio
             database.Add(StorageType.Spell, new ClientDataDBC("spell.dbc", 20));
 
             CurrentAction(this, new LoadingEventArgs("quests"));
-            database.Add(StorageType.Quest, new ClientDataDB("entry", "title", "quest_template"));
+            database.Add(StorageType.Quest, new ClientDataDB("title", "quest_template"));
 
             CurrentAction(this, new LoadingEventArgs("quests"));
             database.Add(StorageType.Creature, new ClientDataDB("entry", "name", "creature_template"));
@@ -122,6 +122,11 @@ namespace VisualSAIStudio
     {
         public ClientDataDB(string id_column, string string_column, string table)
         {
+            Load(id_column, string_column, table);
+        }
+
+        private void Load(string id_column, string string_column, string table)
+        {
             MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SELECT {0}, {1} FROM {2} order by {0}", id_column, string_column, table));
             using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
             {
@@ -130,6 +135,18 @@ namespace VisualSAIStudio
                     values.Add(Convert.ToInt32(reader[id_column]), Convert.ToString(reader[string_column]));
                 }
             }
+        }
+
+        public ClientDataDB(string string_column, string table)
+        {
+
+            MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SHOW columns FROM {0}", table));
+            MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            string id_column = (string)reader["field"];
+            reader.Close();
+            Load(id_column, string_column, table);
+           
         }
     }
 
