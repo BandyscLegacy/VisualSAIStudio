@@ -120,17 +120,17 @@
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="logoPictureBox.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIVSURBVDhPlVNLaxNRFL6rJjOZNmaSZpJpntbElFatWGot
-        jcXWbkShiBAsahQVcSG4KLjSrSv/ggs3brpvCyL4WIiCbkQQERQsStVlm7R5fN7v6IxiI9TF4dxzzj3f
-        eav02iIya0ualpFdf4Ccpvz6Q/TXHmFX7QkKtaco1p+hVH+OgfoLDG68xNDGK+zdfI19m2+g6Bywogj2
-        xDUlYexwYYT7hFOmnvYuM7KF9jfeEmAZge7eX84pmJEMTDsrnDL1tHeF7C0ABxrvoJg2ozAinULRPEKx
-        fuE/QZhJ5yxGGu+hWHOwx5G0GZnOVrwg3IzmEC6XYdiuABh9WYTHx3yA0eYHKDbsXxnYJ45hz8pjxOZO
-        CoBTrWBMp+0BHGx+hGK3vR6YmQKs3IDfg+z9OwJQXLorPUhUT2NCR/UADjU/QXFURA/PzshnUvfQMKz8
-        bnmnbl0XbpUGkazOYbK14gOM67finIluXz4lH3uvnZWak/NXRHbOVYTvvH0T7vkzmGp98QEmWp+huCQU
-        gnEX8fmL8jl546rwvyl16QJm2l99gLIGU9wwCnbl+O+PXtrFktgMJy3y8MI9DfDNBzjcXoXienqKgO0g
-        GNMji+ixJtK+nkQQM6GXzM35ukkCcLf//Pg/dESXo3gYnYzboSldjuJVdTJuh6YJwJPkVfEwuNtcT24Y
-        l4Rz5qjYbTaMNTNtRqbz0fZ3/AAQGtQHtcUs2AAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAhVJREFUOE+VU0trE1EUvqsmM5k2ZpJmkmme1sSUVq1Yai2NxdZuRKGIECxqFBVx
+        IbgouNKtK/+CCzduum8LIvhYiIJuRBARFCxK1WWbtHl83u/ojGIj1MXh3HPOPd95q/TaIjJrS5qWkV1/
+        gJym/PpD9NceYVftCQq1pyjWn6FUf46B+gsMbrzE0MYr7N18jX2bb6DoHLCiCPbENSVh7HBhhPuEU6ae
+        9i4zsoX2N94SYBmB7t5fzimYkQxMOyucMvW0d4XsLQAHGu+gmDajMCKdQtE8QrF+4T9BmEnnLEYa76FY
+        c7DHkbQZmc5WvCDcjOYQLpdh2K4AGH1ZhMfHfIDR5gcoNuxfGdgnjmHPymPE5k4KgFOtYEyn7QEcbH6E
+        Yre9HpiZAqzcgN+D7P07AlBcuis9SFRPY0JH9QAONT9BcVRED8/OyGdS99AwrPxueaduXRdulQaRrM5h
+        srXiA4zrt+KciW5fPiUfe6+dlZqT81dEds5VhO+8fRPu+TOYan3xASZan6G4JBSCcRfx+YvyOXnjqvC/
+        KXXpAmbaX32AsgZT3DAKduX4749e2sWS2AwnLfLwwj0N8M0HONxeheJ6eoqA7SAY0yOL6LEm0r6eRBAz
+        oZfMzfm6SQJwt//8+D90RJejeBidjNuhKV2O4lV1Mm6HpgnAk+RV8TC421xPbhiXhHPmqNhtNow1M21G
+        pvPR9nf8ABAa1Ae1xSzYAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="textBoxDescription.Text" xml:space="preserve">
