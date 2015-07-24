@@ -11,8 +11,11 @@ namespace VisualSAIStudio
 {
     partial class AboutBox : Form
     {
+        bool painted = false;
+
         public AboutBox()
         {
+            painted = false;
             InitializeComponent();
             this.Text = String.Format("About {0}", AssemblyTitle);
             this.labelProductName.Text = AssemblyProduct;
@@ -105,6 +108,15 @@ namespace VisualSAIStudio
         private void AboutBox_Load(object sender, EventArgs e)
         {
 
+        }
+
+        protected override void OnPaintBackground(System.Windows.Forms.PaintEventArgs e)
+        {
+            if (!painted)
+                e.Graphics.DrawImage(BackgroundImage, 0, 0, 599, 360);
+            e.Graphics.DrawImage(BackgroundImage, new Rectangle(27, 92, 560, 184), new Rectangle(27, 92, 560, 184), GraphicsUnit.Pixel);
+
+            painted = true;
         }
     }
 }
