@@ -11,12 +11,13 @@ namespace VisualSAIStudio
 {
     partial class AboutBox : Form
     {
-        bool painted = false;
-
         public AboutBox()
         {
-            painted = false;
             InitializeComponent();
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            this.BackColor = Color.Transparent;
+            this.TransparencyKey = Color.Transparent;
+
             this.Text = String.Format("About {0}", AssemblyTitle);
             this.labelProductName.Text = AssemblyProduct;
             this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
@@ -110,13 +111,6 @@ namespace VisualSAIStudio
 
         }
 
-        protected override void OnPaintBackground(System.Windows.Forms.PaintEventArgs e)
-        {
-            if (!painted)
-                e.Graphics.DrawImage(BackgroundImage, 0, 0, 599, 360);
-            e.Graphics.DrawImage(BackgroundImage, new Rectangle(27, 92, 560, 184), new Rectangle(27, 92, 560, 184), GraphicsUnit.Pixel);
-
-            painted = true;
-        }
+        protected override void OnPaintBackground(PaintEventArgs e) { /* Ignore */ }
     }
 }

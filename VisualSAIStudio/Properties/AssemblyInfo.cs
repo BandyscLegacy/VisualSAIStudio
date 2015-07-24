@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("VisualSAIStudio")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Smart Script Editor for WoW Cores including TrinityCore and SkyFire")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("VisualSAIStudio")]
