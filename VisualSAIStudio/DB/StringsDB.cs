@@ -131,26 +131,38 @@ namespace VisualSAIStudio
 
         private void Load(string id_column, string string_column, string table)
         {
-            MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SELECT {0}, {1} FROM {2} order by {0}", id_column, string_column, table));
-            using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
+            try
             {
-                while (reader.Read())
+                MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SELECT {0}, {1} FROM {2} order by {0}", id_column, string_column, table));
+                using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
                 {
-                    values.Add(Convert.ToInt32(reader[id_column]), Convert.ToString(reader[string_column]));
+                    while (reader.Read())
+                    {
+                        values.Add(Convert.ToInt32(reader[id_column]), Convert.ToString(reader[string_column]));
+                    }
                 }
+            }
+            catch (System.InvalidOperationException e)
+            {
+                // TODO: show config option to configure sql connection
             }
         }
 
         public ClientDataDB(string string_column, string table)
         {
-
-            MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SHOW columns FROM {0}", table));
-            MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
-            string id_column = (string)reader["field"];
-            reader.Close();
-            Load(id_column, string_column, table);
-           
+            try
+            {
+                MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SHOW columns FROM {0}", table));
+                MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                string id_column = (string)reader["field"];
+                reader.Close();
+                Load(id_column, string_column, table);
+            }
+            catch (System.InvalidOperationException e)
+            {
+                // TODO: show config option to configure sql connection
+            }
         }
     }
 
