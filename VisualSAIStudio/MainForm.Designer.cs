@@ -56,6 +56,7 @@
             this.targetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.conditionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.errorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -125,7 +126,8 @@
             this.actionsToolStripMenuItem,
             this.targetsToolStripMenuItem,
             this.conditionsToolStripMenuItem,
-            this.propertiesToolStripMenuItem});
+            this.propertiesToolStripMenuItem,
+            this.errorsToolStripMenuItem});
             this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
             this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.windowToolStripMenuItem.Text = "Window";
@@ -164,6 +166,13 @@
             this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
+            // 
+            // errorsToolStripMenuItem
+            // 
+            this.errorsToolStripMenuItem.Name = "errorsToolStripMenuItem";
+            this.errorsToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.errorsToolStripMenuItem.Text = "Warnings";
+            this.errorsToolStripMenuItem.Click += new System.EventHandler(this.errorsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -362,6 +371,7 @@
         private System.Windows.Forms.ToolStripMenuItem targetsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem conditionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem errorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem detectConflictsToolStripMenuItem;
         private VS2012ToolStripExtender vS2012ToolStripExtender1;
         private System.Windows.Forms.ToolStripMenuItem validateToolStripMenuItem;

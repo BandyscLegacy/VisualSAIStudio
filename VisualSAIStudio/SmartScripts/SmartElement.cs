@@ -12,8 +12,8 @@ namespace VisualSAIStudio
     public abstract class SmartElement : DrawableContainerElement
     {
         protected List<ParameterConditional> conditionals = new List<ParameterConditional>();
-        public Parameter[] parameters {get; set; }
-        public int ID;
+        public Parameter[] parameters { get; set; }
+        public int ID { get; set; }
         protected string readable;
         public string name;
 

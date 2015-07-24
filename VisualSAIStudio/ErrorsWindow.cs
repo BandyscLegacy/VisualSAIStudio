@@ -15,6 +15,7 @@ namespace VisualSAIStudio
         public ErrorsWindow()
         {
             InitializeComponent();
+            this.HideOnClose = true;
         }
 
         int index = 1;

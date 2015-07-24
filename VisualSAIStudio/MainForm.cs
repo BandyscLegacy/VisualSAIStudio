@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
+using Newtonsoft.Json;
 
 namespace VisualSAIStudio
 {
@@ -21,7 +21,6 @@ namespace VisualSAIStudio
         public MainForm()
         {
             InitializeComponent();
-
         }
 
         PropertyWindow properties;
@@ -37,9 +36,8 @@ namespace VisualSAIStudio
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
 
             LoadCustomEventsAndActions();
-            dockPanel1.Theme = new WeifenLuo.WinFormsUI.Docking.VS2012LightTheme();
+            dockPanel1.Theme = new VS2012LightTheme();
             vS2012ToolStripExtender1.SetEnableVS2012Style(this.menuStrip1, true);
-
 
             scratch = new ScratchWindow();
             scratch.Show(dockPanel1);
@@ -101,7 +99,7 @@ namespace VisualSAIStudio
         {
             if (scratch.Selected().GetSelectedAction() != null)
             {
-                properties.SetObject(new VisualSAIStudio.SmartScripts.SmartActionProperty(scratch.Selected().GetSelectedAction()));
+                properties.SetObject(new SmartScripts.SmartActionProperty(scratch.Selected().GetSelectedAction()));
             }
             else if (scratch.Selected().GetSelectedCondition() != null)
             {
@@ -153,40 +151,40 @@ namespace VisualSAIStudio
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SplashScreen about = new SplashScreen(false);
+            AboutBox about = new AboutBox();
             about.ShowDialog(this);
         }
 
         private void eventsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            events = new ToolWindow("data/events.txt", "Events");
             events.Show(dockPanel1, DockState.DockLeft);
         }
 
         private void conditionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            conditions = new ToolWindow("data/conditions.txt", "Conditions");
             conditions.Show(dockPanel1, DockState.DockLeft);
         }
 
         private void actionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            actions = new ToolWindow("data/actions.txt", "Actions");
             actions.Show(dockPanel1, DockState.DockRight);
         }
 
         private void targetsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            targets = new ToolWindow("data/targets.txt", "Targets");
             targets.Show(dockPanel1, DockState.DockRight);
         }
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            properties = new PropertyWindow();
             properties.Show(dockPanel1, DockState.DockRight);
         }
 
+        private void errorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            errors.Show(dockPanel1, DockState.DockBottom);
+        }
+ 
         private void detectConflictsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             scratch.DetectConflicts();

@@ -11,10 +11,7 @@ namespace VisualSAIStudio
     class DBConnect
     {
         private MySqlConnection connection;
-        private string server;
-        private string database;
-        private string uid;
-        private string password;
+        private DBConnectData connectionData;
 
         //Constructor
         public DBConnect()
@@ -28,13 +25,17 @@ namespace VisualSAIStudio
             if (System.IO.File.Exists("data/database.json"))
             {
                 string file = System.IO.File.ReadAllText("data/database.json");
-                 DBConnectData data = Newtonsoft.Json.JsonConvert.DeserializeObject<DBConnectData>(file);
-                string connectionString;
-                connectionString = "SERVER=" + data.server + ";" + "DATABASE=" +
-                data.database + ";" + "UID=" + data.user + ";" + "PASSWORD=" + data.password + ";";
-
-                connection = new MySqlConnection(connectionString);
+                connectionData = Newtonsoft.Json.JsonConvert.DeserializeObject<DBConnectData>(file);
+                MakeNewConnection();
             }
+        }
+
+        private void MakeNewConnection()
+        {
+            string connectionString;
+            connectionString = "SERVER=" + connectionData.server + ";" + "DATABASE=" +
+            connectionData.database + ";" + "UID=" + connectionData.user + ";" + "PASSWORD=" + connectionData.password + ";";
+            connection = new MySqlConnection(connectionString);
         }
 
         //open connection to database
@@ -55,7 +56,7 @@ namespace VisualSAIStudio
                 switch (ex.Number)
                 {
                     case 0:
-                        MessageBox.Show("Cannot connect to server.  Contact administrator");
+                        MessageBox.Show("Cannot connect to server. Contact administrator");
                         break;
 
                     case 1045:

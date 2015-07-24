@@ -18,7 +18,6 @@ namespace VisualSAIStudio
     public abstract class SmartCondition : SmartElement
     {
         public string help;
-        public int ID { get; protected set; }
         public bool invert { get; set; }
         public ConditionTarget target { get; set; }
 

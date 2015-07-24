@@ -166,7 +166,7 @@ namespace DynamicTypeDescriptor
     {
       if (IsZero(m_EnumDataType, m_Value))
       {
-        if ((m_PropertyType is Enum && !Enum.IsDefined(m_PropertyType, m_Value)))
+        if ((m_PropertyType.IsEnum && !Enum.IsDefined(m_PropertyType, m_Value)))
         {
           return true;
         }

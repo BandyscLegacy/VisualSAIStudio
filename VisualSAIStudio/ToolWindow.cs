@@ -19,6 +19,7 @@ namespace VisualSAIStudio
         {
             InitializeComponent();
             this.Text = title;
+            this.HideOnClose = true;
             LoadSmartFromFile(file);
             Reload();
         }
@@ -93,7 +94,6 @@ namespace VisualSAIStudio
 
             return child;
         }
-
 
         private void ToolWindow_Load(object sender, EventArgs e)
         {

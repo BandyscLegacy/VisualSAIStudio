@@ -261,8 +261,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DynamicTypeDescriptor\DynamicTypeDescriptor.csproj" />
-    <Content Include="sai icon.ico" />
-    <Content Include="splashscreen.png" />
+    <Content Include="Resources\sai icon.ico" />
+    <Content Include="Resources\splashscreen.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

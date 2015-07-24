@@ -16,6 +16,7 @@ namespace VisualSAIStudio
         public PropertyWindow()
         {
             InitializeComponent();
+            this.HideOnClose = true;
         }
 
         private void PropertyWindow_Load(object sender, EventArgs e)
