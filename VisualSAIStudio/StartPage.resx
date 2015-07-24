@@ -117,12 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="textBoxDescription.Text" xml:space="preserve">
-    <value>Special thanks to:
- - TOM_RUS for DBC Viewer (https://github.com/tomrus88/dbcviewer)
- - Mizan Rahman for Dynamic Type Description Framework for PropertyGrid (http://www.codeproject.com/Articles/415070/Dynamic-Type-Description-Framework-for-PropertyGri)
- - DockPanel Suite (http://dockpanelsuite.com/)
- - Newtonsoft (http://www.newtonsoft.com/json) for JSON.NET
- - Everyone who contributes to WoW cores</value>
-  </data>
 </root>

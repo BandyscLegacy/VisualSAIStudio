@@ -80,6 +80,50 @@ namespace VisualSAIStudio
             Invalide();
         }
 
+        protected void AddParameters(IList<SmartParameterJSONData> parameters)
+        {
+            int i = 0;
+            foreach (SmartParameterJSONData param_data in parameters)
+            {
+                Parameter pram = Parameter.Factory(param_data.type);
+                pram.name = param_data.name;
+                pram.description = param_data.description;
+                if (param_data.values != null)
+                    ((SwitchParameter)pram).select = param_data.values;
+                SetParameter(i, pram);
+                i++;
+            }
+        }
+
+        protected void AddConditionals(IList<SmartConditionalJSONData> conditions)
+        {
+            if (conditions != null)
+            {
+                foreach (SmartConditionalJSONData condition in conditions)
+                {
+                    ParameterConditional conditional = ParameterConditional.Factory(condition.type, parameters[condition.compared_parameter_id - 1]);
+                    if (condition.compare_to_parameter_id > 0)
+                        conditional.SetCompareTo(parameters[condition.compare_to_parameter_id - 1]);
+                    else
+                        conditional.SetCompareTo(condition.compare_to_value);
+
+                    if (conditional is ParameterConditionalCompareValue)
+                        ((ParameterConditionalCompareValue)conditional).SetCompareType(condition.compare_type);
+
+                    if (condition.warning_type != null)
+                        conditional.warningType = condition.warning_type;
+
+                    if (condition.error != null)
+                        conditional.SetDescription(condition.error);
+
+                    if (condition.invert)
+                        conditional = new ParameterConditionalInversed(conditional);
+
+                    AddConditional(conditional);
+                }
+            }
+        }
+
         protected abstract void UpdateParamsInternal(int index, int value);
 
         public abstract string GetReadableString();

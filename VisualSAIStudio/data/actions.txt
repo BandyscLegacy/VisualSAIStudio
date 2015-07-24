@@ -1,3 +1,4 @@
+Example,SMART_ACTION_EXAMPLE
 Null action,SMART_ACTION_NONE
 Talk; sounds
  Talk (me),SMART_ACTION_TALK

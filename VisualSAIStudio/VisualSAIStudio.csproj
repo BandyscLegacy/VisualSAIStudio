@@ -75,8 +75,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.9.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -161,6 +160,12 @@
     <Compile Include="SmartScripts\Actions\SmartAction.cs" />
     <Compile Include="SmartScripts\SmartEventProperty.cs" />
     <Compile Include="SmartScripts\SmartGenericJSONData.cs" />
+    <Compile Include="StartPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StartPage.Designer.cs">
+      <DependentUpon>StartPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="SmartScripts\Targets\SmartTarget.cs" />
     <Compile Include="DB\StringsDB.cs" />
     <Compile Include="SmartScripts\Targets\Targets.cs" />
@@ -219,6 +224,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Scratch\Scratch.resx">
       <DependentUpon>Scratch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StartPage.resx">
+      <DependentUpon>StartPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>

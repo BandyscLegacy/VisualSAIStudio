@@ -136,7 +136,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
+            this.panel1.BackgroundImage = global::VisualSAIStudio.Properties.Resources.splashscreen;
             this.panel1.Controls.Add(this.textBoxDescription);
             this.panel1.Controls.Add(this.okButton);
             this.panel1.Controls.Add(this.tableLayoutPanel);
@@ -145,6 +145,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(599, 360);
             this.panel1.TabIndex = 25;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // AboutBox
             // 

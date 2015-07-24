@@ -29,17 +29,8 @@ namespace VisualSAIStudio.SmartScripts
             AddConditional(new ParameterConditionalCompareValue(parameters[1], 0, CompareType.GREATER_OR_EQUALS));
         }
 
-        protected override string GetCpp()
-        {
-            if (target is SMART_TARGET_SELF)
-                return "Talk({pram1});";
-            return "{target_creature}->AI()->Talk({pram1});";
-        }
-
         public override string GetReadableString()
         {
-            if (target is SMART_TARGET_SELF)
-                return "Talk {pram1} (self)";
             return "{target}: Talk {pram1}";
         }
     }
@@ -50,11 +41,6 @@ namespace VisualSAIStudio.SmartScripts
         public SMART_ACTION_SET_FACTION() : base(2, "SMART_ACTION_SET_FACTION")
         {
             SetParameter(0, new Parameter("Faction Id", "Use 0 to reset"));
-        }
-
-        protected override string GetCpp()
-        {
-            return "{target_creature}->setFaction({pram1});";
         }
 
         public override string GetReadableString()
@@ -76,26 +62,9 @@ namespace VisualSAIStudio.SmartScripts
             AddConditional(new ParameterConditionalInversed(new ParameterConditionalGroup(conditions, "Creature entry and model id cannot be set at once")));
         }
 
-        protected override string GetCpp()
-        {
-            if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
-                return "{target_creature}->DeMorph();";
-            else if (parameters[1].GetValue() == 0)
-                return "if (CreatureTemplate const* ci = sObjectMgr->GetCreatureTemplate({pram1}))\n{\n {target_creature}->SetDisplayId(sObjectMgr->ChooseDisplayId(0, ci));\n };";
-            else
-                return "{target_creature}->SetDisplayId({pram2});";
-        }
-
         public override string GetReadableString()
         {
-            if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
-                return "{target}: Demorph";
-            else if (parameters[0].GetValue() != 0 && parameters[1].GetValue() != 0)
-                return "{target}: Invalid morph ({pram1}, {pram2}";
-            else if (parameters[0].GetValue() == 0)
-                return "{target}: Morph to model {pram2}";
-            else
-                return "{target}: Morph to model from creature {pram1}";
+            return "{target}: {pram1value:choose(0):{pram2value:choose(0):Demorph|Morph to model {pram2}}|{pram2value:choose(0):Morph to model from creature {pram1}|Invalid morph ({pram1}, {pram2}}}";
         }
     }
 
@@ -381,9 +350,7 @@ namespace VisualSAIStudio.SmartScripts
 
         public override string GetReadableString()
         {
-            if (parameters[0].GetValue() == 0)
-                return "Self: Disable auto attack";
-            return "Self: Enable auto attack";
+            return "Self: {pram1value:choose(0):Disable|Enable} auto attack";
         }
     }
 
@@ -398,9 +365,7 @@ namespace VisualSAIStudio.SmartScripts
 
         public override string GetReadableString()
         {
-            if (parameters[0].GetValue() == 0)
-                return "Self: Disable combat based movement";
-            return "Self: Enable combat based movement";
+            return "Self: {pram1value:choose(0):Disable|Enable} combat based movement";
         }
     }
 
@@ -483,10 +448,7 @@ namespace VisualSAIStudio.SmartScripts
 
         public override string GetReadableString()
         {
-            if (parameters[0].GetValue() == 0)
-                return "{target}: Remove all auras";
-            else
-                return "{target}: Remove aura due to spell {pram1}";
+                return "{target}: {pram1value:choose(0):Remove all auras|Remove aura due to spell {pram1}}";
         }
     }
 
@@ -674,10 +636,7 @@ namespace VisualSAIStudio.SmartScripts
 
         public override string GetReadableString()
         {
-            if (parameters[0].GetValue() == 0)
-                return "{target}: Despawn instantly";
-            else
-                return "{target}: Despawn in {pram1} ms";
+            return "{target}: Despawn {pram1value:choose(0):instantly|in {pram1} ms}";
         }
     }
 
@@ -711,14 +670,7 @@ namespace VisualSAIStudio.SmartScripts
 
         public override string GetReadableString()
         {
-            if (parameters[0].GetValue() > 0 && parameters[1].GetValue() > 0)
-                return "MOUNT_TO_ENTRY_OR_MODEL (invalid)";
-            else if (parameters[0].GetValue() == 0 && parameters[1].GetValue() == 0)
-                return "{target}: Dismount";
-            else if (parameters[0].GetValue() > 0)
-                return "{target}: Mount to creature {pram1}";
-            else
-                return "{target}: Mount to model {pram2}";
+            return "{target}: {pram1value:choose(0):{pram2value:choose(0):Dismount|Mount to model {pram2}}|{pram2value:choose(0):Mount to creature {pram1}|Invalid mount ({pram1}, {pram2}}}";
         }
     }
 
@@ -775,10 +727,7 @@ namespace VisualSAIStudio.SmartScripts
 
         public override string GetReadableString()
         {
-            if (parameters[0].GetValue() == 0)
-                return "Self: Set invisible";
-            else
-                return "Self: Set visible";
+             return "Self: Set {pram1value:choose(0):in|}visible";
         }
     }
 
@@ -819,9 +768,7 @@ namespace VisualSAIStudio.SmartScripts
 
         public override string GetReadableString()
         {
-            if (target is SMART_TARGET_POSITION)
-                return "Self: Summon gameobject {pram1} at {targetcoords} and despawn in {pram2} ms";
-            return "{target}: Summon gameobject {pram1} at my position, moved by offset {targetcoords} and despawn in {pram2} ms";
+            return "{target}: Summon gameobject {pram1} at {targetid:choose(8):{targetcoords}|my position, moved by offset {targetcoords}} and despawn in {pram2} ms";
         }
     }
 

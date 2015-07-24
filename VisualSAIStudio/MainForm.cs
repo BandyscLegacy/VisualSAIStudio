@@ -25,6 +25,7 @@ namespace VisualSAIStudio
 
         PropertyWindow properties;
         ScratchWindow scratch;
+        StartPage startPage;
         ToolWindow targets;
         ToolWindow actions;
         ToolWindow conditions;
@@ -41,6 +42,9 @@ namespace VisualSAIStudio
 
             scratch = new ScratchWindow();
             scratch.Show(dockPanel1);
+
+            startPage = new StartPage();
+            startPage.Show(dockPanel1);
 
             events = new ToolWindow("data/events.txt", "Events");
             events.Show(dockPanel1, DockState.DockLeft);

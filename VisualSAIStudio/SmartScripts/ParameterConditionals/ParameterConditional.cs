@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartFormat;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -38,13 +39,41 @@ namespace VisualSAIStudio.SmartScripts
         { 
         }
 
+        public void SetCompareTo(Parameter parameter)
+        {
+            compareTo = parameter;
+        }
+
+        public void SetCompareTo(int parametr)
+        {
+            SetCompareTo(new Parameter(parametr.ToString(), parametr));
+        }
+
+        public void SetDescription(string descripion)
+        {
+            this.description = Smart.Format(description, new { compared = compared.name, compareto = compareTo.name });
+        }
+
         public abstract bool Validate();
+
+        public static ParameterConditional Factory(string type, Parameter parameter)
+        {
+            switch (type)
+            {
+                case "CompareValue":
+                    return new ParameterConditionalCompareValue(parameter);
+            }
+            return null;
+        }
     }
 
     public class ParameterConditionalCompareValue : ParameterConditional
     {
         private CompareType compareType;
         private int max;
+
+        public ParameterConditionalCompareValue(Parameter compared) : base(compared, WarningType.INVALID_VALUE) { }
+
         public ParameterConditionalCompareValue(Parameter compared, Parameter compareTo, CompareType compareType)
             : base(compared, compareTo, WarningType.INVALID_PARAMETER)
         {
@@ -72,6 +101,13 @@ namespace VisualSAIStudio.SmartScripts
             this.compareType = CompareType.BETWEEN;
             this.max = max;
             this.description = compared.name + " must be between "+min+" and "+max;
+        }
+
+
+        public void SetCompareType(CompareType compareType)
+        {
+            this.compareType = compareType;
+            this.description = compared.name + " must be " + compareType.GetDescription() + " " + compareTo.name;
         }
 
         public override bool Validate()

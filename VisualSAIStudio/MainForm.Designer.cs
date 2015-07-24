@@ -216,6 +216,10 @@
             // dockPanel1
             // 
             this.dockPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dockPanel1.DockBottomPortion = 0.2D;
+            this.dockPanel1.DockLeftPortion = 0.2D;
+            this.dockPanel1.DockRightPortion = 0.2D;
+            this.dockPanel1.DockTopPortion = 0.2D;
             this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
             this.dockPanel1.Location = new System.Drawing.Point(0, 0);
             this.dockPanel1.Name = "dockPanel1";

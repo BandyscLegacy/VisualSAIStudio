@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VisualSAIStudio.SmartScripts;
 
 namespace VisualSAIStudio
 {
@@ -35,18 +36,8 @@ namespace VisualSAIStudio
         public static GenericSmartAction Factory(SmartGenericJSONData data)
         {
             GenericSmartAction action = new GenericSmartAction(data.id, data.name, data.description);
-            int i = 0;
-            foreach (SmartParameterJSONData param_data in data.parameters)
-            {
-                Parameter pram = Parameter.Factory(param_data.type);
-                pram.name = param_data.name;
-                pram.description = param_data.description;
-                if (param_data.values != null)
-                    ((SwitchParameter)pram).select = param_data.values;
-
-                action.SetParameter(i, pram);
-                i++;
-            }
+            action.AddParameters(data.parameters);
+            action.AddConditionals(data.conditions);
             return action;
         }
 
