@@ -12,4 +12,5 @@ Smart Script Editor for WoW Cores including TrinityCore and SkyFire
  - Everyone who contributes to WoW cores
 
 ## Screenshots
+![Screenshot](http://i.imgur.com/Wjxeywh.png)
 ![Screenshot](http://i.imgur.com/4hd6AXG.png)
