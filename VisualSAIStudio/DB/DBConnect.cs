@@ -33,8 +33,11 @@ namespace VisualSAIStudio
         private void MakeNewConnection()
         {
             string connectionString;
-            connectionString = "SERVER=" + connectionData.server + ";" + "DATABASE=" +
-            connectionData.database + ";" + "UID=" + connectionData.user + ";" + "PASSWORD=" + connectionData.password + ";";
+            connectionString =  "SERVER="   + connectionData.server     + ";" +
+                                "PORT="     + connectionData.port       + ";" +
+                                "DATABASE=" + connectionData.database   + ";" +
+                                "UID="      + connectionData.user       + ";" +
+                                "PASSWORD=" + connectionData.password   + ";";
             connection = new MySqlConnection(connectionString);
         }
 
