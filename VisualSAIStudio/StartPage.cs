@@ -31,7 +31,7 @@ namespace VisualSAIStudio
             ll.Font = new System.Drawing.Font("Calibri Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             ll.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             ll.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
-            ll.Location = new System.Drawing.Point(59, 284 + num * 24);
+            ll.Location = new System.Drawing.Point(59, 330 + num * 24);
             ll.Text = action.type.ToString() + "  - " + action.name + " (" + action.entry + ")";
             this.Controls.Add(ll);
         }

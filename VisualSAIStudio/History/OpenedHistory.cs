@@ -21,10 +21,25 @@ namespace VisualSAIStudio.History
 
     class OpenedHistory
     {
-        private List<OpenedHistoryAction> list = new List<OpenedHistoryAction>();
+        private List<OpenedHistoryAction> history = new List<OpenedHistoryAction>();
         private static OpenedHistory instance;
 
         public delegate void DelgateMethod(OpenedHistoryAction action, int num);
+
+        OpenedHistory()
+        {
+            if (System.IO.File.Exists("data/history.json"))
+            {
+                string file = System.IO.File.ReadAllText("data/history.json");
+                history = Newtonsoft.Json.JsonConvert.DeserializeObject<List<OpenedHistoryAction>>(file);
+            }
+        }
+
+        private void save()
+        {
+            string data = Newtonsoft.Json.JsonConvert.SerializeObject(history);
+            System.IO.File.WriteAllText("data/history.json", data);
+        }
 
         public void insert(RecentType type, int entry, string name)
         {
@@ -37,17 +52,20 @@ namespace VisualSAIStudio.History
 
         public void insert(OpenedHistoryAction action)
         {
-            list.Add(action);
+            history.Add(action);
+            // TODO: truncate history to X elements..
+            save();
         }
 
         public void InvokeMethod(Delegate method, int limit = 3)
         {
-            int newLimit = list.Count - limit;
+            int newLimit = history.Count - limit;
             if (newLimit < 0)
                 newLimit = 0;
-            for (int i = newLimit; i < list.Count; ++i)
+
+            for (int i = newLimit; i < history.Count; ++i)
             {
-                method.DynamicInvoke(list[i], newLimit - i);
+                method.DynamicInvoke(history[i], newLimit - i);
             }
         }
 
