@@ -214,7 +214,7 @@ namespace VisualSAIStudio
     abstract class StringParameter : Parameter
     {
         private string str;
-        protected StorageType storageType;
+        public StorageType storageType { get; protected set; }
         public StringParameter(String name, StorageType storageType) : this(name, null, storageType)  { }
         public StringParameter(String name, String description, StorageType storageType) : this(name, description, storageType, false) { }
 

@@ -62,6 +62,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="ObjectListView">
+      <HintPath>..\packages\ObjectListView.Official.2.8.1\lib\net20\ObjectListView.dll</HintPath>
+    </Reference>
     <Reference Include="SmartFormat">
       <HintPath>..\packages\SmartFormat.NET.1.6.1.0\lib\net40\SmartFormat.dll</HintPath>
     </Reference>
@@ -80,11 +83,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutBox.cs">
+    <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutBox.Designer.cs">
+    <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ChooseRowFromDBForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ChooseRowFromDBForm.Designer.cs">
+      <DependentUpon>ChooseRowFromDBForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DB\DBConnectData.cs" />
     <Compile Include="DynamicTypeDescriptor\CustomComponentModel.cs" />
@@ -95,25 +104,26 @@
     <Compile Include="DynamicTypeDescriptor\StandardValueEditorUI.Designer.cs">
       <DependentUpon>StandardValueEditorUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="ErrorsWindow.cs">
+    <Compile Include="Forms\ErrorsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ErrorsWindow.Designer.cs">
+    <Compile Include="Forms\ErrorsWindow.Designer.cs">
       <DependentUpon>ErrorsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="History\EditHistory.cs" />
     <Compile Include="History\OpenedHistory.cs" />
-    <Compile Include="PropertyWindow.cs">
+    <Compile Include="DB\ModalEditor.cs" />
+    <Compile Include="Forms\PropertyWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PropertyWindow.Designer.cs">
+    <Compile Include="Forms\PropertyWindow.Designer.cs">
       <DependentUpon>PropertyWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ScratchWindow.cs">
+    <Compile Include="Forms\ScratchWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ScratchWindow.Designer.cs">
+    <Compile Include="Forms\ScratchWindow.Designer.cs">
       <DependentUpon>ScratchWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="SmartScripts\SmartEventsCollection.cs" />
@@ -122,12 +132,6 @@
     <Compile Include="SmartScripts\Actions\ActionsFactory.cs" />
     <Compile Include="SmartScripts\Conditions\Conditions.cs" />
     <Compile Include="DB\DB2Reader.cs" />
-    <Compile Include="DBCFind.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DBCFind.Designer.cs">
-      <DependentUpon>DBCFind.cs</DependentUpon>
-    </Compile>
     <Compile Include="DB\DBConnect.cs" />
     <Compile Include="DB\DBCReader.cs" />
     <Compile Include="Scratch\DrawableContainerElement.cs" />
@@ -162,10 +166,10 @@
     <Compile Include="SmartScripts\Actions\SmartAction.cs" />
     <Compile Include="SmartScripts\SmartEventProperty.cs" />
     <Compile Include="SmartScripts\SmartGenericJSONData.cs" />
-    <Compile Include="StartPage.cs">
+    <Compile Include="Forms\StartPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StartPage.Designer.cs">
+    <Compile Include="Forms\StartPage.Designer.cs">
       <DependentUpon>StartPage.cs</DependentUpon>
     </Compile>
     <Compile Include="SmartScripts\Targets\SmartTarget.cs" />
@@ -173,10 +177,10 @@
     <Compile Include="SmartScripts\Targets\Targets.cs" />
     <Compile Include="SmartScripts\Targets\TargetsFactory.cs" />
     <Compile Include="SmartScripts\Warning.cs" />
-    <Compile Include="SplashScreen.cs">
+    <Compile Include="Forms\SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SplashScreen.Designer.cs">
+    <Compile Include="Forms\SplashScreen.Designer.cs">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="Style2012\VS2012ColorTable.cs" />
@@ -187,22 +191,22 @@
       <DependentUpon>VS2012ToolStripExtender.cs</DependentUpon>
     </Compile>
     <Compile Include="Style2012\VS2012ToolStripRenderer.cs" />
-    <Compile Include="ToolWindow.cs">
+    <Compile Include="Forms\ToolWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ToolWindow.Designer.cs">
+    <Compile Include="Forms\ToolWindow.Designer.cs">
       <DependentUpon>ToolWindow.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AboutBox.resx">
+    <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DBCFind.resx">
-      <DependentUpon>DBCFind.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ChooseRowFromDBForm.resx">
+      <DependentUpon>ChooseRowFromDBForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DynamicTypeDescriptor\StandardValueEditorUI.resx">
       <DependentUpon>StandardValueEditorUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ErrorsWindow.resx">
+    <EmbeddedResource Include="Forms\ErrorsWindow.resx">
       <DependentUpon>ErrorsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
@@ -218,22 +222,22 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="PropertyWindow.resx">
+    <EmbeddedResource Include="Forms\PropertyWindow.resx">
       <DependentUpon>PropertyWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ScratchWindow.resx">
+    <EmbeddedResource Include="Forms\ScratchWindow.resx">
       <DependentUpon>ScratchWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Scratch\Scratch.resx">
       <DependentUpon>Scratch.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StartPage.resx">
+    <EmbeddedResource Include="Forms\StartPage.resx">
       <DependentUpon>StartPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SplashScreen.resx">
+    <EmbeddedResource Include="Forms\SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ToolWindow.resx">
+    <EmbeddedResource Include="Forms\ToolWindow.resx">
       <DependentUpon>ToolWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="data\custom_actions.json">

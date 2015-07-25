@@ -71,7 +71,6 @@ namespace VisualSAIStudio.SmartScripts
             set { element.UpdateParams(4, value); }
         }
 
-        [Editor(typeof(StandardValueEditor), typeof(UITypeEditor))]
         [CategoryAttribute("Parameters")]
         [Browsable(false)]
         [Id(5, 0)]
@@ -109,9 +108,16 @@ namespace VisualSAIStudio.SmartScripts
                     property.AddAttribute(new EditorAttribute(typeof(StandardValueEditor), typeof(UITypeEditor)));
                     property.PropertyFlags |= PropertyFlags.IsFlag;
                 }
+                if (parameter is StringParameter)
+                {
+                    property.AddAttribute(new TypeConverterAttribute(typeof(DataFromDBConverter)));
+                    property.AddAttribute(new StorageTypeAttribute(((StringParameter)parameter).storageType));
+                    property.AddAttribute(new EditorAttribute(typeof(ModalEditor), typeof(UITypeEditor)));
+                }
             }
         }
     }
+
 
     public class SmartEventProperty : SmartElementProperty
     {

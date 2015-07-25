@@ -36,7 +36,6 @@ namespace VisualSAIStudio
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
 
-            LoadCustomEventsAndActions();
             dockPanel1.Theme = new VS2012LightTheme();
             vS2012ToolStripExtender1.SetEnableVS2012Style(this.menuStrip1, true);
             events = new ToolWindow("data/events.txt", "Events");
@@ -45,14 +44,15 @@ namespace VisualSAIStudio
             conditions = new ToolWindow("data/conditions.txt", "Conditions");
             conditions.Show(events.Pane, DockAlignment.Bottom, 0.5);
 
+            targets = new ToolWindow("data/targets.txt", "Targets");
+            targets.Show(conditions.Pane, DockAlignment.Bottom, 0.5);
+
             actions = new ToolWindow("data/actions.txt", "Actions");
             actions.Show(dockPanel1, DockState.DockRight);
 
-            targets = new ToolWindow("data/targets.txt", "Targets");
-            targets.Show(actions.Pane, DockAlignment.Bottom, 0.8);
 
             properties = new PropertyWindow();
-            properties.Show(targets.Pane, DockAlignment.Bottom, 0.6);
+            properties.Show(actions.Pane, DockAlignment.Bottom, 0.6);
 
             errors = new ErrorsWindow();
             errors.Show(dockPanel1, DockState.DockBottom);
@@ -112,24 +112,6 @@ namespace VisualSAIStudio
             else
                 properties.SetObject(new VisualSAIStudio.SmartScripts.SmartEventProperty(scratch.Selected()));
         }
-
-        private void LoadCustomEventsAndActions()
-        {
-            string data;
-            if (File.Exists("data/custom_actions.json"))
-            {
-                data = File.ReadAllText("data/custom_actions.json");
-                List<SmartGenericJSONData> smart_generics = JsonConvert.DeserializeObject<List<SmartGenericJSONData>>(data);
-                smart_generics.ForEach(e => ExtendedFactories.AddAction(e));
-            }
-            if (File.Exists("data/custom_events.json"))
-            {
-                data = File.ReadAllText("data/custom_events.json");
-                List<SmartGenericJSONData> smart_generics = JsonConvert.DeserializeObject<List<SmartGenericJSONData>>(data);
-                smart_generics.ForEach(e => ExtendedFactories.AddEvent(e));
-            }
-        }
-
 
         private void tabControl1_MouseDown(object sender, MouseEventArgs e)
         {

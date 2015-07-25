@@ -1,4 +1,5 @@
 ﻿using DBCViewer;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,6 +49,26 @@ namespace VisualSAIStudio
 
             CurrentAction(this, new LoadingEventArgs("skills"));
             database.Add(StorageType.Skill, new ClientDataDBC("SkillLine.dbc", 1));
+
+            CurrentAction(this, new LoadingEventArgs("events and actions"));
+            LoadEventsAndActions();
+        }
+
+        private void LoadEventsAndActions()
+        {
+            string data;
+            if (File.Exists("data/custom_actions.json"))
+            {
+                data = File.ReadAllText("data/custom_actions.json");
+                List<SmartGenericJSONData> smart_generics = JsonConvert.DeserializeObject<List<SmartGenericJSONData>>(data);
+                smart_generics.ForEach(e => ExtendedFactories.AddAction(e));
+            }
+            if (File.Exists("data/custom_events.json"))
+            {
+                data = File.ReadAllText("data/custom_events.json");
+                List<SmartGenericJSONData> smart_generics = JsonConvert.DeserializeObject<List<SmartGenericJSONData>>(data);
+                smart_generics.ForEach(e => ExtendedFactories.AddEvent(e));
+            }
         }
 
         private void LoadMovies()
@@ -65,6 +86,11 @@ namespace VisualSAIStudio
         public bool Exists(StorageType storage, int id)
         {
             return database[storage].IdExists(id);
+        }
+
+        public Dictionary<int, string> GetDictionary(StorageType storage)
+        {
+            return database[storage].GetDictionary();
         }
 
         private static StringsDB instance;
@@ -119,6 +145,11 @@ namespace VisualSAIStudio
                 return values[id];
             else
                 return null;
+        }
+
+        public  Dictionary<int, string> GetDictionary()
+        {
+            return values;
         }
     }
 
