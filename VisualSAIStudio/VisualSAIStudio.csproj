@@ -102,6 +102,8 @@
       <DependentUpon>ErrorsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
+    <Compile Include="History\EditHistory.cs" />
+    <Compile Include="History\OpenedHistory.cs" />
     <Compile Include="PropertyWindow.cs">
       <SubType>Form</SubType>
     </Compile>
