@@ -102,12 +102,13 @@ namespace VisualSAIStudio.SmartScripts
                 property.SetDescription(parameter.description);
                 property.SetDisplayName(parameter.name);
                 if (parameter is SwitchParameter)
-                    ((SwitchParameter)parameter).AddValuesToProperty(property);
-                if (parameter is FlagParameter)
                 {
                     property.AddAttribute(new EditorAttribute(typeof(StandardValueEditor), typeof(UITypeEditor)));
-                    property.PropertyFlags |= PropertyFlags.IsFlag;
+                    ((SwitchParameter)parameter).AddValuesToProperty(property);
                 }
+                if (parameter is FlagParameter)
+                    property.PropertyFlags |= PropertyFlags.IsFlag;
+
                 if (parameter is StringParameter)
                 {
                     property.AddAttribute(new TypeConverterAttribute(typeof(DataFromDBConverter)));

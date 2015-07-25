@@ -133,6 +133,37 @@ namespace VisualSAIStudio.SmartScripts
         }
     }
 
+    public class ParameterConditionalFlag : ParameterConditional
+    {
+        private List<int> flags;
+
+        public ParameterConditionalFlag(Parameter compared, List<int> flags) : base(compared, WarningType.INVALID_VALUE)
+        {
+            this.flags = flags;
+        }
+
+        public override bool Validate()
+        {
+            int value = compared.GetValue();
+            foreach (int flag in flags)
+                value = value & ~ flag;
+            if (value > 0)
+            {
+                List<int> unsupported_flags = new List<int>();
+                string bits = Convert.ToString(value, 2);
+                for (int i = 0; i < bits.Length; ++i)
+                {
+                    if (bits[i]=='1')
+                    {
+                        unsupported_flags.Add((int)Math.Pow(2, (bits.Length-i-1)));
+                    }
+                }
+                this.description = compared.name + " contains unsupported flags: "+String.Join(", ", unsupported_flags);
+                return false;
+            }
+            return true;
+        }
+    }
 
     public class ParameterConditionalGroup : ParameterConditional
     {

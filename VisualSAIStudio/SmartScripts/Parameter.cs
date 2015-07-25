@@ -55,19 +55,25 @@ namespace VisualSAIStudio
             switch (param)
             {
                 case "SpellParameter":
-                    return new SpellParameter("");
+                    return new StringParameter(StorageType.Spell);
                 case "EmoteParameter":
-                    return new EmoteParameter("");
+                    return new StringParameter(StorageType.Emote);
                 case "CreatureParameter":
-                    return new CreatureParameter("");
+                    return new StringParameter(StorageType.Creature);
                 case "QuestParameter":
-                    return new QuestParameter("");
+                    return new StringParameter(StorageType.Quest);
                 case "SoundParameter":
-                    return new SoundParameter("");
+                    return new StringParameter(StorageType.Sound);
                 case "MovieParameter":
-                    return new MovieParameter("");
+                    return new StringParameter(StorageType.Movie);
                 case "ZoneAreaParameter":
-                    return new ZoneAreaParameter("");
+                    return new StringParameter(StorageType.Area);
+                case "ClassParameter":
+                    return new StringParameter(StorageType.Class);
+                case "GameobjectParameter":
+                    return new StringParameter(StorageType.GameObject);
+                case "SkillParameter":
+                    return new StringParameter(StorageType.Skill);
                 case "BoolParameter":
                     return new BoolParameter("");
                 case "SwitchParameter":
@@ -89,7 +95,7 @@ namespace VisualSAIStudio
         }
     }
 
-    public class SwitchParameter : Parameter
+    public  class SwitchParameter : Parameter
     {
         public Dictionary<int, SelectOption> select;
 
@@ -102,6 +108,7 @@ namespace VisualSAIStudio
         public SwitchParameter(String name, String description, Dictionary<int, SelectOption> select, bool required) : base(name, description, required) 
         {
             this.select = select;
+            this.validators.Add(new SmartScripts.ParameterConditionalCompareValue(this, select.Keys.Min(), select.Keys.Max()));
         }
 
         public SwitchParameter(String name, String[] values) : this(name, null, values) { }
@@ -111,6 +118,8 @@ namespace VisualSAIStudio
             select = new Dictionary<int, SelectOption>();
             for (int i = 0; i < values.Length; ++i)
                 select.Add(i, new SelectOption(values[i]));
+
+            this.validators.Add(new SmartScripts.ParameterConditionalCompareValue(this, 0, values.Length-1));
         }
 
         public SwitchParameter(String name, String description) : base(name, description) {  }
@@ -140,9 +149,17 @@ namespace VisualSAIStudio
     {
         public FlagParameter(String name) : base(name) { }
 
-        public FlagParameter(String name, Dictionary<int, SelectOption> select) : base(name, select) { }
+        public FlagParameter(String name, Dictionary<int, SelectOption> select) : base(name) 
+        {
+            this.select = select;
+            this.validators.Add(new SmartScripts.ParameterConditionalFlag(this, select.Keys.ToList()));            
+        }
 
-        public FlagParameter(String name, String description, Dictionary<int, SelectOption> select) : base(name, description, select)  { }
+        public FlagParameter(String name, String description, Dictionary<int, SelectOption> select) : base(name, description) 
+        {
+            this.select = select;
+            this.validators.Add(new SmartScripts.ParameterConditionalFlag(this, select.Keys.ToList()));
+        }
 
         public FlagParameter(String name, String[] values) : this(name, null, values) { }
 
@@ -151,6 +168,7 @@ namespace VisualSAIStudio
             select = new Dictionary<int, SelectOption>();
             for (int i = 0; i < values.Length; ++i)
                 select.Add((int)Math.Pow(2, i), new SelectOption(values[i]));
+            this.validators.Add(new SmartScripts.ParameterConditionalFlag(this, select.Keys.ToList()));
         }
 
         public override string ToString()
@@ -211,10 +229,11 @@ namespace VisualSAIStudio
         }
     }
 
-    abstract class StringParameter : Parameter
+    public class StringParameter : Parameter
     {
         private string str;
         public StorageType storageType { get; protected set; }
+        public StringParameter(StorageType type) : this(null, type) { }
         public StringParameter(String name, StorageType storageType) : this(name, null, storageType)  { }
         public StringParameter(String name, String description, StorageType storageType) : this(name, description, storageType, false) { }
 

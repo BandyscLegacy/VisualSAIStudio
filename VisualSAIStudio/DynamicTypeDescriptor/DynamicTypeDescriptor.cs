@@ -818,6 +818,7 @@ namespace DynamicTypeDescriptor
         col = cpd.StatandardValues;
         propType = cpd.PropertyType;
       }
+
       if (value == null)
       {
         return null;
@@ -893,8 +894,12 @@ namespace DynamicTypeDescriptor
       {
         return (value as StandardValueAttribute).Value;
       }
-
-      return base.ConvertFrom(context, culture, value);
+      int val;
+      if (int.TryParse(value.ToString(), out val))
+      {
+          return val;
+      }
+      return null;
     }
     public override object ConvertTo( ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType )
     {
@@ -968,16 +973,24 @@ namespace DynamicTypeDescriptor
           {
 
               StringBuilder sb = new StringBuilder();
+              int val = int.Parse(value.ToString());
               foreach (StandardValueAttribute sva in col)
               {
-                  if ((int.Parse(sva.Value.ToString()) & int.Parse(value.ToString())) > 0)
+                  if ((int.Parse(sva.Value.ToString()) & val) > 0)
                   {
                       if (sb.Length > 0)
                       {
                           sb.Append(", ");
                       }
+                      val &= ~(int)sva.Value;
                       sb.Append(sva.DisplayName);
                   }
+              }
+              if (val > 0)
+              {
+                 if (sb.Length > 0)
+                     sb.Append(", ");
+                  sb.Append(val.ToString());
               }
               return sb.ToString();
           }
