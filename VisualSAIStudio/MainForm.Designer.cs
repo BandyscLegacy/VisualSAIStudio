@@ -44,6 +44,9 @@
             this.errorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.styleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
@@ -64,7 +67,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.windowToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.helpToolStripMenuItem,
+            this.styleToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(955, 24);
@@ -174,6 +178,27 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // styleToolStripMenuItem
+            // 
+            this.styleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lightToolStripMenuItem,
+            this.darkToolStripMenuItem});
+            this.styleToolStripMenuItem.Name = "styleToolStripMenuItem";
+            this.styleToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.styleToolStripMenuItem.Text = "Style";
+            // 
+            // lightToolStripMenuItem
+            // 
+            this.lightToolStripMenuItem.Name = "lightToolStripMenuItem";
+            this.lightToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.lightToolStripMenuItem.Text = "Light";
+            // 
+            // darkToolStripMenuItem
+            // 
+            this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
+            this.darkToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.darkToolStripMenuItem.Text = "Dark";
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -209,6 +234,7 @@
             this.dockPanel1.Location = new System.Drawing.Point(0, 0);
             this.dockPanel1.Name = "dockPanel1";
             this.dockPanel1.Size = new System.Drawing.Size(947, 610);
+            //this.dockPanel1.Theme = new WeifenLuo.WinFormsUI.Docking.VS2012LightTheme();
             this.dockPanel1.TabIndex = 12;
             this.dockPanel1.ActiveDocumentChanged += new System.EventHandler(this.dockPanel1_ActiveDocumentChanged);
             // 
@@ -217,7 +243,7 @@
             this.tabPage2.Controls.Add(this.txtSQL);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(867, 845);
+            this.tabPage2.Size = new System.Drawing.Size(947, 610);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "SQL output";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -233,7 +259,7 @@
             this.txtSQL.Name = "txtSQL";
             this.txtSQL.ReadOnly = true;
             this.txtSQL.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtSQL.Size = new System.Drawing.Size(867, 845);
+            this.txtSQL.Size = new System.Drawing.Size(947, 610);
             this.txtSQL.TabIndex = 0;
             this.txtSQL.WordWrap = false;
             // 
@@ -241,7 +267,7 @@
             // 
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(867, 845);
+            this.tabPage3.Size = new System.Drawing.Size(947, 610);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "C++ output";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -291,6 +317,7 @@
             this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -318,6 +345,9 @@
         private System.Windows.Forms.ToolStripMenuItem detectConflictsToolStripMenuItem;
         private VS2012ToolStripExtender vS2012ToolStripExtender1;
         private System.Windows.Forms.ToolStripMenuItem validateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem styleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
     }
 }
 
