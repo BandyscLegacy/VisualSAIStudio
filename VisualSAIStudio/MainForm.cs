@@ -39,13 +39,6 @@ namespace VisualSAIStudio
             LoadCustomEventsAndActions();
             dockPanel1.Theme = new VS2012LightTheme();
             vS2012ToolStripExtender1.SetEnableVS2012Style(this.menuStrip1, true);
-
-            scratch = new ScratchWindow();
-            scratch.Show(dockPanel1);
-
-            startPage = new StartPage();
-            startPage.Show(dockPanel1);
-
             events = new ToolWindow("data/events.txt", "Events");
             events.Show(dockPanel1, DockState.DockLeft);
 
@@ -64,6 +57,13 @@ namespace VisualSAIStudio
             errors = new ErrorsWindow();
             errors.Show(dockPanel1, DockState.DockBottom);
             errors.WarningSelected += this_warningSelected;
+
+            scratch = new ScratchWindow();
+            scratch.Show(dockPanel1);
+
+            startPage = new StartPage();
+            startPage.Show(dockPanel1);
+
 
             scratch.ElementSelected += this_callback;
             scratch.RequestWarnings += this_RequestWarnings;
@@ -198,9 +198,17 @@ namespace VisualSAIStudio
         {
             errors.Clear();
             foreach (SmartEvent ev in scratch.GetEvents())
-            {
                 errors.AddWarnings(ev.Validate());
-            }
+        }
+
+        private void dockPanel1_ActiveDocumentChanged(object sender, EventArgs e)
+        {
+            if (dockPanel1.ActiveDocument.DockHandler.Form is ScratchWindow)
+                scratch = (ScratchWindow)dockPanel1.ActiveDocument.DockHandler.Form;
+
+            errors.Clear();
+            foreach (SmartEvent ev in scratch.GetEvents())
+                errors.AddWarnings(ev.Validate());           
         }
     }
 }
