@@ -68,7 +68,7 @@ namespace VisualSAIStudio
             return warnings;
         }
 
-        public override Size ComputeSize(Graphics graphics, Font font)
+        public override Size ComputeSize(Graphics graphics, Font font, Font mini_font)
         {
             SizeF measure = graphics.MeasureString(ToString(), font);
             return new Size((int)measure.Width,(int)measure.Height);
@@ -83,6 +83,8 @@ namespace VisualSAIStudio
         protected void AddParameters(IList<SmartParameterJSONData> parameters)
         {
             int i = 0;
+            if (parameters == null)
+                return;
             foreach (SmartParameterJSONData param_data in parameters)
             {
                 Parameter pram = Parameter.Factory(param_data.type);
@@ -110,15 +112,14 @@ namespace VisualSAIStudio
                     if (conditional is ParameterConditionalCompareValue)
                         ((ParameterConditionalCompareValue)conditional).SetCompareType(condition.compare_type);
 
-                    if (condition.warning_type != null)
+                    if (condition.warning_type != WarningType.NOT_SET)
                         conditional.warningType = condition.warning_type;
 
                     if (condition.error != null)
                         conditional.SetDescription(condition.error);
-
+                    
                     if (condition.invert)
                         conditional = new ParameterConditionalInversed(conditional);
-
                     AddConditional(conditional);
                 }
             }
@@ -133,4 +134,5 @@ namespace VisualSAIStudio
             return readable;
         }
     }
+
 }

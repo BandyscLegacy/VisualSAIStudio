@@ -21,6 +21,8 @@ namespace VisualSAIStudio
         public EventHandler RequestWarnings = delegate { };
 
 
+        public SAIType type;
+
         public ScratchWindow()
         {
             InitializeComponent();
@@ -101,7 +103,7 @@ namespace VisualSAIStudio
                     //(`entryorguid`,`source_type`,`id`,`link`,`event_type`,`event_phase_mask`,`event_chance`,`event_flags`,`event_param1`,`event_param2`,`event_param3`,`event_param4`,`action_type`,`action_param1`,`action_param2`,`action_param3`,`action_param4`,`action_param5`,`action_param6`,`target_type`,`target_param1`,`target_param2`,`target_param3`,`target_x`,`target_y`,`target_z`,`target_o`,`comment`)
                     int id = Convert.ToInt32(reader["id"]);
                     int entry = Convert.ToInt32(reader["entryorguid"]);
-                    SmartAction a = ExtendedFactories.ActionFactory(Convert.ToInt32(reader["action_type"]));
+                    SmartAction a = SmartFactory.ActionFactory(Convert.ToInt32(reader["action_type"]));
                     int asad = Convert.ToInt32(reader["target_type"]);
                     SmartTarget target = TargetsFactory.Factory(Convert.ToInt32(reader["target_type"]));
 
@@ -125,14 +127,14 @@ namespace VisualSAIStudio
                     }
                     else
                     {
-                        SmartEvent ev = ExtendedFactories.EventFactory(Convert.ToInt32(reader["event_type"]));
+                        SmartEvent ev = SmartFactory.EventFactory(Convert.ToInt32(reader["event_type"]));
+                        ev.chance = Convert.ToInt32(reader["event_chance"]);
+                        ev.flags = (SmartEventFlag)Convert.ToInt32(reader["event_flags"]);
+                        ev.phasemask = (SmartPhaseMask)Convert.ToInt32(reader["event_phase_mask"]);
                         ev.UpdateParams(0, Convert.ToInt32(reader["event_param1"]));
                         ev.UpdateParams(1, Convert.ToInt32(reader["event_param2"]));
                         ev.UpdateParams(2, Convert.ToInt32(reader["event_param3"]));
                         ev.UpdateParams(3, Convert.ToInt32(reader["event_param4"]));
-                        ev.chance = Convert.ToInt32(reader["event_chance"]);
-                        ev.phasemask = (SmartPhaseMask)Convert.ToInt32(reader["event_phase_mask"]);
-                        ev.flags = (SmartEventFlag)Convert.ToInt32(reader["event_flags"]);
                         if (conditions.ContainsKey(id))
                         {
                             foreach(SmartCondition cond in conditions[id])
@@ -173,12 +175,12 @@ namespace VisualSAIStudio
                 {
                     if (drop_result == DropResult.INSERT)
                     {
-                        el.InsertAction(ExtendedFactories.ActionFactory(str), el.GetInsertActionIndexFromPos(mouse.X, mouse.Y));
+                        el.InsertAction(SmartFactory.ActionFactory(str), el.GetInsertActionIndexFromPos(mouse.X, mouse.Y));
                     }
                     else if (drop_result == DropResult.REPLACE)
                     {
                         DrawableElement action = el.GetElementFromPos(mouse.X, mouse.Y);
-                        el.ReplaceAction(ExtendedFactories.ActionFactory(str), (SmartAction)action);
+                        el.ReplaceAction(SmartFactory.ActionFactory(str), (SmartAction)action);
                     }
                 }
                 else if (str.Contains("CONDITION_"))
@@ -212,11 +214,11 @@ namespace VisualSAIStudio
         {
             if (events.Count == 0 || mouse.X < 5)
             {
-                events.Insert(ExtendedFactories.EventFactory(strEvent), 0);
+                events.Insert(SmartFactory.EventFactory(strEvent), 0);
             }
             else if (mouse.Y > events[events.Count-1].rect.Bottom )
             {
-                events.Insert(ExtendedFactories.EventFactory(strEvent), events.Count);
+                events.Insert(SmartFactory.EventFactory(strEvent), events.Count);
             }
             else
             {
@@ -226,12 +228,12 @@ namespace VisualSAIStudio
                     
                     if (mouse.Y > ev.rect.Bottom - 10 && mouse.Y < ev.rect.Bottom + 10)
                     {
-                        events.Insert(ExtendedFactories.EventFactory(strEvent), i + 1);
+                        events.Insert(SmartFactory.EventFactory(strEvent), i + 1);
                         break;
                     } 
                     else if (ev.contains(mouse.X, mouse.Y))
                     {
-                        SmartEvent new_event = ExtendedFactories.EventFactory(strEvent);
+                        SmartEvent new_event = SmartFactory.EventFactory(strEvent);
                         new_event.Copy(ev);
                         events.Replace(ev, new_event);
                         break;

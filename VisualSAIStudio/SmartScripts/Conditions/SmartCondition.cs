@@ -54,7 +54,7 @@ namespace VisualSAIStudio
             base.paramValueChanged(sender, e);
         }
 
-        public override System.Drawing.Size Draw(System.Drawing.Graphics graphics, int x, int y, int width, int height, System.Drawing.Brush brush, System.Drawing.Pen pen, System.Drawing.Font font, bool setRect = true)
+        public override System.Drawing.Size Draw(System.Drawing.Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, Font mini_font, bool setRect = true)
         {
             SizeF size = graphics.MeasureString(ToString(), font);
             graphics.DrawString(ToString(), font, brush, x, y);

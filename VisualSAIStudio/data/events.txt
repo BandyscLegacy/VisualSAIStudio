@@ -1,68 +1,97 @@
-Update
- Update in Combat,SMART_EVENT_UPDATE_IC
- Update out of combat,SMART_EVENT_UPDATE_OOC
- Update,SMART_EVENT_UPDATE
+On Update
+ On update,SMART_EVENT_UPDATE
+ On update (in combat),SMART_EVENT_UPDATE_IC
+ On update (out of combat),SMART_EVENT_UPDATE_OOC
 Self
- Respawned,SMART_EVENT_RESPAWN
- Summoned,SMART_EVENT_JUST_SUMMONED
- Died,SMART_EVENT_DEATH
- Evaded,SMART_EVENT_EVADE
- Reset,SMART_EVENT_RESET
-Damage
- Killed unit,SMART_EVENT_KILL
- Aggroed,SMART_EVENT_AGGRO
- Received damage,SMART_EVENT_DAMAGED
- Target received damage,SMART_EVENT_DAMAGED_TARGET
+ On AI initialize,SMART_EVENT_AI_INIT
+ On just created,SMART_EVENT_JUST_CREATED
+ On just summoned (self),SMART_EVENT_JUST_SUMMONED
+ On reset,SMART_EVENT_RESET
+ On respawn,SMART_EVENT_RESPAWN
+ On aggro,SMART_EVENT_AGGRO
+ On kill,SMART_EVENT_KILL
+ On death,SMART_EVENT_DEATH
+ On corpse removed,SMART_EVENT_CORPSE_REMOVED
+ On evade,SMART_EVENT_EVADE
+ On DoAction,SMART_EVENT_ACTION_DONE
+ When friendly unit is stunned,SMART_EVENT_FRIENDLY_IS_CC
 Quest
- Quest accepted,SMART_EVENT_ACCEPTED_QUEST
- Quest rewarded,SMART_EVENT_REWARD_QUEST
- Quest accepted (not supported),SMART_EVENT_QUEST_ACCEPTED
- Quest objective completion (not supported)
- Quest completion (not supported),SMART_EVENT_QUEST_COMPLETION
- Quest rewarded (not supported),SMART_EVENT_QUEST_REWARDED
- Quest failed (not supported),SMART_EVENT_QUEST_FAIL
+ On quest accepted,SMART_EVENT_ACCEPTED_QUEST
+ On quest rewarded,SMART_EVENT_REWARD_QUEST
+ On quest accepted,SMART_EVENT_QUEST_ACCEPTED
+ On quest objective completion,SMART_EVENT_QUEST_OBJ_COPLETETION
+ On quest completed,SMART_EVENT_QUEST_COMPLETION
+ On quest rewarded,SMART_EVENT_QUEST_REWARDED
+ On quest failed,SMART_EVENT_QUEST_FAIL
 Movement
- Path started,SMART_EVENT_WAYPOINT_START
- Waypoint reached,SMART_EVENT_WAYPOINT_REACHED
- Path paused,SMART_EVENT_WAYPOINT_PAUSED
- Path resumed,SMART_EVENT_WAYPOINT_RESUMED
- Path stopped,SMART_EVENT_WAYPOINT_STOPPED
- Path ended,SMART_EVENT_WAYPOINT_ENDED
- Movement inform,SMART_EVENT_MOVEMENTINFORM
- Follow completed,SMART_EVENT_FOLLOW_COMPLETED
- Reached home,SMART_EVENT_REACHED_HOME
+ On movement finished,SMART_EVENT_MOVEMENTINFORM
+ On path started,SMART_EVENT_WAYPOINT_START
+ On waypoint reached,SMART_EVENT_WAYPOINT_REACHED
+ On path paused,SMART_EVENT_WAYPOINT_PAUSED
+ On path resumed,SMART_EVENT_WAYPOINT_RESUMED
+ On path stopped,SMART_EVENT_WAYPOINT_STOPPED
+ On path ended,SMART_EVENT_WAYPOINT_ENDED
+ On home reached,SMART_EVENT_REACHED_HOME
+ On follow completed,SMART_EVENT_FOLLOW_COMPLETED
 Spells
- Spell hit,SMART_EVENT_SPELLHIT
- Victim casting,SMART_EVENT_VICTIM_CASTING
- Has aura,SMART_EVENT_HAS_AURA
- Target buffed,SMART_EVENT_TARGET_BUFFED
- Spell hits target,SMART_EVENT_SPELLHIT_TARGET
- Missing buff,SMART_EVENT_MISSING_BUFF
- On spell click,SMART_EVENT_ON_SPELLCLICK
-Gossip
- Gossip hello,SMART_EVENT_GOSSIP_HELLO
- Gossip select,SMART_EVENT_GOSSIP_SELECT
+ On spell hit,SMART_EVENT_SPELLHIT
+ On target spell hit,SMART_EVENT_SPELLHIT_TARGET
+ On spellclick,SMART_EVENT_ON_SPELLCLICK
+ When has aura,SMART_EVENT_HAS_AURA
+ When target buffed,SMART_EVENT_TARGET_BUFFED
+ When victim is casting,SMART_EVENT_VICTIM_CASTING
+ When friendly unit is missing buff,SMART_EVENT_FRIENDLY_MISSING_BUFF
+ Spell dummy effect,SMART_EVENT_DUMMY_EFFECT
 Summons
- Summoned unit,SMART_EVENT_SUMMONED_UNIT
- Summon despawned,SMART_EVENT_SUMMON_DESPAWNED
- Summoner or owner health,SMART_EVENT_SUMMONEROROWNER_HEALTH
- Summoner or owner resource,SMART_EVENT_SUMMONEROROWNER_RESOURCE
-Vehicle
- Passenger boarded,SMART_EVENT_PASSENGER_BOARDED
- Passenger removed,SMART_EVENT_PASSENGER_REMOVED
+ On summoned another unit,SMART_EVENT_SUMMONED_UNIT
+ On summon despawned,SMART_EVENT_SUMMON_DESPAWNED
+Damage
+ On damage taken,SMART_EVENT_DAMAGED
+ On damage dealt,SMART_EVENT_DAMAGED_TARGET
+ On charmed,SMART_EVENT_CHARMED
+ On victim charmed,SMART_EVENT_CHARMED_TARGET
+Gossip
+ On gossip selected,SMART_EVENT_GOSSIP_SELECT
+ On gossip dialog shown,SMART_EVENT_GOSSIP_HELLO
+Texts
+ On emote received,SMART_EVENT_RECEIVE_EMOTE
+ When text is over,SMART_EVENT_TEXT_OVER
 Line of sight
- Out of combat LoS,SMART_EVENT_OOC_LOS
- In combat LoS,SMART_EVENT_IC_LOS
- Unit in range,SMART_EVENT_RANGE
+ When creature in range,SMART_EVENT_RANGE
+ When creature in LOS (ooc),SMART_EVENT_OOC_LOS
+ When creature in LOS (ic),SMART_EVENT_IC_LOS
+Vehicle
+ On passenger boarded,SMART_EVENT_PASSENGER_BOARDED
+ On paseenger removed,SMART_EVENT_PASSENGER_REMOVED
+Data & counter
+ When data set,SMART_EVENT_DATA_SET
+ When counter set,SMART_EVENT_COUNTER_SET
+Game events
+ On game event started,SMART_EVENT_GAME_EVENT_START
+ On game event ended,SMART_EVENT_GAME_EVENT_END
+Timed events
+ On timed event triggered,SMART_EVENT_TIMED_EVENT_TRIGGERED
+Areatrigger
+ On triggered,SMART_EVENT_AREATRIGGER_ONTRIGGER
+Distance
+ When creature in distance,SMART_EVENT_DISTANCE_CREATURE
+ When gameobject in distance,SMART_EVENT_DISTANCE_GAMEOBJECT
+ When is behind victim,SMART_EVENT_IS_BEHIND_TARGET
+Health, mana
+ On heal received,SMART_EVENT_RECEIVE_HEAL
+ When health between,SMART_EVENT_HEALT_PCT
+ When mana between,SMART_EVENT_MANA_PCT
+ When victim HP between,SMART_EVENT_TARGET_HEALTH_PCT
+ When friendly HP between,SMART_EVENT_FRIENDLY_HEALTH
+ When target HP between,SMART_EVENT_FRIENDLY_HEALTH_PCT
+ When target mana between,SMART_EVENT_TARGET_MANA_PCT
 Gameobject
- State changed,SMART_EVENT_GO_STATE_CHANGED
- Event inform,SMART_EVENT_GO_EVENT_INFORM
-Game event
- Game event started,SMART_EVENT_GAME_EVENT_START
- Game event ended,SMART_EVENT_GAME_EVENT_END
+ On loot state changed,SMART_EVENT_GO_STATE_CHANGED
+ On gameobject event,SMART_EVENT_GO_EVENT_INFORM
 Transport
  Add player,SMART_EVENT_TRANSPORT_ADDPLAYER
  Add creature,SMART_EVENT_TRANSPORT_ADDCREATURE
  Remove player,SMART_EVENT_TRANSPORT_REMOVE_PLAYER
  Relocate,SMART_EVENT_TRANSPORT_RELOCATE
-Custom,SMART_EVENT_CUSTOM_ACTION
+Instance
+ Player entered,SMART_EVENT_INSTANCE_PLAYER_ENTER

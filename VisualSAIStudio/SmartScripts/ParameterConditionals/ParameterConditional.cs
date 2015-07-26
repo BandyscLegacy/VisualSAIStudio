@@ -49,9 +49,9 @@ namespace VisualSAIStudio.SmartScripts
             SetCompareTo(new Parameter(parametr.ToString(), parametr));
         }
 
-        public void SetDescription(string descripion)
+        public void SetDescription(string error)
         {
-            this.description = Smart.Format(description, new { compared = compared.name, compareto = compareTo.name });
+            this.description = Smart.Format(error, new { compared = compared.name, compareto = compareTo.name });
         }
 
         public abstract bool Validate();

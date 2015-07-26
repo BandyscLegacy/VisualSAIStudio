@@ -96,6 +96,7 @@ namespace VisualSAIStudio
         {
             this.ID = id;
             this.name = name;
+            this.chance = 100;
             this.MouseDown += this_mouseDown;
             contextMenu.Items.Add("Copy", null, this_copyEvent);
             contextMenu.Items.Add("Paste", null, this_pasteEvent);
@@ -285,6 +286,7 @@ namespace VisualSAIStudio
         public void Copy(SmartEvent prev)
         {
             base.Copy(prev);
+            this.chance = prev.chance;
             this.conditions = prev.conditions;
         }
 
@@ -318,16 +320,20 @@ namespace VisualSAIStudio
                 pram3value = parameters[2].GetValue(),
                 pram4value = parameters[3].GetValue(),
             });
+            if (chance < 100)
+                readable += " (" + chance + "% chance)";
             ChildrenModified(sender, e);
             base.paramValueChanged(sender, e);
         }
 
-        public override Size ComputeSize(Graphics graphics, Font font)
+        public override Size ComputeSize(Graphics graphics, Font font, Font mini_font)
         {
             SizeF measure = graphics.MeasureString(ToString(), font);
             int width = (int)measure.Width + 10;
-            children.ForEach(child => width = Math.Max(width, (int)child.ComputeSize(graphics, font).Width));
-            int height = (int)measure.Height + 10;
+            children.ForEach(child => width = Math.Max(width, (int)child.ComputeSize(graphics, font, mini_font).Width));
+            int height = (int)measure.Height;
+            measure = graphics.MeasureString(ToString(), mini_font);
+            height += (int)measure.Height + 5;
             int children_height = 0;
             if (children.Count>0)
             {
@@ -341,10 +347,10 @@ namespace VisualSAIStudio
             return new Size(width, height);
         }
 
-        public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, bool setRect = true)
+        public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, Font mini_font, bool setRect = true)
         {
             Point start_pos = new Point(x, y);
-            Size size = ComputeSize(graphics, font);
+            Size size = ComputeSize(graphics, font, mini_font);
             int maxX = size.Width;
 
             if (selected)
@@ -357,18 +363,23 @@ namespace VisualSAIStudio
 
             foreach (SmartCondition condition in conditions)
             {
-                Size asize = condition.Draw(graphics, x+18, y+5, width, size.Height, brush, pen, font, setRect);
+                Size asize = condition.Draw(graphics, x+18, y+5, width, size.Height, brush, pen, font, mini_font, setRect);
                 y += asize.Height;
             }
-
+            
             graphics.FillEllipse(brush, x + 10, y + 10, 5, 5);
             graphics.DrawString(ToString(), font, brush, x + 18, y + 5);
-            y += (int)graphics.MeasureString(ToString(), font).Height + 10;
-
+            y += (int)graphics.MeasureString(ToString(), font).Height+5;
+            if (phasemask > SmartPhaseMask.Always)
+            {
+                brush = Brushes.CadetBlue;
+                graphics.DrawString("in "+phasemask.ToString(), mini_font, brush, x + 20, y);
+                y += (int)graphics.MeasureString("in", mini_font).Height + 5;
+            }
 
             foreach (SmartAction action in actions)
             {
-                Size asize = action.Draw(graphics, x + 30, y, width, size.Height, brush, pen, font, setRect);
+                Size asize = action.Draw(graphics, x + 30, y, width, size.Height, brush, pen, font, mini_font, setRect);
                 y += asize.Height;
             }
             

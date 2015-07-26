@@ -127,6 +127,7 @@
     <Compile Include="Forms\ScratchWindow.Designer.cs">
       <DependentUpon>ScratchWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="SmartScripts\SAIType.cs" />
     <Compile Include="SmartScripts\SmartEventsCollection.cs" />
     <Compile Include="SmartScripts\Actions\Actions.cs" />
     <Compile Include="DB\BinaryFormatExtensions.cs" />
@@ -139,15 +140,13 @@
     <Compile Include="Scratch\DrawableElement.cs" />
     <Compile Include="Scratch\DrawableElementsCollection.cs" />
     <Compile Include="SmartScripts\Conditions\ConditionsFactory.cs" />
-    <Compile Include="SmartScripts\Events\EventsFactory.cs" />
-    <Compile Include="SmartScripts\ExtendedFactories.cs" />
+    <Compile Include="SmartScripts\SmartFactory.cs" />
     <Compile Include="SmartScripts\Actions\GenericSmartAction.cs" />
     <Compile Include="SmartScripts\Events\GenericSmartEvent.cs" />
     <Compile Include="SmartScripts\Conditions\SmartCondition.cs" />
     <Compile Include="SmartScripts\ParameterConditionals\ParameterConditional.cs" />
     <Compile Include="SmartScripts\ParametersConverter.cs" />
     <Compile Include="SmartScripts\SmartElement.cs" />
-    <Compile Include="SmartScripts\Events\Events.cs" />
     <Compile Include="SmartScripts\Parameter.cs" />
     <Compile Include="SmartScripts\Events\SmartEvent.cs" />
     <Compile Include="MainForm.cs">

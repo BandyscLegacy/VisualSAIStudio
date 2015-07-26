@@ -61,13 +61,13 @@ namespace VisualSAIStudio
             {
                 data = File.ReadAllText("data/custom_actions.json");
                 List<SmartGenericJSONData> smart_generics = JsonConvert.DeserializeObject<List<SmartGenericJSONData>>(data);
-                smart_generics.ForEach(e => ExtendedFactories.AddAction(e));
+                smart_generics.ForEach(e => SmartFactory.AddAction(e));
             }
             if (File.Exists("data/custom_events.json"))
             {
                 data = File.ReadAllText("data/custom_events.json");
                 List<SmartGenericJSONData> smart_generics = JsonConvert.DeserializeObject<List<SmartGenericJSONData>>(data);
-                smart_generics.ForEach(e => ExtendedFactories.AddEvent(e));
+                smart_generics.ForEach(e => SmartFactory.AddEvent(e));
             }
         }
 

@@ -38,6 +38,7 @@ namespace VisualSAIStudio
         public string name {get; set;}
         public IList<SmartParameterJSONData> parameters { get; set; }
         public IList<SmartConditionalJSONData> conditions { get; set; }
+        public IList<SmartScripts.SAIType> valid_types { get; set; }
         public string description {get; set;}
         public string tooltip {get; set;}
     }

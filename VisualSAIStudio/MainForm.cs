@@ -186,11 +186,20 @@ namespace VisualSAIStudio
         private void dockPanel1_ActiveDocumentChanged(object sender, EventArgs e)
         {
             if (dockPanel1.ActiveDocument.DockHandler.Form is ScratchWindow)
+            {
                 scratch = (ScratchWindow)dockPanel1.ActiveDocument.DockHandler.Form;
+                events.SetSAIType(scratch.type);
+            }
 
             errors.Clear();
             foreach (SmartEvent ev in scratch.GetEvents())
                 errors.AddWarnings(ev.Validate());           
+        }
+        private void gOTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ScratchWindow w = new ScratchWindow();
+            w.type = SmartScripts.SAIType.Gameobject;
+            w.Show(dockPanel1);
         }
     }
 }

@@ -24,6 +24,7 @@ namespace VisualSAIStudio
         private Brush brush;
         private Pen pen;
         private Font font;
+        private Font mini_font;
 
 
         public DrawableElementsCollection elements;
@@ -37,6 +38,7 @@ namespace VisualSAIStudio
             brush = Brushes.Black;
             pen = new Pen(brush);
             font = new Font("Tahoma", 9);
+            mini_font = new Font(font.FontFamily, 8);
 
             SetElements(new DrawableElementsCollection());
             this.MouseWheel += new MouseEventHandler(this.mouse_wheel_event);
@@ -87,7 +89,7 @@ namespace VisualSAIStudio
             for (int i = 0; i < elements.Count; ++i)
             {
                 DrawableElement e = elements.Get(i);
-                Size size = e.Draw(graphics, curx, cury, this.Width, this.Height, brush, pen, font);
+                Size size = e.Draw(graphics, curx, cury, this.Width, this.Height, brush, pen, font, mini_font);
                 cury += size.Height + 10;
                 if (maxX < size.Width)
                     maxX = size.Width + 10;
@@ -95,7 +97,7 @@ namespace VisualSAIStudio
 
             if (dragging && selectedElement != null)
             {
-                selectedElement.Draw(graphics, mouse.X, mouse.Y, this.Width, this.Height, brush, pen, font, false);
+                selectedElement.Draw(graphics, mouse.X, mouse.Y, this.Width, this.Height, brush, pen, font, mini_font, false);
             }
 
             if (dragging)

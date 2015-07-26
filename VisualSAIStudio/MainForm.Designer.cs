@@ -56,6 +56,7 @@
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.scratch1 = new VisualSAIStudio.Scratch();
             this.vS2012ToolStripExtender1 = new VisualSAIStudio.VS2012ToolStripExtender(this.components);
+            this.gOTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -79,6 +80,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadFromDBToolStripMenuItem,
+            this.gOTestToolStripMenuItem,
             this.detectConflictsToolStripMenuItem,
             this.validateToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -296,6 +298,13 @@
             this.vS2012ToolStripExtender1.DefaultRenderer = null;
             this.vS2012ToolStripExtender1.VS2012Renderer = null;
             // 
+            // gOTestToolStripMenuItem
+            // 
+            this.gOTestToolStripMenuItem.Name = "gOTestToolStripMenuItem";
+            this.gOTestToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.gOTestToolStripMenuItem.Text = "GO test";
+            this.gOTestToolStripMenuItem.Click += new System.EventHandler(this.gOTestToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -348,6 +357,7 @@
         private System.Windows.Forms.ToolStripMenuItem styleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gOTestToolStripMenuItem;
     }
 }
 

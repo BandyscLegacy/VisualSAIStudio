@@ -22,6 +22,7 @@ namespace VisualSAIStudio
 
     public enum WarningType
     {
+        NOT_SET,
         INVALID_TARGET,
         INVALID_PARAMETER,
         INVALID_VALUE

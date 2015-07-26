@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VisualSAIStudio.SmartScripts;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace VisualSAIStudio
@@ -15,6 +16,9 @@ namespace VisualSAIStudio
     public partial class ToolWindow : DockContent
     {
         TreeNode collection = new TreeNode();
+
+        SAIType saitype;
+
         public ToolWindow(String file, String title)
         {
             InitializeComponent();
@@ -22,8 +26,16 @@ namespace VisualSAIStudio
             this.HideOnClose = true;
             LoadSmartFromFile(file);
             Reload();
+            saitype = SAIType.Gameobject;
+        }
+        public void SetSAIType(SAIType type)
+        {
+            this.saitype = type;
+            Reload();
         }
 
+
+        //@TODO: to rewrite >.<
         private void Reload()
         {
             List<string> expanded = new List<string>();
@@ -41,16 +53,20 @@ namespace VisualSAIStudio
                 parent2.Tag = parent.Tag;
                 foreach (TreeNode child in parent.Nodes)
                 {
-                    if (child.Text.ToLower().Contains(textBox.Text.ToLower()) ||
-                       ( child.Tag != null && child.Tag.ToString().ToLower().Contains(textBox.Text.ToLower())))
+                    if ((child.Text.ToLower().Contains(textBox.Text.ToLower()) ||
+                       ( child.Tag != null && child.Tag.ToString().ToLower().Contains(textBox.Text.ToLower()))) &&
+                            SmartFactory.IsValidType(child.Tag.ToString(), saitype))
                     {
                         add = true;
                         parent2.Nodes.Add(child);
                     }
                 }
 
-                if (parent2.Text.ToLower().Contains(textBox.Text.ToLower()) ||
-                    (parent2.Tag!= null && parent2.Tag.ToString().ToLower().Contains(textBox.Text.ToLower())))
+                if ((parent2.Text.ToLower().Contains(textBox.Text.ToLower()) && parent2.Nodes.Count > 0) ||
+                    (parent2.Tag!= null &&
+                    parent2.Tag.ToString().ToLower().Contains(textBox.Text.ToLower()) &&
+                    SmartFactory.IsValidType(parent2.Tag.ToString(), saitype)
+                    ))
                 {
                     add = true;
                 }

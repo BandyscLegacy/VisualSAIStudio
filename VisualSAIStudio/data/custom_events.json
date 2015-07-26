@@ -1,2 +1,1612 @@
 [
+  {
+    "id": 0,
+    "valid_types": [
+      "Creature",
+      "TimedActionList"
+    ],
+    "name": "SMART_EVENT_UPDATE_IC",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "InitialMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "InitialMax",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMax",
+        "description": ""
+      }
+    ],
+    "description": "When in combat and timer at the begining between {pram1} and {pram2} ms (and later repeats every {pram3} and {pram4} ms)"
+  },
+  {
+    "id": 1,
+    "valid_types": [
+      "Creature",
+      "Gameobject",
+      "Instance"
+    ],
+    "name": "SMART_EVENT_UPDATE_OOC",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "InitialMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "InitialMax",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMax",
+        "description": ""
+      }
+    ],
+    "description": "When out of combat and timer at the begining between {pram1} and {pram2} ms (and later repeats every {pram3} and {pram4} ms)"
+  },
+  {
+    "id": 2,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_HEALT_PCT",
+    "parameters": [
+      {
+        "type": "PercentageParameter",
+        "name": "HP Minimum",
+        "description": ""
+      },
+      {
+        "type": "PercentageParameter",
+        "name": "HP Maximum",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMax",
+        "description": ""
+      }
+    ],
+    "description": "When health between {pram1} and {pram2}"
+  },
+  {
+    "id": 3,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_MANA_PCT",
+    "parameters": [
+      {
+        "type": "PercentageParameter",
+        "name": "Mana Minimum",
+        "description": ""
+      },
+      {
+        "type": "PercentageParameter",
+        "name": "Mana Maximum",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMax",
+        "description": ""
+      }
+    ],
+    "description": "When mana between {pram1} and {pram2}"
+  },
+  {
+    "id": 4,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_AGGRO",
+    "description": "On aggro"
+  },
+  {
+    "id": 5,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_KILL",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "CooldownMin0",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax1",
+        "description": ""
+      },
+      {
+        "type": "BoolParameter",
+        "name": "Player only",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "else creature entry3",
+        "description": ""
+      }
+    ],
+    "description": "On kill {pram3value:choose(0):creature {pram4}|player}"
+  },
+  {
+    "id": 6,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_DEATH",
+    "description": "On death"
+  },
+  {
+    "id": 7,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_EVADE",
+    "description": "On evade"
+  },
+  {
+    "id": 8,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_SPELLHIT",
+    "parameters": [
+      {
+        "type": "SpellParameter",
+        "name": "Spell",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "School",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": ""
+      }
+    ],
+    "description": "On spell {pram1} hit"
+  },
+  {
+    "id": 9,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_RANGE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Minimum Distance",
+        "description": "Minimum distance between creature and its victim to trigger the event"
+      },
+      {
+        "type": "Parameter",
+        "name": "Maximum Distance",
+        "description": "Maximum distance between creature and its victim to trigger the event"
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Min",
+        "description": "Minimum timer value to check for event"
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Max",
+        "description": "Maximum timer value to check for event"
+      }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+        "compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+        "error": "{compared} has to be higher than {compareto}"
+      }
+    ],
+    "description": "When victim in range {pram1} - {pram2} yards, check every {pram3} - {pram4} ms"
+  },
+  {
+    "id": 10,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_OOC_LOS",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "NoHostile",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "MaxRnage",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Cooldown Min",
+        "description": "????"
+      },
+      {
+        "type": "Parameter",
+        "name": "Cooldown Max",
+        "description": "????"
+      }
+    ],
+    "description": "When {pram1value:choose(0):|non }hostile unit in line of sight (out of combat)"
+  },
+  {
+    "id": 11,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_RESPAWN",
+    "parameters": [
+      {
+        "type": "SwitchParameter",
+        "name": "Respawn type",
+        "values": {
+          "0": {
+            "name": "SMART_SCRIPT_RESPAWN_CONDITION_NONE",
+            "description": "Any respawn type"
+          },
+          "1": {
+            "name": "SMART_SCRIPT_RESPAWN_CONDITION_MAP",
+            "description": "Compare map"
+          },
+          "2": {
+            "name": "SMART_SCRIPT_RESPAWN_CONDITION_AREA",
+            "description": "Compare area (zone)"
+          }
+        },
+        "description": "Respawn type to check"
+      },
+      {
+        "type": "ZoneAreaParameter",
+        "name": "Map Id",
+        "description": "Respawn Type must be either SMART_SCRIPT_RESPAWN_CONDITION_NONE or SMART_SCRIPT_RESPAWN_CONDITION_MAP"
+      },
+      {
+        "type": "ZoneAreaParameter",
+        "name": "Zone",
+        "description": "Respawn Type must be either SMART_SCRIPT_RESPAWN_CONDITION_NONE or SMART_SCRIPT_RESPAWN_CONDITION_AREA"
+      }
+    ],
+    "description": "On respawn {pram2value:choose(0):{pram3value:choose(0):|in zone {pram3}}|on map {pram2}{pram3value:choose(0):| and in zone {pram3}}}"
+  },
+  {
+    "id": 12,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_TARGET_HEALTH_PCT",
+    "parameters": [
+      {
+        "type": "PercentageParameter",
+        "name": "HP Minimum",
+        "description": ""
+      },
+      {
+        "type": "PercentageParameter",
+        "name": "HP Maximum",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Min",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Max",
+        "description": ""
+      }
+    ],
+    "description": "When victim health between {pram1} - {pram2} (check every {pram3} - {pram4})"
+  },
+  {
+    "id": 13,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_VICTIM_CASTING",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Repeat Min",
+        "description": "Example"
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Max",
+        "description": "Example"
+      },
+      {
+        "type": "SpellParameter",
+        "name": "Spell",
+        "description": "If 0, any spell will trigger the event"
+      }
+    ],
+    "description": "When victim is casting {pram3value:choose(0):any|}spell{pram3value:choose(0):| {pram3}} (check every {pram3} - {pram4})"
+  },
+  {
+    "id": 14,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_FRIENDLY_HEALTH",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "HP Deficit",
+        "description": "Absolute value"
+      },
+      {
+        "type": "Parameter",
+        "name": "Radius",
+        "description": "Radius to check for friendly creatures"
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Min",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Max",
+        "description": ""
+      }
+    ],
+    "description": "When friendly unit in range {pram2} yards has lost more than {pram1} hp (check every {pram3} - {pram4})"
+  },
+  {
+    "id": 15,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_FRIENDLY_IS_CC",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Radius",
+        "description": "Radius to check for"
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Min",
+        "description": "Example"
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Max",
+        "description": "Example"
+      }
+    ],
+    "description": "When friendly unit in range {pram1} yards is either: feared, charmed, stunned, frozen or confused (check every {pram3} - {pram4})"
+  },
+  {
+    "id": 16,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_FRIENDLY_MISSING_BUFF",
+    "parameters": [
+      {
+        "type": "SpellParameter",
+        "name": "Spell",
+        "description": "Spell id to check"
+      },
+      {
+        "type": "Parameter",
+        "name": "Radius",
+        "description": "Radius to check in"
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMax",
+        "description": ""
+      }
+    ],
+    "description": "When friendly unit in range {pram2} yards has not got aura {pram1} (check every {pram3} - {pram4})"
+  },
+  {
+    "id": 17,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_SUMMONED_UNIT",
+    "parameters": [
+      {
+        "type": "CreatureParameter",
+        "name": "Creature",
+        "description": "If 0, any creature will trigger the event"
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMin",
+        "description": "Example"
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": "Example"
+      }
+    ],
+    "description": "On summoned {pram1value:choose(0):any|}unit {pram1value:choose(0):|{pram1}}"
+  },
+  {
+    "id": 18,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_TARGET_MANA_PCT",
+    "parameters": [
+      {
+        "type": "PercentageParameter",
+        "name": "Minimum mana",
+        "description": ""
+      },
+      {
+        "type": "PercentageParameter",
+        "name": "Maximum mana",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMax",
+        "description": ""
+      }
+    ],
+    "description": "When vicitm has mana between {pram1} - {pram2} (check every {pram3} - {pram4})"
+  },
+  {
+    "id": 19,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_ACCEPTED_QUEST",
+    "parameters": [
+      {
+        "type": "QuestParameter",
+        "name": "Quest",
+        "description": "If 0, any quest will trigger the event"
+      }
+    ],
+    "description": "When player accepts {pram1value:choose(0):any quest|quest {pram1}}"
+  },
+  {
+    "id": 20,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_REWARD_QUEST",
+    "parameters": [
+      {
+        "type": "QuestParameter",
+        "name": "Quest",
+        "description": "If 0, any quest will trigger the event"
+      }
+    ],
+    "description": "When player rewards {pram1value:choose(0):any quest|quest {pram1}}"
+  },
+  {
+    "id": 21,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_REACHED_HOME",
+    "description": "When creature reaches home (e.g. after evade)"
+  },
+  {
+    "id": 22,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_RECEIVE_EMOTE",
+    "parameters": [
+      {
+        "type": "EmoteParameter",
+        "name": "Emote",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": ""
+      }
+    ],
+    "description": "When emote {pram1} received from player"
+  },
+  {
+    "id": 23,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_HAS_AURA",
+    "parameters": [
+      {
+        "type": "SpellParameter",
+        "name": "Spell",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Stack amount",
+        "description": "If 0, any amount will trigger the quest"
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Min",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Max",
+        "description": ""
+      }
+    ],
+    "description": "When creature has{pram2value:choose(0):| {pram2} stacks of} aura {pram1} (check every {pram3} - {pram4} ms)"
+  },
+  {
+    "id": 24,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_TARGET_BUFFED",
+    "parameters": [
+      {
+        "type": "SpellParameter",
+        "name": "Spell",
+        "required": true,
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Minimum stack amount",
+        "required": true,
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMax",
+        "description": ""
+      }
+    ],
+    "description": "When victim has at least {pram2} stacks of aura {pram1} (check every {pram3} - {pram4})"
+  },
+  {
+    "id": 25,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_RESET",
+    "description": "On reset (e.g. after reaching home)"
+  },
+  {
+    "id": 26,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_IC_LOS",
+    "parameters": [
+      {
+        "type": "BoolParameter",
+        "name": "No Hostile",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Maximum distance",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMin",
+        "description": "???"
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": "???"
+      }
+    ],
+    "description": "When {pram1value:choose(0):|non }hostile unit in line of sight (in combat)"
+  },
+  {
+    "id": 27,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_PASSENGER_BOARDED",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "CooldownMin",
+        "description": "???"
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": "???"
+      }
+    ],
+    "description": "On passenger boarded (vehicle)"
+  },
+  {
+    "id": 28,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_PASSENGER_REMOVED",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "CooldownMin",
+        "description": "???"
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": "???"
+      }
+    ],
+    "description": "On passenger removed (vehicle)"
+  },
+  {
+    "id": 29,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_CHARMED",
+    "description": "When creature gets charmed by another unit"
+  },
+  {
+    "id": 30,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_CHARMED_TARGET",
+    "description": "When creature charmes another unit (is it supported by core????)"
+  },
+  {
+    "id": 31,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_SPELLHIT_TARGET",
+    "parameters": [
+      {
+        "type": "SpellParameter",
+        "name": "Spell",
+        "description": ""
+      },
+      {
+        "type": "SpellSchoolParameter",
+        "name": "School",
+        "description": "If 0, any spell school will trigger the event"
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMin",
+        "description": "???"
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": "???"
+      }
+    ],
+    "description": "When spell {pram1} {pram2value:choose(0):|of school {pram2} } hits a target"
+  },
+  {
+    "id": 32,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_DAMAGED",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Minimum damage",
+        "description": "Minimum damage to trigger the event"
+      },
+      {
+        "type": "Parameter",
+        "name": "Maximum damage",
+        "description": "Must be set, or else the event will not trigger."
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": ""
+      }
+    ],
+    "description": "When creature damaged by {pram1} - {pram2} HP"
+  },
+  {
+    "id": 33,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_DAMAGED_TARGET",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Minimum damage",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Maximum damage",
+        "description": "Must be set, or else the event will not trigger."
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": ""
+      }
+    ],
+    "description": "When creature deal damage to victim between {pram1} - {pram2} HP"
+  },
+  {
+    "id": 34,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_MOVEMENTINFORM",
+    "parameters": [
+      {
+        "type": "SwitchParameter",
+        "name": "Movement Type",
+        "values": {
+        	"0": {"name": "Any"},
+			"1": {"name": "RANDOM_MOTION_TYPE"},
+			"2": {"name": "WAYPOINT_MOTION_TYPE"},
+			"3": {"name": "ANIMAL_RANDOM_MOTION_TYPE"},
+			"4": {"name": "CONFUSED_MOTION_TYPE"},
+			"5": {"name": "CHASE_MOTION_TYPE"},
+			"6": {"name": "HOME_MOTION_TYPE"},
+			"7": {"name": "FLIGHT_MOTION_TYPE"},
+			"8": {"name": "POINT_MOTION_TYPE"},
+			"9": {"name": "FLEEING_MOTION_TYPE"},
+			"10": {"name": "DISTRACT_MOTION_TYPE"},
+			"11": {"name": "ASSISTANCE_MOTION_TYPE"},
+			"12": {"name": "ASSISTANCE_DISTRACT_MOTION_TYPE"},
+			"13": {"name": "TIMED_FLEEING_MOTION_TYPE"},
+			"14": {"name": "FOLLOW_MOTION_TYPE"},
+			"15": {"name": "ROTATE_MOTION_TYPE"},
+			"16": {"name": "EFFECT_MOTION_TYPE"},
+			"17": {"name": "NULL_MOTION_TYPE"}
+        },
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Point ID",
+        "description": "If 0, any point will trigger the event"
+      }
+    ],
+    "description": "On movement {pram1value:choose(0):|of type {pram1} }inform{pram2value:choose(0):|, point {pram2}}"
+  },
+  {
+    "id": 35,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_SUMMON_DESPAWNED",
+    "parameters": [
+      {
+        "type": "CreatureParameter",
+        "name": "Entry",
+        "description": "If 0, any creature will trigger the event. NOT SURE???"
+      },
+      {
+        "type": "Parameter",
+        "name": "Cooldown Min",
+        "description": "???"
+      },
+      {
+        "type": "Parameter",
+        "name": "Cooldown Max",
+        "description": "???"
+      }
+    ],
+    "description": "On summoned creature {pram1value:choose(0):|{pram1} }despawn"
+  },
+  {
+    "id": 36,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_CORPSE_REMOVED",
+    "description": "On creature corpse removed"
+  },
+  {
+    "id": 37,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_AI_INIT",
+    "description": "On AI initialize"
+  },
+  {
+    "id": 38,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_DATA_SET",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Id",
+        "description": "Variable id"
+      },
+      {
+        "type": "Parameter",
+        "name": "Value",
+        "description": "Value of variable to trigger"
+      },
+      {
+        "type": "Parameter",
+        "name": "Cooldown Min",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Cooldown Max",
+        "description": ""
+      }
+    ],
+    "description": "On data {pram1} set to {pram2}"
+  },
+  {
+    "id": 39,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_WAYPOINT_START",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Point Id (Unused)",
+        "description": "Ignored by core"
+      },
+      {
+        "type": "Parameter",
+        "name": "Path",
+        "description": "Path ID, if 0, any path will trigger the event"
+      }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_value": 0,
+        "compare_type": "EQUALS",
+        "error": "{compared} is not supported by core, value has no effect"
+      }
+    ],
+    "description": "On {pram2value:choose(0):any path|path {pram2}} started"
+  },
+  {
+    "id": 40,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_WAYPOINT_REACHED",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Point ID",
+        "description": "Point ID, if 0, any point will trigger the event"
+      },
+      {
+        "type": "Parameter",
+        "name": "Path",
+        "description": "Path ID, if 0, any path will trigger the event"
+      }
+    ],
+    "description": "On {pram1value:choose(0):any waypoint|wapoint {pram1}} of {pram2value:choose(0):any path|path {pram2}} reached"
+  },
+  {
+    "id": 41,
+    "valid_types": [
+      "Transport"
+    ],
+    "name": "SMART_EVENT_TRANSPORT_ADDPLAYER",
+    "description": "On player added to transport"
+  },
+  {
+    "id": 42,
+    "valid_types": [
+      "Transport"
+    ],
+    "name": "SMART_EVENT_TRANSPORT_ADDCREATURE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Entry",
+        "description": "If 0, any creature will trigger the event"
+      }
+    ],
+    "description": "On creature added to transport"
+  },
+  {
+    "id": 43,
+    "valid_types": [
+      "Transport"
+    ],
+    "name": "SMART_EVENT_TRANSPORT_REMOVE_PLAYER",
+    "description": "On player removed from transport"
+  },
+  {
+    "id": 44,
+    "valid_types": [
+      "Transport"
+    ],
+    "name": "SMART_EVENT_TRANSPORT_RELOCATE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Point Id",
+      }
+    ],
+    "description": "On player relocate"
+  },
+  {
+    "id": 45,
+    "valid_types": [
+      "Instance"
+    ],
+    "name": "SMART_EVENT_INSTANCE_PLAYER_ENTER",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Team",
+        "description": "If 0, any team"
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMin",
+        "description": "Example"
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": "Example"
+      }
+    ],
+    "description": "On player enetered instance"
+  },
+  {
+    "id": 46,
+    "valid_types": [
+      "AreaTrigger"
+    ],
+    "name": "SMART_EVENT_AREATRIGGER_ONTRIGGER",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Trigger",
+        "description": "Area trigger ID. If 0, any area trigger will trigger the event. Probably senseless - area trigger script always is bind to one area trigger. Isn't it?"
+      }
+    ],
+    "description": "On trigger"
+  },
+  {
+    "id": 47,
+    "valid_types": [
+      "Quest"
+    ],
+    "name": "SMART_EVENT_QUEST_ACCEPTED",
+    "description": "When player accepted quest"
+  },
+  {
+    "id": 48,
+    "valid_types": [
+      "Quest"
+    ],
+    "name": "SMART_EVENT_QUEST_OBJ_COPLETETION",
+    "description": "When player completed objective"
+  },
+  {
+    "id": 49,
+    "valid_types": [
+      "Quest"
+    ],
+    "name": "SMART_EVENT_QUEST_COMPLETION",
+    "description": "When player completed quest"
+  },
+  {
+    "id": 50,
+    "valid_types": [
+      "Quest"
+    ],
+    "name": "SMART_EVENT_QUEST_REWARDED",
+    "description": "When player rewarded quest"
+  },
+  {
+    "id": 51,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_QUEST_FAIL",
+    "description": "When player failed quest"
+  },
+  {
+    "id": 52,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_TEXT_OVER",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Group Id",
+        "description": "Group ID from creature_text"
+      },
+      {
+        "type": "CreatureParameter",
+        "name": "Creature",
+        "description": "Creature who talks, if 0, any creature will trigger the event"
+      }
+    ],
+    "description": "When text {pram1}{pram2value:choose(0):| said by creature {pram2}} is over"
+  },
+  {
+    "id": 53,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_RECEIVE_HEAL",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Minimum heal",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Maximum heal",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": ""
+      }
+    ],
+    "description": "When creature is healed by {pram1} - {pram2} hp"
+  },
+  {
+    "id": 54,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_JUST_SUMMONED",
+    "description": "On just summoned"
+  },
+  {
+    "id": 55,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_WAYPOINT_PAUSED",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Point ID",
+        "description": "Point ID, if 0, any point will trigger the event"
+      },
+      {
+        "type": "Parameter",
+        "name": "Path",
+        "description": "Path ID, if 0, any path will trigger the event"
+      }
+    ],
+    "description": "On {pram1value:choose(0):any waypoint|wapoint {pram1}} of {pram2value:choose(0):any path|path {pram2}} paused"
+  },  
+  {
+    "id": 56,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_WAYPOINT_RESUMED",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Point ID",
+        "description": "Point ID, if 0, any point will trigger the event"
+      },
+      {
+        "type": "Parameter",
+        "name": "Path",
+        "description": "Path ID, if 0, any path will trigger the event"
+      }
+    ],
+    "description": "On {pram1value:choose(0):any waypoint|wapoint {pram1}} of {pram2value:choose(0):any path|path {pram2}} resumed"
+  },  
+  {
+    "id": 57,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_WAYPOINT_STOPPED",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Point ID",
+        "description": "Point ID, if 0, any point will trigger the event"
+      },
+      {
+        "type": "Parameter",
+        "name": "Path",
+        "description": "Path ID, if 0, any path will trigger the event"
+      }
+    ],
+    "description": "On {pram1value:choose(0):any waypoint|wapoint {pram1}} of {pram2value:choose(0):any path|path {pram2}} stopped"
+  },  
+  {
+    "id": 58,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_WAYPOINT_ENDED",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Point ID",
+        "description": "Point ID, if 0, any point will trigger the event"
+      },
+      {
+        "type": "Parameter",
+        "name": "Path",
+        "description": "Path ID, if 0, any path will trigger the event"
+      }
+    ],
+    "description": "On {pram1value:choose(0):any waypoint|wapoint {pram1}} of {pram2value:choose(0):any path|path {pram2}} ended"
+  },        
+  {
+    "id": 59,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_TIMED_EVENT_TRIGGERED",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "ID",
+        "description": "Timed event ID, which triggers the event. Note: 0 does NOT mean any event"
+      }
+    ],
+    "description": "On timed event {pram1} triggered"
+  },
+  {
+    "id": 60,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_UPDATE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "InitialMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "InitialMax",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "RepeatMax",
+        "description": ""
+      }
+    ],
+    "description": "Every {pram3} and {pram4} ms (for the first time, timer between {pram1} and {pram2} ms)"
+  },
+  {
+    "id": 61,
+    "valid_types": [
+      "Creature",
+      "Gameobject",
+      "Instance",
+      "AreaTrigger",
+      "Quest",
+      "Transport",
+      "Event",
+      "Gossip",
+      "Spell"
+    ],
+    "name": "SMART_EVENT_LINK",
+    "description": "On link"
+  },
+  {
+    "id": 62,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_GOSSIP_SELECT",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Menu ID",
+        "description": "Menu ID (gossip_menu)"
+      },
+      {
+        "type": "Parameter",
+        "name": "Action ID",
+        "description": "Option ID (gossip_menu_option)"
+      }
+    ],
+    "description": "On gossip action {pram2} from menu {pram1} selected"
+  },
+  {
+    "id": 63,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_JUST_CREATED",
+    "description": "When just created"
+  },
+  {
+    "id": 64,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_GOSSIP_HELLO",
+    "description": "When player opened gossip dialog"
+  },
+  {
+    "id": 65,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_FOLLOW_COMPLETED",
+    "description": "On follow completed"
+  },
+  {
+    "id": 66,
+    "valid_types": [
+      "Spell"
+    ],
+    "name": "SMART_EVENT_DUMMY_EFFECT",
+    "parameters": [
+      {
+        "type": "SpellParameter",
+        "name": "Spell",
+      },
+      {
+        "type": "Parameter",
+        "name": "Effect Index",
+      }
+    ],
+    "description": "Spell {pram1} dummy effect"
+  },
+  {
+    "id": 67,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_IS_BEHIND_TARGET",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "cooldownMin",
+        "description": "???"
+      },
+      {
+        "type": "Parameter",
+        "name": "CooldownMax",
+        "description": "???"
+      }
+    ],
+    "description": "When victim is behind me"
+  },
+  {
+    "id": 68,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_GAME_EVENT_START",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Event ID",
+        "description": "From table game_event.Entry"
+      }
+    ],
+    "description": "When game event {pram1} started"
+  },
+  {
+    "id": 69,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_GAME_EVENT_END",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Event ID",
+        "description": "From table game_event.Entry"
+      }
+    ],
+    "description": "When game event {pram1} ended"
+  },
+  {
+    "id": 70,
+    "valid_types": [
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_GO_STATE_CHANGED",
+    "parameters": [
+      {
+        "type": "SwitchParameter",
+        "name": "State",
+        "values": {
+        	"0": {"name": "GO_NOT_READY"},
+        	"1": {"name": "GO_READY", "description": "can be ready but despawned, and then not possible activate until spawn"},
+        	"2": {"name": "GO_ACTIVATED"},
+        	"3": {"name": "GO_JUST_DEACTIVATED"}
+         },
+        "description": "Gameobject loot state"
+      }
+    ],
+    "description": "On loot state changed to {pram1}"
+  },
+  {
+    "id": 71,
+    "valid_types": [
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_GO_EVENT_INFORM",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Event ID",
+        "description": "For example, gameobject of type \"gobber\""
+      }
+    ],
+    "description": "On game object event {pram1} triggered"
+  },
+  {
+    "id": 72,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_ACTION_DONE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Action ID",
+      }
+    ],
+    "description": "On DoAction {pram1}"
+  },
+  {
+    "id": 73,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_ON_SPELLCLICK",
+    "description": "On spellclick"
+  },
+  {
+    "id": 74,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_FRIENDLY_HEALTH_PCT",
+    "parameters": [
+      {
+        "type": "PercentageParameter",
+        "name": "Minimum HP",
+        "description": "Target from first action must be: CREATURE_RANGE, CREATURE_GUID, CREATURE_DISTANCE, CLOSEST_CREATURE, CLOSEST_PLAYER, PLAYER_RANGE, PLAYER_DISTANCE"
+      },
+      {
+        "type": "PercentageParameter",
+        "name": "Maximum HP",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "repeatMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "repeatMax",
+        "description": ""
+      }
+    ],
+    "description": "When target has HP between {pram1} - {pram2}"
+  },
+  {
+    "id": 75,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_DISTANCE_CREATURE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "GUID",
+        "description": ""
+      },
+      {
+        "type": "CreatureParameter",
+        "name": "Creature",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Distance",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat",
+        "description": "Repeat Min = Repeat Max"
+      }
+    ],
+    "description": "When creature {pram1value:choose(0):{pram2}| with guid {pram1}} in range {pram3}"
+  },
+  {
+    "id": 76,
+    "valid_types": [
+      "Creature"
+    ],
+    "name": "SMART_EVENT_DISTANCE_GAMEOBJECT",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "GUID",
+        "description": ""
+      },
+      {
+        "type": "GameobjectParameter",
+        "name": "Gameobject",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Distance",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat",
+        "description": "Repeat Min = Repeat Max"
+      }
+    ],
+    "description": "When gameobject {pram1value:choose(0):{pram2}| with guid {pram1}} in range {pram3}"
+  },
+  {
+    "id": 77,
+    "valid_types": [
+      "Creature",
+      "Gameobject"
+    ],
+    "name": "SMART_EVENT_COUNTER_SET",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Counter ID",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "Value",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "cooldownMin",
+        "description": ""
+      },
+      {
+        "type": "Parameter",
+        "name": "cooldownMax",
+        "description": ""
+      }
+    ],
+    "description": "On counter {pram1} set to {pram2}"
+  }
 ]

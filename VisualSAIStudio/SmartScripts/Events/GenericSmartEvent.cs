@@ -12,12 +12,13 @@ namespace VisualSAIStudio
 
         public GenericSmartEvent(int id, string name, string description) : base(id, name) 
         {
+            this.readable = description;
             this.description = description;
         }
 
         public override string GetReadableString()
         {
-            return String.Format(description, parameters[0], parameters[1], parameters[2], parameters[3]);
+            return description;
         }
 
         private void SetParameter(int index, Parameter pram)

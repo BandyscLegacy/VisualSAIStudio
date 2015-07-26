@@ -65,7 +65,7 @@ namespace VisualSAIStudio
 
         public static SmartAction DeserializeFromArray(string[] array)
         {
-            SmartAction action = ExtendedFactories.ActionFactory(int.Parse(array[0]));
+            SmartAction action = SmartFactory.ActionFactory(int.Parse(array[0]));
             action.target = TargetsFactory.Factory(int.Parse(array[7]));
             for (int i = 0; i < 6; ++i)
                 action.parameters[i].SetValue(int.Parse(array[i + 1]));
@@ -76,7 +76,7 @@ namespace VisualSAIStudio
             return action;
         }
 
-        public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, bool setRect = true)
+        public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, Font mini_font, bool setRect = true)
         {
             SizeF size = graphics.MeasureString(ToString(), font);
 

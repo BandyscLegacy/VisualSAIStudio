@@ -47,8 +47,8 @@ namespace VisualSAIStudio
             else
                 selected = false;
         }
-        public abstract Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, bool setRect=true);
+        public abstract Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, Font mini_font, bool setRect=true);
 
-        public abstract Size ComputeSize(Graphics graphics, Font font);
+        public abstract Size ComputeSize(Graphics graphics, Font font, Font mini_font);
     }
 }

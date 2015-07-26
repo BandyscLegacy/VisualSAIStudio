@@ -13,6 +13,8 @@ namespace VisualSAIStudio
         public string description { get; set; }
         protected List<SmartScripts.ParameterConditional> validators = new List<SmartScripts.ParameterConditional>();
 
+        public Parameter() : this(null) { }
+
         public Parameter(String name) : this(name, null) {  }
 
         public Parameter(String name, String description) : this(name, description, 0, false) {  }
@@ -75,13 +77,17 @@ namespace VisualSAIStudio
                 case "SkillParameter":
                     return new StringParameter(StorageType.Skill);
                 case "BoolParameter":
-                    return new BoolParameter("");
+                    return new BoolParameter();
                 case "SwitchParameter":
-                    return new SwitchParameter("");
+                    return new SwitchParameter();
                 case "FlagParameter":
-                    return new FlagParameter("");
+                    return new FlagParameter();
+                case "SpellSchoolParameter":
+                    return new SpellSchoolParameter();
+                case "PercentageParameter":
+                    return new PercentageParameter();
                 case "Parameter":
-                    return new Parameter("");
+                    return new Parameter();
             }
             return new NullParameter();
         }
@@ -126,6 +132,8 @@ namespace VisualSAIStudio
 
         public SwitchParameter(String name) : base(name) { }
 
+        public SwitchParameter() : base(null) { }
+
         public void AddValuesToProperty(DynamicTypeDescriptor.CustomPropertyDescriptor property)
         {
             DynamicTypeDescriptor.StandardValueAttribute value = null; 
@@ -148,6 +156,8 @@ namespace VisualSAIStudio
     public class FlagParameter : SwitchParameter
     {
         public FlagParameter(String name) : base(name) { }
+
+        public FlagParameter() : base(null) { }
 
         public FlagParameter(String name, Dictionary<int, SelectOption> select) : base(name) 
         {
@@ -194,6 +204,26 @@ namespace VisualSAIStudio
             {0x40, new SelectOption("SMARTCAST_COMBAT_MOVE")}
         };
         public CastFlagsParameter(string name) : base (name, flags) { }
+        public CastFlagsParameter() : base(null, flags) { }
+    }
+
+    public class SpellSchoolParameter : FlagParameter
+    {
+        private static Dictionary<int, SelectOption> flags = new Dictionary<int, SelectOption>() {
+            {0, new SelectOption("SPELL_SCHOOL_MASK_NONE")}, 
+            {1, new SelectOption("SPELL_SCHOOL_MASK_NORMAL")}, 
+            {2, new SelectOption("SPELL_SCHOOL_MASK_HOLY")}, 
+            {4, new SelectOption("SPELL_SCHOOL_MASK_FIRE")}, 
+            {8, new SelectOption("SPELL_SCHOOL_MASK_NATURE")}, 
+            {16, new SelectOption("SPELL_SCHOOL_MASK_FROST")}, 
+            {32, new SelectOption("SPELL_SCHOOL_MASK_SHADOW")}, 
+            {64, new SelectOption("SPELL_SCHOOL_MASK_ARCANE")}, 
+            {124, new SelectOption("SPELL_SCHOOL_MASK_SPELL")}, 
+            {126, new SelectOption("SPELL_SCHOOL_MASK_MAGIC")}, 
+            {127, new SelectOption("SPELL_SCHOOL_MASK_ALL")}
+        };
+        public SpellSchoolParameter(string name) : base(name, flags) { }
+        public SpellSchoolParameter() : base(null, flags) { }
     }
 
     public class SummonTypeParameter : SwitchParameter
@@ -208,6 +238,7 @@ namespace VisualSAIStudio
             {7, new SelectOption("TEMPSUMMON_DEAD_DESPAWN", "despawns when the creature disappears")},
             {8, new SelectOption("TEMPSUMMON_MANUAL_DESPAWN", "despawns when UnSummon() is called")},
         };
+        public SummonTypeParameter() : base(null, types) { }
         public SummonTypeParameter(string name) : base (name, types) { }
         public SummonTypeParameter(string name, bool required) : base(name, types, required) { }
     }
@@ -215,12 +246,14 @@ namespace VisualSAIStudio
     public class BoolParameter : SwitchParameter
     {
         private static Dictionary<int, SelectOption> values = new Dictionary<int, SelectOption>() { { 0,new SelectOption( "False") }, { 1, new SelectOption("True") } };
+        public BoolParameter() : base(null, values) { }
         public BoolParameter(String name) : base(name, values) { }
         public BoolParameter(String name, String description) : base(name, description, values) { }
     }
 
     public class PercentageParameter : Parameter
     {
+        public PercentageParameter() : base(null) { }
         public PercentageParameter(String name) : base(name) { }
         public PercentageParameter(String name, String description) : base(name, description) { }
         public override string ToString()
@@ -259,7 +292,7 @@ namespace VisualSAIStudio
         }
     }
 
-    //this should be deleted I guess...
+    //this should be deleted once actions are moved to custom_actions
     class SpellParameter : StringParameter
     {
         public SpellParameter(String name) : base(name, StorageType.Spell) {}
