@@ -34,6 +34,12 @@ namespace VisualSAIStudio
             Reload();
         }
 
+        protected override string GetPersistString()
+        {
+            return this.GetType() + "/" + this.Text;
+        }
+
+
 
         //@TODO: to rewrite >.<
         private void Reload()

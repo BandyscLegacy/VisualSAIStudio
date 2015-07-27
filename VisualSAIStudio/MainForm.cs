@@ -22,7 +22,7 @@ namespace VisualSAIStudio
         {
             InitializeComponent();
         }
-
+        private DeserializeDockContent m_deserializeDockContent;
         PropertyWindow properties;
         ScratchWindow scratch;
         StartPage startPage;
@@ -38,35 +38,68 @@ namespace VisualSAIStudio
 
             dockPanel1.Theme = new VS2012LightTheme();
             vS2012ToolStripExtender1.SetEnableVS2012Style(this.menuStrip1, true);
-            events = new ToolWindow("data/events.txt", "Events");
-            events.Show(dockPanel1, DockState.DockLeft);
+           
+            CreateWindows();
+            m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
 
-            conditions = new ToolWindow("data/conditions.txt", "Conditions");
-            conditions.Show(events.Pane, DockAlignment.Bottom, 0.5);
-
-            targets = new ToolWindow("data/targets.txt", "Targets");
-            targets.Show(conditions.Pane, DockAlignment.Bottom, 0.5);
-
-            actions = new ToolWindow("data/actions.txt", "Actions");
-            actions.Show(dockPanel1, DockState.DockRight);
-
-
-            properties = new PropertyWindow();
-            properties.Show(actions.Pane, DockAlignment.Bottom, 0.6);
-
-            errors = new ErrorsWindow();
-            errors.Show(dockPanel1, DockState.DockBottom);
-            errors.WarningSelected += this_warningSelected;
+            if (File.Exists("data/layout.xml"))
+                dockPanel1.LoadFromXml("data/layout.xml", m_deserializeDockContent);
+            else
+                PlaceWindows();
 
             scratch = new ScratchWindow();
             scratch.Show(dockPanel1);
+            scratch.ElementSelected += this_callback;
+            scratch.RequestWarnings += this_RequestWarnings;
 
             startPage = new StartPage();
             startPage.Show(dockPanel1);
 
+        }
 
-            scratch.ElementSelected += this_callback;
-            scratch.RequestWarnings += this_RequestWarnings;
+        private void CreateWindows()
+        {
+            events = new ToolWindow("data/events.txt", "Events");
+            conditions = new ToolWindow("data/conditions.txt", "Conditions");
+            targets = new ToolWindow("data/targets.txt", "Targets");
+            actions = new ToolWindow("data/actions.txt", "Actions");
+            properties = new PropertyWindow();
+            errors = new ErrorsWindow();
+            errors.WarningSelected += this_warningSelected;
+        }
+
+        private void PlaceWindows()
+        {
+            events.Show(dockPanel1, DockState.DockLeft);
+            conditions.Show(events.Pane, DockAlignment.Bottom, 0.5);
+            targets.Show(conditions.Pane, DockAlignment.Bottom, 0.5);
+            actions.Show(dockPanel1, DockState.DockRight);
+            properties.Show(actions.Pane, DockAlignment.Bottom, 0.6);
+            errors.Show(dockPanel1, DockState.DockBottom);
+        }
+
+        private IDockContent GetContentFromPersistString(string persistString)
+        {
+            if (persistString == typeof(ErrorsWindow).ToString())
+                return errors;
+            else if (persistString == typeof(PropertyWindow).ToString())
+                return properties;
+            else if (persistString.Contains(typeof(ToolWindow).ToString()))
+            {
+                string[] parsedStrings = persistString.Split(new char[] { '/' });
+                switch (parsedStrings[1])
+                {
+                    case "Events":
+                        return events;
+                    case "Actions":
+                        return actions;
+                    case "Targets":
+                        return targets;
+                    case "Conditions":
+                        return conditions;
+                }
+            }
+            return null;
         }
 
         private void this_RequestWarnings(object sender, EventArgs e)
@@ -190,7 +223,7 @@ namespace VisualSAIStudio
                 scratch = (ScratchWindow)dockPanel1.ActiveDocument.DockHandler.Form;
                 events.SetSAIType(scratch.type);
             }
-
+            
             errors.Clear();
             foreach (SmartEvent ev in scratch.GetEvents())
                 errors.AddWarnings(ev.Validate());           
@@ -200,6 +233,11 @@ namespace VisualSAIStudio
             ScratchWindow w = new ScratchWindow();
             w.type = SmartScripts.SAIType.Gameobject;
             w.Show(dockPanel1);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            dockPanel1.SaveAsXml("data/layout.xml");
         }
     }
 }
