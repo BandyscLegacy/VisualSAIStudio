@@ -34,7 +34,6 @@
             // scratch1
             // 
             this.scratch1.AllowDrop = true;
-            this.scratch1.BackColor = System.Drawing.Color.White;
             this.scratch1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scratch1.Location = new System.Drawing.Point(0, 0);
             this.scratch1.Name = "scratch1";
@@ -42,6 +41,7 @@
             this.scratch1.TabIndex = 0;
             this.scratch1.DragDrop += new System.Windows.Forms.DragEventHandler(this.scratch1_DragDrop);
             this.scratch1.DragOver += new System.Windows.Forms.DragEventHandler(this.scratch1_DragOver);
+            this.scratch1.DragLeave += new System.EventHandler(this.scratch1_DragLeave);
             this.scratch1.Paint += new System.Windows.Forms.PaintEventHandler(this.scratch1_Paint);
             // 
             // ScratchWindow

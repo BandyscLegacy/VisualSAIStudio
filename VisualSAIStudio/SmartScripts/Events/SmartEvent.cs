@@ -208,12 +208,12 @@ namespace VisualSAIStudio
 
         public int GetInsertActionIndexFromPos(int x, int y)
         {
-            if (y > rect.Bottom - 5)
-                return actions.Count;
+            if (actions.Count > 0 && y < actions[0].rect.Top + actions[0].rect.Height / 2)
+                return 0;
             for (int i = actions.Count - 1; i >= 0; --i)
             {
-                if (y > actions[i].rect.Top - 5 && y < actions[i].rect.Bottom + 5)
-                    return i;
+                if (y > actions[i].rect.Top + actions[i].rect.Height/2)// && y < actions[i].rect.Bottom + 5)
+                    return i+1;
             }
             return 0;
         }
@@ -286,8 +286,12 @@ namespace VisualSAIStudio
         public void Copy(SmartEvent prev)
         {
             base.Copy(prev);
+            this.phasemask = prev.phasemask;
+            this.flags = prev.flags;
             this.chance = prev.chance;
             this.conditions = prev.conditions;
+            this.actions = prev.actions;
+            paramValueChanged(this, new EventArgs());
         }
 
   
@@ -329,13 +333,14 @@ namespace VisualSAIStudio
         public override Size ComputeSize(Graphics graphics, Font font, Font mini_font)
         {
             SizeF measure = graphics.MeasureString(ToString(), font);
-            int width = (int)measure.Width + 10;
+            int width = (int)measure.Width + 30;
             children.ForEach(child => width = Math.Max(width, (int)child.ComputeSize(graphics, font, mini_font).Width));
             int height = (int)measure.Height;
-            measure = graphics.MeasureString(ToString(), mini_font);
-            height += (int)measure.Height + 5;
+            if (this.phasemask > SmartPhaseMask.Always)
+                height += (int)graphics.MeasureString(ToString(), mini_font).Height;
+
             int children_height = 0;
-            if (children.Count>0)
+            if (children.Count > 0)
             {
                 children_height = children.Max(i => i.rect.Bottom) - rect.Top + 5;
                 if (actions.Count > 0)
@@ -343,27 +348,27 @@ namespace VisualSAIStudio
                 else if (conditions.Count > 0)
                     height += children_height;
             }
+            else
+                height += 5;
 
             return new Size(width, height);
         }
 
-        public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, Font mini_font, bool setRect = true)
+        public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush default_brush, Pen pen, Font font, Font mini_font, bool setRect = true)
         {
             Point start_pos = new Point(x, y);
             Size size = ComputeSize(graphics, font, mini_font);
-            int maxX = size.Width;
-
+            Brush brush = default_brush;
             if (selected)
             {
                 brush = new SolidBrush(Color.FromArgb(255, 230, 230, 230));
                 graphics.FillRectangle(brush, x, y, width, size.Height);
             }
-            brush = Brushes.Black;
-            
-
+            brush = default_brush;
+          
             foreach (SmartCondition condition in conditions)
             {
-                Size asize = condition.Draw(graphics, x+18, y+5, width, size.Height, brush, pen, font, mini_font, setRect);
+                Size asize = condition.Draw(graphics, x+18, y+5, width, size.Height, default_brush, pen, font, mini_font, setRect);
                 y += asize.Height;
             }
             
@@ -379,12 +384,12 @@ namespace VisualSAIStudio
 
             foreach (SmartAction action in actions)
             {
-                Size asize = action.Draw(graphics, x + 30, y, width, size.Height, brush, pen, font, mini_font, setRect);
+                Size asize = action.Draw(graphics, x + 30, y, width, size.Height, default_brush, pen, font, mini_font, setRect);
                 y += asize.Height;
             }
-            
+           
             if (setRect)
-                SetRect(start_pos.X, start_pos.Y, maxX, size.Height);
+                SetRect(start_pos.X, start_pos.Y, width, size.Height);
 
             return size;
         }

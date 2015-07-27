@@ -50,6 +50,11 @@ namespace VisualSAIStudio
             ElementsChanged(this, new ChangedEventArgs(ChangedType.Added));
         }
 
+        public int IndexOf(DrawableElement element)
+        {
+            return collection.IndexOf(element);
+        }
+
         private void this_elementRequestRemove(object sender, EventArgs e)
         {
             Remove((DrawableElement)sender);
@@ -125,6 +130,18 @@ namespace VisualSAIStudio
         public DrawableElement Get(int index)
         {
             return collection[index];
+        }
+
+        public int GetInsertIndexFromPos(int x, int y)
+        {
+            if (collection.Count > 0 && y < collection[0].rect.Top + collection[0].rect.Height / 2)
+                return 0;
+            for (int i = collection.Count - 1; i >= 0; --i)
+            {
+                if (y > collection[i].rect.Top + collection[i].rect.Height / 2)
+                    return i + 1;
+            }
+            return 0;
         }
 
         public IEnumerator<DrawableElement> GetEnumerator()

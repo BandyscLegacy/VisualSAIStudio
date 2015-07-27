@@ -115,6 +115,10 @@ namespace VisualSAIStudio.SmartScripts
                     property.AddAttribute(new StorageTypeAttribute(((StringParameter)parameter).storageType));
                     property.AddAttribute(new EditorAttribute(typeof(ModalEditor), typeof(UITypeEditor)));
                 }
+            } else if ( parameter.GetValue()>0)
+            {
+                property.SetIsBrowsable(true);
+                property.SetDisplayName("unused (" + property.DisplayName+")");
             }
         }
     }

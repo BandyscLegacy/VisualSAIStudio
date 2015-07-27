@@ -91,12 +91,15 @@ namespace VisualSAIStudio
             return DropResult.INSERT;
 
         }
+
+
     }
+
 
     public enum DropResult
     {
+        NONE,
         INSERT,
-        REPLACE,
-        NONE
+        REPLACE
     }
 }

@@ -14,12 +14,14 @@ namespace VisualSAIStudio
 {
     public partial class ScratchWindow : DockContent
     {
-
-        SmartEventsCollection events = new SmartEventsCollection();
+        private Pen pen;
+        private Point mouse;
+        private string drop_name;
+        private DropResult dropResult;
+        private SmartEventsCollection events = new SmartEventsCollection();
 
         public EventHandler ElementSelected = delegate { };
         public EventHandler RequestWarnings = delegate { };
-
 
         public SAIType type;
 
@@ -30,6 +32,7 @@ namespace VisualSAIStudio
 
         private void ScratchWindow_Load(object sender, EventArgs e)
         {
+            pen = new Pen(Brushes.Gray);
             scratch1.SetElements(events);
             scratch1.ElementSelected += new EventHandler(this.EventSelected);
             events.ElementsChanged += this_elementChanged;
@@ -157,102 +160,93 @@ namespace VisualSAIStudio
         }
 
 
-        // @TODO: to rewrite
         private void scratch1_DragDrop(object sender, DragEventArgs e)
         {
-            Point mouse = scratch1.PointToClient(new Point(e.X, e.Y));
+            mouse = scratch1.PointToClient(new Point(e.X, e.Y));
 
             if (e.Data.GetDataPresent(DataFormats.StringFormat))
             {
                 string str = (string)e.Data.GetData(DataFormats.StringFormat);
-                SmartEvent el = events.EventAt(mouse.X, mouse.Y);
-                DropResult drop_result = events.GetDropResult(str, mouse.X, mouse.Y);
-                if (str.IndexOf("SMART_EVENT")>-1)
-                {
-                    DropEvent(str, mouse);
-                }
-                else if (str.IndexOf("SMART_ACTION")>-1)
-                {
-                    if (drop_result == DropResult.INSERT)
-                    {
-                        el.InsertAction(SmartFactory.ActionFactory(str), el.GetInsertActionIndexFromPos(mouse.X, mouse.Y));
-                    }
-                    else if (drop_result == DropResult.REPLACE)
-                    {
-                        DrawableElement action = el.GetElementFromPos(mouse.X, mouse.Y);
-                        el.ReplaceAction(SmartFactory.ActionFactory(str), (SmartAction)action);
-                    }
-                }
-                else if (str.Contains("CONDITION_"))
-                {
-                    if (drop_result == DropResult.INSERT)
-                    {
-                        el.InsertCondition(ConditionsFactory.Factory(str), el.GetInsertConditionIndexFromPos(mouse.X, mouse.Y));
-                    }
-                    else if (drop_result == DropResult.REPLACE)
-                    {
-                        DrawableElement condition = el.GetElementFromPos(mouse.X, mouse.Y);
-                        el.ReplaceCondition(ConditionsFactory.Factory(str), (SmartCondition)condition);
-                    }
-                }
-                // @TODO rewrite
-                else if (str.IndexOf("SMART_TARGET") > -1)
-                {
-                        DrawableContainerElement ev = (DrawableContainerElement)el;
-                        SmartAction action = (SmartAction)ev.GetElementFromPos(mouse.X, mouse.Y);
-                        SmartTarget target = TargetsFactory.Factory(str);
-                        target.UpdateParams(action.target);
-                        action.target = target;
-                }
+                dropResult = events.GetDropResult(str, mouse.X, mouse.Y);
 
+                if (str.IndexOf("SMART_EVENT")>-1)
+                    DropEvent(str, mouse);
+                else if (str.IndexOf("SMART_ACTION")>-1)
+                    DropAction(str, mouse);
+                else if (str.Contains("CONDITION_"))
+                    DropCondition(str, mouse);
+                else if (str.IndexOf("SMART_TARGET") > -1)
+                    DropTarget(str, mouse);
+            }
+            dropResult = DropResult.NONE;
+        }
+
+        private void DropTarget(string str, Point mouse)
+        {
+            SmartEvent el = events.EventAt(mouse.X, mouse.Y);
+            SmartAction action = (SmartAction)el.GetElementFromPos(mouse.X, mouse.Y);
+            SmartTarget target = TargetsFactory.Factory(str);
+            target.UpdateParams(action.target);
+            action.target = target;
+        }
+
+        private void DropCondition(string str, Point mouse)
+        {
+
+            SmartEvent el = events.EventAt(mouse.X, mouse.Y);
+            switch (dropResult)
+            {
+                case DropResult.INSERT:
+                    el.InsertCondition(ConditionsFactory.Factory(str), el.GetInsertConditionIndexFromPos(mouse.X, mouse.Y));
+                    break;
+                case DropResult.REPLACE:
+                    DrawableElement condition = el.GetElementFromPos(mouse.X, mouse.Y);
+                    el.ReplaceCondition(ConditionsFactory.Factory(str), (SmartCondition)condition);
+                    break;
             }
         }
 
-        // @TODO: to rewrite ASAP!!
-        // I know, it it TOTAL MESS
+        private void DropAction(string str, Point mouse)
+        {
+            SmartEvent el = events.EventAt(mouse.X, mouse.Y);
+            switch (dropResult)
+            {
+                case DropResult.INSERT:
+                    el.InsertAction(SmartFactory.ActionFactory(str), el.GetInsertActionIndexFromPos(mouse.X, mouse.Y));
+                    break;
+                case DropResult.REPLACE:
+                    SmartAction action = (SmartAction)el.GetElementFromPos(mouse.X, mouse.Y);
+                    el.ReplaceAction(SmartFactory.ActionFactory(str), action);
+                    break;
+            }
+        }
+
+
         private void DropEvent(string strEvent, Point mouse)
         {
-            if (events.Count == 0 || mouse.X < 5)
+            switch (dropResult)
             {
-                events.Insert(SmartFactory.EventFactory(strEvent), 0);
-            }
-            else if (mouse.Y > events[events.Count-1].rect.Bottom )
-            {
-                events.Insert(SmartFactory.EventFactory(strEvent), events.Count);
-            }
-            else
-            {
-                for (int i = 0; i < events.Count; ++i)
-                {
-                    SmartEvent ev = events.GetEvent(i);
-                    
-                    if (mouse.Y > ev.rect.Bottom - 10 && mouse.Y < ev.rect.Bottom + 10)
-                    {
-                        events.Insert(SmartFactory.EventFactory(strEvent), i + 1);
-                        break;
-                    } 
-                    else if (ev.contains(mouse.X, mouse.Y))
-                    {
-                        SmartEvent new_event = SmartFactory.EventFactory(strEvent);
-                        new_event.Copy(ev);
-                        events.Replace(ev, new_event);
-                        break;
-                    }
-                }
+                case DropResult.INSERT:
+                    events.Insert(SmartFactory.EventFactory(strEvent), events.GetInsertIndexFromPos(mouse.X, mouse.Y));
+                    break;
+                case DropResult.REPLACE:
+                    SmartEvent ev = (SmartEvent)events.ElementAt(mouse.X, mouse.Y);
+                    SmartEvent new_event = SmartFactory.EventFactory(strEvent);
+                    new_event.Copy(ev);
+                    events.Replace(ev, new_event);
+                    break;
             }
         }
 
         private void scratch1_DragOver(object sender, DragEventArgs e)
         {
-            Point p = scratch1.PointToClient(new Point(e.X, e.Y));
-            DropResult drop_result = DropResult.NONE;
-            string str = (string)e.Data.GetData(DataFormats.StringFormat);
+            mouse = scratch1.PointToClient(new Point(e.X, e.Y));
+            drop_name = (string)e.Data.GetData(DataFormats.StringFormat);
+            dropResult = events.GetDropResult(drop_name, mouse.X, mouse.Y);
 
-            drop_result = events.GetDropResult(str, p.X, p.Y);
-
-            if (drop_result == DropResult.INSERT)
+            if (dropResult == DropResult.INSERT)
                 e.Effect = DragDropEffects.Copy;
-            else if (drop_result == DropResult.NONE)
+            else if (dropResult == DropResult.NONE)
                 e.Effect = DragDropEffects.None;
             else
                 e.Effect = DragDropEffects.Move;
@@ -271,15 +265,24 @@ namespace VisualSAIStudio
             foreach (SmartEvent e in events)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendFormat("({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11} ",
-                    entryorguid, source_type, event_id, (e.GetActions().Count==1?0:event_id+1), e.ID, (int)e.phasemask, e.chance, (int)e.flags, 
+                sb.AppendFormat("({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, ",
+                    "@ENTRY", source_type, event_id, (e.GetActions().Count==1?0:event_id+1), e.ID, (int)e.phasemask, e.chance, (int)e.flags, 
                 e.parameters[0].GetValue(), e.parameters[1].GetValue(), e.parameters[2].GetValue(), e.parameters[3].GetValue());
 
                 SmartAction first_action = e.GetAction(0);
                 sb.AppendFormat("{0}, ", first_action.ID);
                 for (int i = 0; i < 6; i++)
                     sb.AppendFormat("{0}, ", first_action.parameters[i].GetValue());
-                sb.AppendFormat("0, 0, 0, 0, 0, 0, 0, \"{0}\"),", e + " => " + first_action.ToString());
+                sb.AppendFormat("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, \"{8}\"),", 
+                    first_action.target.ID, 
+                    first_action.target.parameters[0],
+                    first_action.target.parameters[1],
+                    first_action.target.parameters[2],
+                    first_action.target.position[0],
+                    first_action.target.position[1],
+                    first_action.target.position[2],
+                    first_action.target.position[3],
+                    e + " - " + first_action.ToString());
                 resres.AppendLine(sb.ToString());
 
                 event_id++;
@@ -288,13 +291,22 @@ namespace VisualSAIStudio
                 {
                     SmartAction action = e.GetAction(index);
                     StringBuilder sb2 = new StringBuilder();
-                    sb2.AppendFormat("({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11} ",
-                    entryorguid, source_type, event_id, (e.GetActions().Count-1==index?0:event_id+1), 61, 0, 100, 0, 
+                    sb2.AppendFormat("({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, ",
+                    "@ENTRY", source_type, event_id, (e.GetActions().Count - 1 == index ? 0 : event_id + 1), 61, 0, 100, 0, 
                         0,0,0,0);
                     sb2.AppendFormat("{0}, ", action.ID);
                     for (int i = 0; i < 6; i++)
                         sb2.AppendFormat("{0}, ", action.parameters[i].GetValue());
-                    sb2.AppendFormat("0, 0, 0, 0, 0, 0, 0, \"{0}\"),", e + " => " + action.ToString());
+                    sb2.AppendFormat("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, \"{8}\"),",
+                        first_action.target.ID,
+                        first_action.target.parameters[0],
+                        first_action.target.parameters[1],
+                        first_action.target.parameters[2],
+                        first_action.target.position[0],
+                        first_action.target.position[1],
+                        first_action.target.position[2],
+                        first_action.target.position[3],
+                        e + " - " + first_action.ToString());
                     resres.AppendLine(sb2.ToString());
                     event_id++;
                 }
@@ -345,7 +357,33 @@ namespace VisualSAIStudio
 
         private void scratch1_Paint(object sender, PaintEventArgs e)
         {
+            if (dropResult != DropResult.INSERT)
+                return;
 
+            if (drop_name.Contains("SMART_EVENT"))
+            {
+                int index = events.GetInsertIndexFromPos(mouse.X, mouse.Y);
+                if (events.Count > 0)
+                {
+                    int y = (index == events.Count ? events[index - 1].rect.Bottom : events[index].rect.Top);
+                    e.Graphics.DrawLine(pen, 0, y, e.ClipRectangle.Width, y);
+                }
+            }
+            else if (drop_name.Contains("SMART_ACTION"))
+            {
+                SmartEvent ev = (SmartEvent)events.ElementAt(mouse.X, mouse.Y);
+                if (ev!=null && ev.actions.Count > 0)
+                {
+                    int index = ev.GetInsertActionIndexFromPos(mouse.X, mouse.Y);
+                    int y = (index == ev.actions.Count ? ev.actions[index - 1].rect.Bottom : ev.actions[index].rect.Top);
+                    e.Graphics.DrawLine(pen, 0, y, e.ClipRectangle.Width, y);
+                }
+            }
+        }
+
+        private void scratch1_DragLeave(object sender, EventArgs e)
+        {
+            dropResult = DropResult.NONE;
         }
     }
 }

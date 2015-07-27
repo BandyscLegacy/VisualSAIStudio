@@ -76,11 +76,10 @@ namespace VisualSAIStudio
             return action;
         }
 
-        public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, Font mini_font, bool setRect = true)
+        public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush default_brush, Pen pen, Font font, Font mini_font, bool setRect = true)
         {
             SizeF size = graphics.MeasureString(ToString(), font);
-
-            brush = Brushes.Black;
+            Brush brush = default_brush;
             graphics.DrawString(ToString(), font, brush, x + 5, y + 3);
 
             if (setRect)
@@ -89,7 +88,6 @@ namespace VisualSAIStudio
             if (selected)
                 graphics.DrawLine(pen, x, y, x, y + size.Height);
 
-            pen.Color = Color.Black;
             return new Size(width, (int)size.Height+6);
         }
 

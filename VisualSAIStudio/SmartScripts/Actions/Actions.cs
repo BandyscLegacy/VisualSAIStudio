@@ -443,7 +443,7 @@ namespace VisualSAIStudio.SmartScripts
     {
         public SMART_ACTION_REMOVEAURASFROMSPELL() : base(28, "SMART_ACTION_REMOVEAURASFROMSPELL")
         {
-            SetParameter(0, new SpellParameter("Spell", "Spell id to remove aura", true));
+            SetParameter(0, new SpellParameter("Spell", "Spell id to remove aura, if 0, all auras will be removed"));
         }
 
         public override string GetReadableString()

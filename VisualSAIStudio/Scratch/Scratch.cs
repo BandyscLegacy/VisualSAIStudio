@@ -35,7 +35,7 @@ namespace VisualSAIStudio
         {
             InitializeComponent();
 
-            brush = Brushes.Black;
+            brush = new SolidBrush(Color.FromArgb(20, 20, 20));
             pen = new Pen(brush);
             font = new Font("Tahoma", 9);
             mini_font = new Font(font.FontFamily, 8);
@@ -89,7 +89,7 @@ namespace VisualSAIStudio
             for (int i = 0; i < elements.Count; ++i)
             {
                 DrawableElement e = elements.Get(i);
-                Size size = e.Draw(graphics, curx, cury, this.Width, this.Height, brush, pen, font, mini_font);
+                Size size = e.Draw(graphics, curx, cury, this.Width + hScrollBar.Maximum, this.Height, brush, pen, font, mini_font);
                 cury += size.Height + 10;
                 if (maxX < size.Width)
                     maxX = size.Width + 10;
@@ -98,35 +98,36 @@ namespace VisualSAIStudio
             if (dragging && selectedElement != null)
             {
                 selectedElement.Draw(graphics, mouse.X, mouse.Y, this.Width, this.Height, brush, pen, font, mini_font, false);
-            }
-
-            if (dragging)
-            {
-                foreach (DrawableElement e in elements)
+                if (elements.Count>1)
                 {
-                    if (mouse.Y > e.rect.Bottom - 10 && mouse.Y < e.rect.Bottom + 10)
-                    {
-                        graphics.DrawLine(pen, 5, e.rect.Bottom + 5, this.Width - 10, e.rect.Bottom + 5);
-                        break;
-                    }
+                    int index = elements.GetInsertIndexFromPos(mouse.X, mouse.Y);
+                    int y = (index == elements.Count ? elements[index - 1].rect.Bottom : elements[index].rect.Top);
+                    graphics.DrawLine(pen, 5, y, this.Width - 10, y);
                 }
             }
+
+
             vScrollBar.Maximum = Math.Max(0, cury - this.Height + startY+20);
             hScrollBar.Maximum = Math.Max(0, maxX - this.Width  + 20);
+            if (vScrollBar.Maximum == 0)
+                vScrollBar.Visible = false;
+            else
+                vScrollBar.Visible = true;
+
+            if (hScrollBar.Maximum == 0)
+                hScrollBar.Visible = false;
+            else
+                hScrollBar.Visible = true;
         }
 
         private void DragDown()
         {
-            for (int i = 0; i < elements.Count; ++i)
-            {
-                DrawableElement element = elements.Get(i);
-                if (element!= selectedElement && mouse.Y > element.rect.Bottom - 10 && mouse.Y < element.rect.Bottom + 10)
-                {
-                    elements.Remove(selectedElement);
-                    elements.Insert(selectedElement, i);
-                    break;
-                }
-            }
+            int index = elements.GetInsertIndexFromPos(mouse.X, mouse.Y);
+            if (elements.IndexOf(selectedElement) < index)
+                index--;
+            elements.Remove(selectedElement);
+            elements.Insert(selectedElement, index);
+
         }
         
         private void Scratch_MouseMove(object sender, MouseEventArgs e)
@@ -140,8 +141,8 @@ namespace VisualSAIStudio
 
         private void Scratch_Load(object sender, EventArgs e)
         {
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            SetStyle(ControlStyles.UserPaint, true);
+            //SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            //SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.DoubleBuffer, true);
         }
@@ -177,11 +178,10 @@ namespace VisualSAIStudio
         private void Scratch_MouseUp(object sender, MouseEventArgs e)
         {
             mousedown = false;
-            if (dragging)
-            {
+            if (dragging && selectedElement != null)
                 DragDown();
-                dragging = false;
-            }
+            
+            dragging = false;
         }
 
         private void vScrollBar_Scroll(object sender, ScrollEventArgs e)

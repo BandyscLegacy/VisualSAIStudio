@@ -9,24 +9,38 @@
     "parameters": [
       {
         "type": "Parameter",
-        "name": "InitialMin",
+        "name": "Initial Minimum",
         "description": ""
       },
       {
         "type": "Parameter",
-        "name": "InitialMax",
+        "name": "Initial Maximum",
         "description": ""
       },
       {
         "type": "Parameter",
-        "name": "RepeatMin",
+        "name": "Repeat Minimum",
         "description": ""
       },
       {
         "type": "Parameter",
-        "name": "RepeatMax",
+        "name": "Repeat Maximum",
         "description": ""
       }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      },
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
     ],
     "description": "When in combat and timer at the begining between {pram1} and {pram2} ms (and later repeats every {pram3} and {pram4} ms)"
   },
@@ -41,24 +55,38 @@
     "parameters": [
       {
         "type": "Parameter",
-        "name": "InitialMin",
+        "name": "Initial Minimum",
         "description": ""
       },
       {
         "type": "Parameter",
-        "name": "InitialMax",
+        "name": "Initial Maximum",
         "description": ""
       },
       {
         "type": "Parameter",
-        "name": "RepeatMin",
+        "name": "Repeat Minimum",
         "description": ""
       },
       {
         "type": "Parameter",
-        "name": "RepeatMax",
+        "name": "Repeat Maximum",
         "description": ""
       }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      },
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
     ],
     "description": "When out of combat and timer at the begining between {pram1} and {pram2} ms (and later repeats every {pram3} and {pram4} ms)"
   },
@@ -81,16 +109,30 @@
       },
       {
         "type": "Parameter",
-        "name": "RepeatMin",
-        "description": ""
+        "name": "Repeat Minimum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       },
       {
         "type": "Parameter",
-        "name": "RepeatMax",
-        "description": ""
+        "name": "Repeat Maximum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       }
     ],
-    "description": "When health between {pram1} and {pram2}"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      },
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "When health between {pram1} and {pram2} (check every {pram3} - {pram4} ms)"
   },
   {
     "id": 3,
@@ -111,16 +153,30 @@
       },
       {
         "type": "Parameter",
-        "name": "RepeatMin",
-        "description": ""
+        "name": "Repeat Minimum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       },
       {
         "type": "Parameter",
-        "name": "RepeatMax",
-        "description": ""
+        "name": "Repeat Maximum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       }
     ],
-    "description": "When mana between {pram1} and {pram2}"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      },
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "When mana between {pram1} and {pram2} (check every {pram3} - {pram4} ms)"
   },
   {
     "id": 4,
@@ -139,26 +195,34 @@
     "parameters": [
       {
         "type": "Parameter",
-        "name": "CooldownMin0",
-        "description": ""
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax1",
-        "description": ""
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "BoolParameter",
         "name": "Player only",
-        "description": ""
+        "description": "If false, only creatures will trigger the event, if true, only player will trigger the event"
       },
       {
-        "type": "Parameter",
-        "name": "else creature entry3",
-        "description": ""
+        "type": "CreatureParameter",
+        "name": "Creature",
+        "description": "Takes into account only if \"Player only\" is True"
       }
     ],
-    "description": "On kill {pram3value:choose(0):creature {pram4}|player}"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      }  
+    ],
+    "description": "On kill {pram3value:choose(0):creature {pram4}|player} {pram1value:choose(0):|(wait {pram1} - {pram2} ms before next trigger of this event)}"
   },
   {
     "id": 6,
@@ -187,25 +251,33 @@
       {
         "type": "SpellParameter",
         "name": "Spell",
-        "description": ""
+        "description": "If 0, any spell will trigger the event"
       },
       {
-        "type": "Parameter",
+        "type": "SpellSchoolParameter",
         "name": "School",
-        "description": ""
+        "description": "School of spell"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMin",
-        "description": ""
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": ""
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "On spell {pram1} hit"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "On {pram1value:choose(0):any spell|spell {pram1}}{pram2value:choose(0):| of school {pram2}} hit {pram3value:choose(0):|(wait {pram3} - {pram4} ms before next trigger)}"
   },
   {
     "id": 9,
@@ -238,13 +310,18 @@
     "conditions": [
       {
         "type": "CompareValue",
-        "compared_parameter_id": 3,
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      },
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
         "compare_to_parameter_id": 4,
         "compare_type": "LOWER_OR_EQUALS",
-        "error": "{compared} has to be higher than {compareto}"
-      }
+      },     
     ],
-    "description": "When victim in range {pram1} - {pram2} yards, check every {pram3} - {pram4} ms"
+    "description": "When victim in range {pram1} - {pram2} yards (check every {pram3} - {pram4} ms)"
   },
   {
     "id": 10,
@@ -254,25 +331,33 @@
     "name": "SMART_EVENT_OOC_LOS",
     "parameters": [
       {
+        "type": "BoolParameter",
+        "name": "No Hostile",
+        "description": "If false, only hostile units will trigger the event"
+      },
+      {
         "type": "Parameter",
-        "name": "NoHostile",
+        "name": "Max distance",
         "description": ""
       },
       {
         "type": "Parameter",
-        "name": "MaxRnage",
-        "description": ""
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "Cooldown Min",
-        "description": "????"
-      },
-      {
-        "type": "Parameter",
-        "name": "Cooldown Max",
-        "description": "????"
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
     ],
     "description": "When {pram1value:choose(0):|non }hostile unit in line of sight (out of combat)"
   },
@@ -335,14 +420,28 @@
       },
       {
         "type": "Parameter",
-        "name": "Repeat Min",
-        "description": ""
+        "name": "Repeat Minimum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       },
       {
         "type": "Parameter",
-        "name": "Repeat Max",
-        "description": ""
+        "name": "Repeat Maximum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      },
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
     ],
     "description": "When victim health between {pram1} - {pram2} (check every {pram3} - {pram4})"
   },
@@ -369,6 +468,14 @@
         "description": "If 0, any spell will trigger the event"
       }
     ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      }
+    ],
     "description": "When victim is casting {pram3value:choose(0):any|}spell{pram3value:choose(0):| {pram3}} (check every {pram3} - {pram4})"
   },
   {
@@ -390,14 +497,22 @@
       },
       {
         "type": "Parameter",
-        "name": "Repeat Min",
-        "description": ""
+        "name": "Repeat Minimum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       },
       {
         "type": "Parameter",
-        "name": "Repeat Max",
-        "description": ""
+        "name": "Repeat Maximum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
     ],
     "description": "When friendly unit in range {pram2} yards has lost more than {pram1} hp (check every {pram3} - {pram4})"
   },
@@ -415,14 +530,22 @@
       },
       {
         "type": "Parameter",
-        "name": "Repeat Min",
-        "description": "Example"
+        "name": "Repeat Minimum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       },
       {
         "type": "Parameter",
-        "name": "Repeat Max",
-        "description": "Example"
+        "name": "Repeat Maximum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 2,
+        "compare_to_parameter_id": 3,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
     ],
     "description": "When friendly unit in range {pram1} yards is either: feared, charmed, stunned, frozen or confused (check every {pram3} - {pram4})"
   },
@@ -445,14 +568,22 @@
       },
       {
         "type": "Parameter",
-        "name": "RepeatMin",
-        "description": ""
+        "name": "Repeat Minimum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       },
       {
         "type": "Parameter",
-        "name": "RepeatMax",
-        "description": ""
+        "name": "Repeat Maximum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
     ],
     "description": "When friendly unit in range {pram2} yards has not got aura {pram1} (check every {pram3} - {pram4})"
   },
@@ -471,16 +602,24 @@
       },
       {
         "type": "Parameter",
-        "name": "CooldownMin",
-        "description": "Example"
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": "Example"
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "On summoned {pram1value:choose(0):any|}unit {pram1value:choose(0):|{pram1}}"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 2,
+        "compare_to_parameter_id": 3,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "On summoned {pram1value:choose(0):any|}unit {pram1value:choose(0):|{pram1}} {pram2value:choose(0):|(wait {pram2} - {pram3} ms before next event trigger)}"
   },
   {
     "id": 18,
@@ -501,14 +640,28 @@
       },
       {
         "type": "Parameter",
-        "name": "RepeatMin",
-        "description": ""
+        "name": "Repeat Minimum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       },
       {
         "type": "Parameter",
-        "name": "RepeatMax",
-        "description": ""
+        "name": "Repeat Maximum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      },
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
     ],
     "description": "When vicitm has mana between {pram1} - {pram2} (check every {pram3} - {pram4})"
   },
@@ -550,7 +703,7 @@
       "Creature"
     ],
     "name": "SMART_EVENT_REACHED_HOME",
-    "description": "When creature reaches home (e.g. after evade)"
+    "description": "When creature reached home (e.g. after evade)"
   },
   {
     "id": 22,
@@ -562,20 +715,29 @@
       {
         "type": "EmoteParameter",
         "name": "Emote",
-        "description": ""
+        "required": true,
+        "description": "Note: \"0\" does NOT mean any emote"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMin",
-        "description": ""
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": ""
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "When emote {pram1} received from player"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 2,
+        "compare_to_parameter_id": 3,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "When emote {pram1} received from player {pram2value:choose(0):|(wait {pram2} - {pram3} ms before next event trigger)}"
   },
   {
     "id": 23,
@@ -596,14 +758,22 @@
       },
       {
         "type": "Parameter",
-        "name": "Repeat Min",
-        "description": ""
+        "name": "Repeat Minimum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       },
       {
         "type": "Parameter",
-        "name": "Repeat Max",
-        "description": ""
+        "name": "Repeat Maximum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
     ],
     "description": "When creature has{pram2value:choose(0):| {pram2} stacks of} aura {pram1} (check every {pram3} - {pram4} ms)"
   },
@@ -628,14 +798,22 @@
       },
       {
         "type": "Parameter",
-        "name": "RepeatMin",
-        "description": ""
+        "name": "Repeat Minimum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       },
       {
         "type": "Parameter",
-        "name": "RepeatMax",
-        "description": ""
+        "name": "Repeat Maximum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       }
+    ],
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
     ],
     "description": "When victim has at least {pram2} stacks of aura {pram1} (check every {pram3} - {pram4})"
   },
@@ -657,7 +835,7 @@
       {
         "type": "BoolParameter",
         "name": "No Hostile",
-        "description": ""
+        "description": "If false, only hostile units will trigger the event"
       },
       {
         "type": "Parameter",
@@ -666,16 +844,24 @@
       },
       {
         "type": "Parameter",
-        "name": "CooldownMin",
-        "description": "???"
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": "???"
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "When {pram1value:choose(0):|non }hostile unit in line of sight (in combat)"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "When {pram1value:choose(0):|non }hostile unit in line of sight (in combat){pram3value:choose(0):| (wait {pram3} - {pram4} ms before next event trigger)}"
   },
   {
     "id": 27,
@@ -686,16 +872,24 @@
     "parameters": [
       {
         "type": "Parameter",
-        "name": "CooldownMin",
-        "description": "???"
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": "???"
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "On passenger boarded (vehicle)"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      }  
+    ],
+    "description": "On passenger boarded (vehicle){pram1value:choose(0):| (wait {pram1} - {pram2} ms before next event trigger)}"
   },
   {
     "id": 28,
@@ -706,16 +900,24 @@
     "parameters": [
       {
         "type": "Parameter",
-        "name": "CooldownMin",
-        "description": "???"
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": "???"
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "On passenger removed (vehicle)"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      }    
+    ],
+    "description": "On passenger removed (vehicle){pram1value:choose(0):| (wait {pram1} - {pram2} ms before next event trigger)}"
   },
   {
     "id": 29,
@@ -752,16 +954,24 @@
       },
       {
         "type": "Parameter",
-        "name": "CooldownMin",
-        "description": "???"
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": "???"
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "When spell {pram1} {pram2value:choose(0):|of school {pram2} } hits a target"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "When spell {pram1} {pram2value:choose(0):|of school {pram2}} hits a target{pram3value:choose(0):| (wait {pram3} - {pram4} ms before next event trigger)}"
   },
   {
     "id": 32,
@@ -778,20 +988,29 @@
       {
         "type": "Parameter",
         "name": "Maximum damage",
+        "required": true,
         "description": "Must be set, or else the event will not trigger."
       },
       {
         "type": "Parameter",
-        "name": "CooldownMin",
-        "description": ""
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": ""
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "When creature damaged by {pram1} - {pram2} HP"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "When creature damaged by {pram1} - {pram2} HP{pram3value:choose(0):| (wait {pram3} - {pram4} ms before next event trigger)}"
   },
   {
     "id": 33,
@@ -803,25 +1022,40 @@
       {
         "type": "Parameter",
         "name": "Minimum damage",
-        "description": ""
+        "description": "Minimum damage to trigger the event"
       },
       {
         "type": "Parameter",
         "name": "Maximum damage",
+        "required": true,
         "description": "Must be set, or else the event will not trigger."
       },
       {
         "type": "Parameter",
-        "name": "CooldownMin",
-        "description": ""
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": ""
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "When creature deal damage to victim between {pram1} - {pram2} HP"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      },
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "When creature deal damage to victim between {pram1} - {pram2} HP{pram3value:choose(0):| (wait {pram3} - {pram4} ms before next event trigger)}"
   },
   {
     "id": 34,
@@ -878,16 +1112,24 @@
       },
       {
         "type": "Parameter",
-        "name": "Cooldown Min",
-        "description": "???"
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "Cooldown Max",
-        "description": "???"
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "On summoned creature {pram1value:choose(0):|{pram1} }despawn"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 2,
+        "compare_to_parameter_id": 3,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "On summoned creature {pram1value:choose(0):|{pram1} }despawn{pram2value:choose(0):| (wait {pram2} - {pram3} ms before next event trigger)}"
   },
   {
     "id": 36,
@@ -926,16 +1168,24 @@
       },
       {
         "type": "Parameter",
-        "name": "Cooldown Min",
-        "description": ""
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "Cooldown Max",
-        "description": ""
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "On data {pram1} set to {pram2}"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "On data {pram1} set to {pram2}{pram3value:choose(0):| (wait {pram3} - {pram4} ms before next event trigger)}"
   },
   {
     "id": 39,
@@ -1045,16 +1295,24 @@
       },
       {
         "type": "Parameter",
-        "name": "CooldownMin",
-        "description": "Example"
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": "Example"
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "On player enetered instance"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 2,
+        "compare_to_parameter_id": 3,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "On player enetered instance{pram2value:choose(0):| (wait {pram2} - {pram3} ms before next event trigger)}"
   },
   {
     "id": 46,
@@ -1106,7 +1364,7 @@
   {
     "id": 51,
     "valid_types": [
-      "Creature"
+      "Quest"
     ],
     "name": "SMART_EVENT_QUEST_FAIL",
     "description": "When player failed quest"
@@ -1151,16 +1409,30 @@
       },
       {
         "type": "Parameter",
-        "name": "CooldownMin",
-        "description": ""
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": ""
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "When creature is healed by {pram1} - {pram2} hp"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      },
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "When creature is healed by {pram1} - {pram2} HP{pram3value:choose(0):| (wait {pram3} - {pram4} ms before next event trigger)}"
   },
   {
     "id": 54,
@@ -1276,22 +1548,22 @@
     "parameters": [
       {
         "type": "Parameter",
-        "name": "InitialMin",
+        "name": "Initial Minimum",
         "description": ""
       },
       {
         "type": "Parameter",
-        "name": "InitialMax",
+        "name": "Initial Maximum",
         "description": ""
       },
       {
         "type": "Parameter",
-        "name": "RepeatMin",
+        "name": "Repeat Minimum",
         "description": ""
       },
       {
         "type": "Parameter",
-        "name": "RepeatMax",
+        "name": "Repeat Maximum",
         "description": ""
       }
     ],
@@ -1387,16 +1659,24 @@
     "parameters": [
       {
         "type": "Parameter",
-        "name": "cooldownMin",
-        "description": "???"
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "CooldownMax",
-        "description": "???"
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "When victim is behind me"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      } 
+    ],
+    "description": "When victim is behind me{pram1value:choose(0):| (wait {pram1} - {pram2} ms before next event trigger)}"
   },
   {
     "id": 68,
@@ -1507,16 +1787,30 @@
       },
       {
         "type": "Parameter",
-        "name": "repeatMin",
-        "description": ""
+        "name": "Repeat Minimum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       },
       {
         "type": "Parameter",
-        "name": "repeatMax",
-        "description": ""
+        "name": "Repeat Maximum",
+        "description": "Core will check whether this event should fire every min - max milliseconds"
       }
     ],
-    "description": "When target has HP between {pram1} - {pram2}"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 1,
+        "compare_to_parameter_id": 2,
+        "compare_type": "LOWER_OR_EQUALS",
+      },
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "When target has HP between {pram1} - {pram2} (check every {pram3} - {pram4} ms)"
   },
   {
     "id": 75,
@@ -1543,7 +1837,7 @@
       {
         "type": "Parameter",
         "name": "Repeat",
-        "description": "Repeat Min = Repeat Max"
+        "description": "Core will check whether the event should fire every [parameter] milliseconds"
       }
     ],
     "description": "When creature {pram1value:choose(0):{pram2}| with guid {pram1}} in range {pram3}"
@@ -1573,7 +1867,7 @@
       {
         "type": "Parameter",
         "name": "Repeat",
-        "description": "Repeat Min = Repeat Max"
+        "description": "Core will check whether the event should fire every [parameter] milliseconds"
       }
     ],
     "description": "When gameobject {pram1value:choose(0):{pram2}| with guid {pram1}} in range {pram3}"
@@ -1598,15 +1892,23 @@
       },
       {
         "type": "Parameter",
-        "name": "cooldownMin",
-        "description": ""
+        "name": "Cooldown Minimum",
+        "description": "If set (along with cooldown max), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       },
       {
         "type": "Parameter",
-        "name": "cooldownMax",
-        "description": ""
+        "name": "Cooldown Maximum",
+        "description": "If set (along with cooldown min), event will NOT trigger more OFTEN than between min - max milliseconds (randomly)"
       }
     ],
-    "description": "On counter {pram1} set to {pram2}"
+    "conditions": [
+      {
+        "type": "CompareValue",
+		"compared_parameter_id": 3,
+        "compare_to_parameter_id": 4,
+        "compare_type": "LOWER_OR_EQUALS",
+      },     
+    ],
+    "description": "On counter {pram1} set to {pram2}{pram3value:choose(0):| (wait {pram3} - {pram4} ms before next event trigger)}"
   }
 ]
