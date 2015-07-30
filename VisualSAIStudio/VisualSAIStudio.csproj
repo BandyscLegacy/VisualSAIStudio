@@ -113,6 +113,12 @@
       <DependentUpon>ErrorsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
+    <Compile Include="Forms\SelectSAI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SelectSAI.Designer.cs">
+      <DependentUpon>SelectSAI.cs</DependentUpon>
+    </Compile>
     <Compile Include="History\EditHistory.cs" />
     <Compile Include="History\OpenedHistory.cs" />
     <Compile Include="DB\ModalEditor.cs" />
@@ -201,6 +207,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ErrorsWindow.resx">
       <DependentUpon>ErrorsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SelectSAI.resx">
+      <DependentUpon>SelectSAI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
