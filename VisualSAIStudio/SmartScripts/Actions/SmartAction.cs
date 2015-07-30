@@ -8,7 +8,7 @@ using VisualSAIStudio.SmartScripts;
 
 namespace VisualSAIStudio
 {
-    public abstract class SmartAction : SmartElement
+    public class SmartAction : SmartElement
     {
         private SmartTarget _target;
         public SmartTarget target
@@ -20,27 +20,13 @@ namespace VisualSAIStudio
             set
             {
                 this._target = value;
-                paramValueChanged(this, new EventArgs());
+                Invalide();
             }
         }
 
-        public SmartAction() : base()
-        {
-            target = new SMART_TARGET_SELF();
-        }
-
-        public SmartAction(int id, string name) : base()
-        {
-            target = new SMART_TARGET_SELF();
-            this.ID = id;
-            this.name = name;
-        }
-
-        protected virtual string GetCpp() { return ""; }
-
-        public string GetCPPCode()
-        {
-            return "";
+        public SmartAction(SmartGenericJSONData data) : base(data) {
+            this.target = new SMART_TARGET_NONE();
+            ParameterValueChanged(this, new EventArgs());
         }
 
         public override void Copy(SmartElement prev)
@@ -65,8 +51,8 @@ namespace VisualSAIStudio
 
         public static SmartAction DeserializeFromArray(string[] array)
         {
-            SmartAction action = SmartFactory.ActionFactory(int.Parse(array[0]));
-            action.target = TargetsFactory.Factory(int.Parse(array[7]));
+            SmartAction action = SmartFactory.GetInstance().ActionFactory(int.Parse(array[0]));
+            action.target = SmartFactory.GetInstance().TargetFactory(int.Parse(array[7]));
             for (int i = 0; i < 6; ++i)
                 action.parameters[i].SetValue(int.Parse(array[i + 1]));
             for (int i = 0; i < 3; ++i)
@@ -91,11 +77,13 @@ namespace VisualSAIStudio
             return new Size(width, (int)size.Height+6);
         }
 
-        protected override void paramValueChanged(object sender, EventArgs e)
+        protected override void ParameterValueChanged(object sender, EventArgs e)
         {
-            if (GetReadableString() == null)
+            if (readable == null || target == null)
                 return;
-            readable = Smart.Format(GetReadableString(), new { target = target.GetReadableString(),
+            output = Smart.Format(readable, new
+            {
+                                                               target = target.ToString(),
                                                                targetcoords = target.GetCoords(), 
                                                                targetid = target.ID,
                                                                pram1 = parameters[0],
@@ -110,21 +98,14 @@ namespace VisualSAIStudio
                                                                pram4value = parameters[3].GetValue(),
                                                                pram5value = parameters[4].GetValue(),
                                                                pram6value = parameters[5].GetValue()});
-            base.paramValueChanged(sender, e);
+            base.ParameterValueChanged(sender, e);
         }
-
-        protected override void UpdateParamsInternal(int index, int value)
-        {
-            this.parameters[index].SetValue(value);
-            paramValueChanged(this, new EventArgs());
-        }
-
 
         public override List<Warning> Validate()
         {
             List<Warning> warnings = base.Validate();
-            if (!(target is SMART_TARGET_NONE || target is SMART_TARGET_SELF) &&
-                !GetReadableString().Contains("{target}") && !GetReadableString().Contains("{targetcoords}")
+            if (!(target.ID == 0 || target.ID == 1) &&
+                !readable.Contains("{target}") && !readable.Contains("{targetcoords}")
                 )
                 warnings.Add(new Warning(WarningType.INVALID_TARGET, "Target will be ignored", this));
 

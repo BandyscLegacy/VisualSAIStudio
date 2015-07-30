@@ -86,7 +86,7 @@ namespace VisualSAIStudio
                     if (Convert.ToInt32(reader["ElseGroup"]) != prevelsegroup)
                         conditions[id].Add(new CONDITION_LOGICAL_OR());
 
-                    SmartCondition cond = ConditionsFactory.Factory(Convert.ToInt32(reader["ConditionTypeOrReference"]));
+                    SmartCondition cond = SmartFactory.GetInstance().ConditionFactory(Convert.ToInt32(reader["ConditionTypeOrReference"]));
                     cond.parameters[0].SetValue(Convert.ToInt32(reader["ConditionValue1"]));
                     cond.parameters[1].SetValue(Convert.ToInt32(reader["ConditionValue2"]));
                     cond.parameters[2].SetValue(Convert.ToInt32(reader["ConditionValue3"]));
@@ -106,9 +106,9 @@ namespace VisualSAIStudio
                     //(`entryorguid`,`source_type`,`id`,`link`,`event_type`,`event_phase_mask`,`event_chance`,`event_flags`,`event_param1`,`event_param2`,`event_param3`,`event_param4`,`action_type`,`action_param1`,`action_param2`,`action_param3`,`action_param4`,`action_param5`,`action_param6`,`target_type`,`target_param1`,`target_param2`,`target_param3`,`target_x`,`target_y`,`target_z`,`target_o`,`comment`)
                     int id = Convert.ToInt32(reader["id"]);
                     int entry = Convert.ToInt32(reader["entryorguid"]);
-                    SmartAction a = SmartFactory.ActionFactory(Convert.ToInt32(reader["action_type"]));
+                    SmartAction a = SmartFactory.GetInstance().ActionFactory(Convert.ToInt32(reader["action_type"]));
                     int asad = Convert.ToInt32(reader["target_type"]);
-                    SmartTarget target = TargetsFactory.Factory(Convert.ToInt32(reader["target_type"]));
+                    SmartTarget target = SmartFactory.GetInstance().TargetFactory(Convert.ToInt32(reader["target_type"]));
 
                     for (int i = 0; i < 6; i++)
                         a.UpdateParams(i, Convert.ToInt32(reader["action_param" + (i + 1)]));
@@ -130,7 +130,7 @@ namespace VisualSAIStudio
                     }
                     else
                     {
-                        SmartEvent ev = SmartFactory.EventFactory(Convert.ToInt32(reader["event_type"]));
+                        SmartEvent ev = SmartFactory.GetInstance().EventFactory(Convert.ToInt32(reader["event_type"]));
                         ev.chance = Convert.ToInt32(reader["event_chance"]);
                         ev.flags = (SmartEventFlag)Convert.ToInt32(reader["event_flags"]);
                         ev.phasemask = (SmartPhaseMask)Convert.ToInt32(reader["event_phase_mask"]);
@@ -185,7 +185,7 @@ namespace VisualSAIStudio
         {
             SmartEvent el = events.EventAt(mouse.X, mouse.Y);
             SmartAction action = (SmartAction)el.GetElementFromPos(mouse.X, mouse.Y);
-            SmartTarget target = TargetsFactory.Factory(str);
+            SmartTarget target = SmartFactory.GetInstance().TargetFactory(str);
             target.UpdateParams(action.target);
             action.target = target;
         }
@@ -197,11 +197,11 @@ namespace VisualSAIStudio
             switch (dropResult)
             {
                 case DropResult.INSERT:
-                    el.InsertCondition(ConditionsFactory.Factory(str), el.GetInsertConditionIndexFromPos(mouse.X, mouse.Y));
+                    el.InsertCondition(SmartFactory.GetInstance().ConditionFactory(str), el.GetInsertConditionIndexFromPos(mouse.X, mouse.Y));
                     break;
                 case DropResult.REPLACE:
                     DrawableElement condition = el.GetElementFromPos(mouse.X, mouse.Y);
-                    el.ReplaceCondition(ConditionsFactory.Factory(str), (SmartCondition)condition);
+                    el.ReplaceCondition(SmartFactory.GetInstance().ConditionFactory(str), (SmartCondition)condition);
                     break;
             }
         }
@@ -212,11 +212,11 @@ namespace VisualSAIStudio
             switch (dropResult)
             {
                 case DropResult.INSERT:
-                    el.InsertAction(SmartFactory.ActionFactory(str), el.GetInsertActionIndexFromPos(mouse.X, mouse.Y));
+                    el.InsertAction(SmartFactory.GetInstance().ActionFactory(str), el.GetInsertActionIndexFromPos(mouse.X, mouse.Y));
                     break;
                 case DropResult.REPLACE:
                     SmartAction action = (SmartAction)el.GetElementFromPos(mouse.X, mouse.Y);
-                    el.ReplaceAction(SmartFactory.ActionFactory(str), action);
+                    el.ReplaceAction(SmartFactory.GetInstance().ActionFactory(str), action);
                     break;
             }
         }
@@ -227,11 +227,11 @@ namespace VisualSAIStudio
             switch (dropResult)
             {
                 case DropResult.INSERT:
-                    events.Insert(SmartFactory.EventFactory(strEvent), events.GetInsertIndexFromPos(mouse.X, mouse.Y));
+                    events.Insert(SmartFactory.GetInstance().EventFactory(strEvent), events.GetInsertIndexFromPos(mouse.X, mouse.Y));
                     break;
                 case DropResult.REPLACE:
                     SmartEvent ev = (SmartEvent)events.ElementAt(mouse.X, mouse.Y);
-                    SmartEvent new_event = SmartFactory.EventFactory(strEvent);
+                    SmartEvent new_event = SmartFactory.GetInstance().EventFactory(strEvent);
                     new_event.Copy(ev);
                     events.Replace(ev, new_event);
                     break;
@@ -325,7 +325,7 @@ namespace VisualSAIStudio
                 for (int j = 0; j < ev.GetActions().Count; ++j)
                 {
                     SmartAction a1 = ev.GetAction(j);
-                    SmartAction a2 = ActionsFactory.Factory(a1.ID);
+                    SmartAction a2 = SmartFactory.GetInstance().ActionFactory(a1.ID);
                     a2.Copy(a1);
 
                     for (int p = 0; p < 6;++p )

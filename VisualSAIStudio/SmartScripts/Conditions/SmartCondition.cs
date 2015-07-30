@@ -15,33 +15,20 @@ namespace VisualSAIStudio
     }
 
 
-    public abstract class SmartCondition : SmartElement
+    public class SmartCondition : SmartElement
     {
-        public string help;
         public bool invert { get; set; }
         public ConditionTarget target { get; set; }
 
-        public SmartCondition(int id, string name, string help)
-        {
-            parameters = new Parameter[3];
-            this.ID = id;
-            this.help = help;
-            this.name = name;
-            for (int i = 0; i < 3;++i )
-                parameters[i] = new NullParameter();
-        }
+        public SmartCondition(int id, string name, string readable) : base(id, name, readable) {  }
 
-        protected override void UpdateParamsInternal(int index, int value)
-        {
-            this.parameters[index].SetValue(value);
-            paramValueChanged(this, new EventArgs());
-        }
+        public SmartCondition(SmartGenericJSONData data) : base(data) { }
 
-        protected override void paramValueChanged(object sender, EventArgs e)
+        protected override void ParameterValueChanged(object sender, EventArgs e)
         {
-            if (GetReadableString() == null)
+            if (readable == null)
                 return;
-            readable = Smart.Format(GetReadableString(), new
+            output = Smart.Format(readable, new
             {
                 target = target,
                 pram1 = parameters[0],
@@ -51,7 +38,7 @@ namespace VisualSAIStudio
                 pram2value = parameters[1].GetValue(),
                 pram3value = parameters[2].GetValue(),
             });
-            base.paramValueChanged(sender, e);
+            base.ParameterValueChanged(sender, e);
         }
 
         public override System.Drawing.Size Draw(System.Drawing.Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, Font mini_font, bool setRect = true)
@@ -67,5 +54,10 @@ namespace VisualSAIStudio
 
             return new Size(width, (int)size.Height + 6);
         }
+    }
+
+    public class CONDITION_LOGICAL_OR : SmartCondition
+    {
+        public CONDITION_LOGICAL_OR() : base(-1, "CONDITION_LOGICAL_OR", "or") { }
     }
 }

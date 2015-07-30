@@ -15,7 +15,9 @@ namespace VisualSAIStudio
         public EventHandler RequestRemove = delegate { };
         public DrawableElement parent;
 
+        public MouseEventHandler MouseUp = delegate { };
         public MouseEventHandler MouseDown = delegate { };
+        public MouseEventHandler MouseMove = delegate { };
         public EventHandler Selected = delegate { };
 
         public bool contains(int x, int y)
@@ -50,5 +52,10 @@ namespace VisualSAIStudio
         public abstract Size Draw(Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, Font mini_font, bool setRect=true);
 
         public abstract Size ComputeSize(Graphics graphics, Font font, Font mini_font);
+
+        public virtual bool IsDraggableArea(int x, int y)
+        {
+            return true;
+        }
     }
 }

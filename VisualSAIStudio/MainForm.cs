@@ -153,7 +153,7 @@ namespace VisualSAIStudio
 
         public void GenerateSQLOutput()
         {
-            txtSQL.Text = scratch.GenerateSQLOutput();
+            scratch.GenerateSQLOutput();
         }
 
         private void textBox8_KeyDown(object sender, KeyEventArgs e)

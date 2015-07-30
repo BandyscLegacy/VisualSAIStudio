@@ -78,26 +78,28 @@ namespace VisualSAIStudio
 
     }
 
-    public abstract class SmartEvent : SmartElement
+    public class SmartEvent : SmartElement
     {
         public event EventHandler ActionSelected = delegate { };
         public List<SmartCondition> conditions = new List<SmartCondition>();
         public List<SmartAction> actions = new List<SmartAction>();
         private ContextMenuStrip contextMenu = new ContextMenuStrip();
         private Point mouse;
+        private bool dragging;
 
         public int chance {get; set;}
         public SmartPhaseMask phasemask { get; set; }
         public SmartEventFlag flags { get; set; }
 
-        public SmartEvent() : this(0, null) {  }
-        public SmartEvent(int id) : this(id, null) {  }
-        public SmartEvent(int id, string name)
+
+        public SmartEvent(SmartGenericJSONData data) : base(data)
         {
-            this.ID = id;
-            this.name = name;
             this.chance = 100;
+
+            /** @TODO: MOVE TO ScratchWindow **/
             this.MouseDown += this_mouseDown;
+            this.MouseUp += this_mouseUp;
+            this.MouseMove += this_mouseMove;
             contextMenu.Items.Add("Copy", null, this_copyEvent);
             contextMenu.Items.Add("Paste", null, this_pasteEvent);
             contextMenu.Items.Add("Cut", null, this_cutEvent);
@@ -230,11 +232,6 @@ namespace VisualSAIStudio
             return 0;
         }
 
-        protected override void UpdateParamsInternal(int index, int value)
-        {
-            this.parameters[index].SetValue(value);
-        }
-
         private void this_cutEvent(object sender, EventArgs e)
         {
             this_copyEvent(sender, e);
@@ -279,8 +276,40 @@ namespace VisualSAIStudio
             {
                 mouse.X = e.X;
                 mouse.Y = e.Y;
-               contextMenu.Show(System.Windows.Forms.Cursor.Position);
+                contextMenu.Show(System.Windows.Forms.Cursor.Position);
             }
+        }
+
+        private void this_mouseUp(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                if (selectedChildren is SmartAction)
+                {
+                    int index = GetInsertActionIndexFromPos(e.X, e.Y);
+                    if (actions.IndexOf((SmartAction)selectedChildren) < index)
+                        index--;
+                    actions.Remove((SmartAction)selectedChildren);
+                    actions.Insert(index, (SmartAction)selectedChildren);
+                }
+                else if (selectedChildren is SmartCondition)
+                {
+                    int index = GetInsertConditionIndexFromPos(e.X, e.Y);
+                    if (conditions.IndexOf((SmartCondition)selectedChildren) < index)
+                        index--;
+                    conditions.Remove((SmartCondition)selectedChildren);
+                    conditions.Insert(index, (SmartCondition)selectedChildren);
+                }
+                dragging = false;
+            }
+        }
+
+        private void this_mouseMove(object sender, MouseEventArgs e)
+        {
+            mouse.X = e.X;
+            mouse.Y = e.Y;
+            if (e.Button == MouseButtons.Left)
+                dragging = true;
         }
 
         public void Copy(SmartEvent prev)
@@ -291,29 +320,14 @@ namespace VisualSAIStudio
             this.chance = prev.chance;
             this.conditions = prev.conditions;
             this.actions = prev.actions;
-            paramValueChanged(this, new EventArgs());
+            ParameterValueChanged(this, new EventArgs());
         }
 
-  
-
-        public string GetCPPCode()
+        protected override void ParameterValueChanged(object sender, EventArgs e)
         {
-            StringBuilder ret = new StringBuilder();
-
-            foreach (DrawableElement child in children)
-            {
-                SmartAction action = (SmartAction)child;
-                ret.AppendLine(action.GetCPPCode());
-            }
-
-            return ret.ToString();
-        }
-
-        protected override void paramValueChanged(object sender, EventArgs e)
-        {
-            if (GetReadableString() == null)
+            if (readable == null)
                 return;
-            readable = Smart.Format(GetReadableString(), new
+            output = Smart.Format(readable, new
             {
                 pram1 = parameters[0],
                 pram2 = parameters[1],
@@ -325,9 +339,9 @@ namespace VisualSAIStudio
                 pram4value = parameters[3].GetValue(),
             });
             if (chance < 100)
-                readable += " (" + chance + "% chance)";
+                output += " (" + chance + "% chance)";
             ChildrenModified(sender, e);
-            base.paramValueChanged(sender, e);
+            base.ParameterValueChanged(sender, e);
         }
 
         public override Size ComputeSize(Graphics graphics, Font font, Font mini_font)
@@ -387,6 +401,9 @@ namespace VisualSAIStudio
                 Size asize = action.Draw(graphics, x + 30, y, width, size.Height, default_brush, pen, font, mini_font, setRect);
                 y += asize.Height;
             }
+
+            if (dragging && selectedChildren != null)
+                selectedChildren.Draw(graphics, mouse.X, mouse.Y, width, height, default_brush, pen, font, mini_font, false);
            
             if (setRect)
                 SetRect(start_pos.X, start_pos.Y, width, size.Height);
@@ -398,6 +415,17 @@ namespace VisualSAIStudio
         {
             ChildrenModified(sender, e);
             Invalide();
+        }
+
+        public override bool IsDraggableArea(int x, int y)
+        {
+            if (conditions.Count > 0 && y < conditions[conditions.Count - 1].rect.Bottom)
+                return false;
+
+            if (actions.Count > 0 && y > actions[0].rect.Top)
+                return false;
+
+            return true;
         }
 
         internal void DragActionPaint(Graphics graphics, Brush brush, Pen pen, int x, int y)

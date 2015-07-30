@@ -4,60 +4,87 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualSAIStudio
+namespace VisualSAIStudio.SmartScripts
 {
     class SmartFactory
     {
-        public static Dictionary<String, SmartGenericJSONData> action_name_data = new Dictionary<string, SmartGenericJSONData>();
-        public static Dictionary<int, SmartGenericJSONData> action_id_data = new Dictionary<int,SmartGenericJSONData>();
 
-        public static Dictionary<String, SmartGenericJSONData> event_name_data = new Dictionary<string, SmartGenericJSONData>();
-        public static Dictionary<int, SmartGenericJSONData> event_id_data = new Dictionary<int, SmartGenericJSONData>();
+        public Dictionary<SmartType, Dictionary<int, SmartGenericJSONData>> smart_id_data = new Dictionary<SmartType, Dictionary<int, SmartGenericJSONData>>();
 
-        private static Dictionary<String, IList<SmartScripts.SAIType>> events_name_types = new Dictionary<string, IList<SmartScripts.SAIType>>();
+        public Dictionary<SmartType, Dictionary<string, int>> smart_name_to_id = new Dictionary<SmartType,Dictionary<string,int>>(); 
 
-        public static void AddAction(SmartGenericJSONData data)
+        private static Dictionary<string, IList<SAIType>> events_name_types = new Dictionary<string, IList<SAIType>>();
+
+        public void Add(SmartType type, SmartGenericJSONData data)
         {
-            action_name_data.Add(data.name, data);
-            action_id_data.Add(data.id, data);
+            if (!smart_id_data.ContainsKey(type))
+            {
+                smart_id_data[type] = new Dictionary<int, SmartGenericJSONData>();
+                smart_name_to_id[type] = new Dictionary<string,int>();
+            }
+
+            smart_id_data[type].Add(data.id, data);
+            smart_name_to_id[type].Add(data.name, data.id);
+
+            if (type == SmartType.SMART_EVENT)
+                events_name_types.Add(data.name, data.valid_types);
         }
 
-        public static void AddEvent(SmartGenericJSONData data)
+        public SmartEvent EventFactory(int id)
         {
-            event_name_data.Add(data.name, data);
-            event_id_data.Add(data.id, data);
-            events_name_types.Add(data.name, data.valid_types);
+            if (smart_id_data.ContainsKey(SmartType.SMART_EVENT) && smart_id_data[SmartType.SMART_EVENT].ContainsKey(id))
+                return new SmartEvent(smart_id_data[SmartType.SMART_EVENT][id]);
+            return null;
         }
-
-        public static SmartEvent EventFactory(string id)
+        public SmartEvent EventFactory(string id)
         {
-            if (event_name_data.ContainsKey(id))
-                return GenericSmartEvent.Factory(event_name_data[id]);
+            if (smart_name_to_id.ContainsKey(SmartType.SMART_EVENT) && smart_name_to_id[SmartType.SMART_EVENT].ContainsKey(id))
+                return EventFactory(smart_name_to_id[SmartType.SMART_EVENT][id]);
             return null;
         }
 
-        public static SmartEvent EventFactory(int id)
+        public SmartCondition ConditionFactory(int id)
         {
-            if (event_id_data.ContainsKey(id))
-                return GenericSmartEvent.Factory(event_id_data[id]);
+            if (smart_id_data.ContainsKey(SmartType.SMART_CONDITION) && smart_id_data[SmartType.SMART_CONDITION].ContainsKey(id))
+                return new SmartCondition(smart_id_data[SmartType.SMART_CONDITION][id]);
+            return null;
+        }
+        public SmartCondition ConditionFactory(string id)
+        {
+            if (smart_name_to_id.ContainsKey(SmartType.SMART_CONDITION) && smart_name_to_id[SmartType.SMART_CONDITION].ContainsKey(id))
+                return ConditionFactory(smart_name_to_id[SmartType.SMART_CONDITION][id]);
             return null;
         }
 
-        public static SmartAction ActionFactory(string id)
+        public SmartTarget TargetFactory(int id)
         {
-            if (action_name_data.ContainsKey(id))
-                return GenericSmartAction.Factory(action_name_data[id]);
-            return ActionsFactory.Factory(id);
+            if (smart_id_data.ContainsKey(SmartType.SMART_TARGET) && smart_id_data[SmartType.SMART_TARGET].ContainsKey(id))
+                return new SmartTarget(smart_id_data[SmartType.SMART_TARGET][id]);
+            return null;
+        }
+        public SmartTarget TargetFactory(string id)
+        {
+            if (smart_name_to_id.ContainsKey(SmartType.SMART_TARGET) && smart_name_to_id[SmartType.SMART_TARGET].ContainsKey(id))
+                return TargetFactory(smart_name_to_id[SmartType.SMART_TARGET][id]);
+            return null;
         }
 
-        public static SmartAction ActionFactory(int id)
+        public SmartAction ActionFactory(int id)
         {
-            if (action_id_data.ContainsKey(id))
-                return GenericSmartAction.Factory(action_id_data[id]);
-            return ActionsFactory.Factory(id);
+            if (smart_id_data.ContainsKey(SmartType.SMART_ACTION) && smart_id_data[SmartType.SMART_ACTION].ContainsKey(id))
+                return new SmartAction(smart_id_data[SmartType.SMART_ACTION][id]);
+            return null;
+        }
+        public SmartAction ActionFactory(string id)
+        {
+            if (smart_name_to_id.ContainsKey(SmartType.SMART_ACTION) && smart_name_to_id[SmartType.SMART_ACTION].ContainsKey(id))
+                return ActionFactory(smart_name_to_id[SmartType.SMART_ACTION][id]);
+            return null;
         }
 
-        public static bool IsValidType(string id, SmartScripts.SAIType saitype)
+
+
+        public bool IsEventValidType(string id, SAIType saitype)
         {
             if (events_name_types.ContainsKey(id))
             {
@@ -66,6 +93,15 @@ namespace VisualSAIStudio
                 return false;
             }
             return true;
+        }
+
+
+        private static SmartFactory instance;
+        public static SmartFactory GetInstance()
+        {
+            if (instance==null)
+                instance = new SmartFactory();
+            return instance;
         }
     }
 }

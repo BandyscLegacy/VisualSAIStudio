@@ -84,6 +84,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\GuidEntry.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,20 +130,14 @@
     </Compile>
     <Compile Include="SmartScripts\SAIType.cs" />
     <Compile Include="SmartScripts\SmartEventsCollection.cs" />
-    <Compile Include="SmartScripts\Actions\Actions.cs" />
     <Compile Include="DB\BinaryFormatExtensions.cs" />
-    <Compile Include="SmartScripts\Actions\ActionsFactory.cs" />
-    <Compile Include="SmartScripts\Conditions\Conditions.cs" />
     <Compile Include="DB\DB2Reader.cs" />
     <Compile Include="DB\DBConnect.cs" />
     <Compile Include="DB\DBCReader.cs" />
     <Compile Include="Scratch\DrawableContainerElement.cs" />
     <Compile Include="Scratch\DrawableElement.cs" />
     <Compile Include="Scratch\DrawableElementsCollection.cs" />
-    <Compile Include="SmartScripts\Conditions\ConditionsFactory.cs" />
     <Compile Include="SmartScripts\SmartFactory.cs" />
-    <Compile Include="SmartScripts\Actions\GenericSmartAction.cs" />
-    <Compile Include="SmartScripts\Events\GenericSmartEvent.cs" />
     <Compile Include="SmartScripts\Conditions\SmartCondition.cs" />
     <Compile Include="SmartScripts\ParameterConditionals\ParameterConditional.cs" />
     <Compile Include="SmartScripts\ParametersConverter.cs" />
@@ -174,8 +169,6 @@
     </Compile>
     <Compile Include="SmartScripts\Targets\SmartTarget.cs" />
     <Compile Include="DB\StringsDB.cs" />
-    <Compile Include="SmartScripts\Targets\Targets.cs" />
-    <Compile Include="SmartScripts\Targets\TargetsFactory.cs" />
     <Compile Include="SmartScripts\Warning.cs" />
     <Compile Include="Forms\SplashScreen.cs">
       <SubType>Form</SubType>
@@ -240,11 +233,19 @@
     <EmbeddedResource Include="Forms\ToolWindow.resx">
       <DependentUpon>ToolWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="data\.database.json" />
+    <None Include="data\actions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="data\database.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="data\custom_actions.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="data\custom_events.json">
+    <None Include="data\events.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="data\targets.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

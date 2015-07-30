@@ -61,7 +61,7 @@ namespace VisualSAIStudio
                 {
                     if ((child.Text.ToLower().Contains(textBox.Text.ToLower()) ||
                        ( child.Tag != null && child.Tag.ToString().ToLower().Contains(textBox.Text.ToLower()))) &&
-                            SmartFactory.IsValidType(child.Tag.ToString(), saitype))
+                            SmartFactory.GetInstance().IsEventValidType(child.Tag.ToString(), saitype))
                     {
                         add = true;
                         parent2.Nodes.Add(child);
@@ -71,7 +71,7 @@ namespace VisualSAIStudio
                 if ((parent2.Text.ToLower().Contains(textBox.Text.ToLower()) && parent2.Nodes.Count > 0) ||
                     (parent2.Tag!= null &&
                     parent2.Tag.ToString().ToLower().Contains(textBox.Text.ToLower()) &&
-                    SmartFactory.IsValidType(parent2.Tag.ToString(), saitype)
+                    SmartFactory.GetInstance().IsEventValidType(parent2.Tag.ToString(), saitype)
                     ))
                 {
                     add = true;

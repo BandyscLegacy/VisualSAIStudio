@@ -19,4 +19,12 @@ namespace VisualSAIStudio.SmartScripts
         Instance = 8, 
         TimedActionList = 9, 
     }
+
+    public enum SmartType
+    {
+        SMART_EVENT,
+        SMART_ACTION,
+        SMART_TARGET,
+        SMART_CONDITION,
+    }
 }

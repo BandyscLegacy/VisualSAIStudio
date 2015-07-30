@@ -134,15 +134,17 @@ namespace VisualSAIStudio
         {
             mouse.X = e.X;
             mouse.Y = e.Y;
-            if (e.Button == MouseButtons.Left && mouse.distance(mouse_start)>10)
+
+            if (selectedElement != null)
+                selectedElement.MouseMove(sender, e);
+
+            if (!dragging && e.Button == MouseButtons.Left && selectedElement !=null && selectedElement.IsDraggableArea(e.X, e.Y) && mouse.distance(mouse_start)>10)
                 dragging = true;
             this.Refresh();
         }
 
         private void Scratch_Load(object sender, EventArgs e)
         {
-            //SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            //SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.DoubleBuffer, true);
         }
@@ -156,23 +158,15 @@ namespace VisualSAIStudio
 
             if (selectedElement != null)
                 selectedElement.setSelected(false);
-            selectedElement = null;
 
-            foreach(DrawableElement element in elements)
-            {
-                if (element.contains(e.X, e.Y))
-                {
-                    element.setSelected(new Point(e.X, e.Y));
-                    selectedElement = element;
-                    ElementSelected(this, new EventArgs());
-                }
-            }
 
-            if (selectedElement != null)
-            {
+            selectedElement = elements.ElementAt(e.X, e.Y);
+
+            if (selectedElement != null) {
+                selectedElement.setSelected(new Point(e.X, e.Y));
                 selectedElement.MouseDown(sender, e);
+                ElementSelected(this, new EventArgs());
             }
-
         }
 
         private void Scratch_MouseUp(object sender, MouseEventArgs e)
@@ -180,9 +174,13 @@ namespace VisualSAIStudio
             mousedown = false;
             if (dragging && selectedElement != null)
                 DragDown();
-            
+
+            if (selectedElement != null)
+                selectedElement.MouseUp(sender, e);
+
             dragging = false;
         }
+
 
         private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
         {

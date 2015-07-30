@@ -1,0 +1,320 @@
+[
+  {
+    "id": 0,
+    "name": "SMART_TARGET_NONE",
+    "description": "Null target"
+  },
+  {
+    "id": 1,
+    "name": "SMART_TARGET_SELF",
+    "description": "Self",
+    "help": "Creature from this script"
+  },
+  {
+    "id": 2,
+    "name": "SMART_TARGET_VICTIM",
+    "description": "Victim",
+    "help": "Our current target (ie: highest aggro)"
+  },
+  {
+    "id": 3,
+    "name": "SMART_TARGET_HOSTILE_SECOND_AGGRO",
+    "description": "Second highest aggro",
+    "help": "Creature with second highest aggro on the threat list"
+  },
+  {
+    "id": 4,
+    "name": "SMART_TARGET_HOSTILE_LAST_AGGRO",
+    "description": "Least aggro",
+    "help": "Creature with least aggro on the threat list"
+  },
+  {
+    "id": 5,
+    "name": "SMART_TARGET_HOSTILE_RANDOM",
+    "description": "Random hostile",
+    "help": "Any random target on our threat list"
+  },
+  {
+    "id": 6,
+    "name": "SMART_TARGET_HOSTILE_RANDOM_NOT_TOP",
+    "description": "Random hostile (not top)",
+    "help": "Any random target except top threat"
+  },
+  {
+    "id": 7,
+    "name": "SMART_TARGET_ACTION_INVOKER",
+    "description": "Action invoker",
+    "help": "Unit who caused the event to occur"
+  },
+  {
+    "id": 8,
+    "name": "SMART_TARGET_POSITION",
+    "description": "({x}, {y}, {z}{o:choose(0):|, {o}})",
+    "help": "Absolute world position, use xyz from event params"
+  },
+  {
+    "id": 9,
+    "name": "SMART_TARGET_CREATURE_RANGE",
+    "parameters": [
+      {
+        "type": "CreatureParameter",
+        "name": "Creature",
+        "description": "Creature Entry to find"
+      },
+      {
+        "type": "Parameter",
+        "name": "Minimum distance",
+      },
+      {
+        "type": "Parameter",
+        "required": true,
+        "name": "Maximum distance",
+      }
+    ],
+    "description": "{pram1value:choose(0):Any creature|Creature {pram1}} in {pram2} - {pram3} yards"
+  },
+  {
+    "id": 10,
+    "name": "SMART_TARGET_CREATURE_GUID",
+    "parameters": [
+      {
+        "type": "CreatureGUIDParameter",
+        "name": "Creature GUID",
+        "description": "Creature GUID to find"
+      },
+      {
+        "type": "CreatureParameter",
+        "name": "Creature Entry",
+        "description": "It is used only to confirm found GUID is of this entry. Can be left to 0."
+      }
+    ],
+    "description": "Creature {pram1}"
+  },
+  {
+    "id": 11,
+    "name": "SMART_TARGET_CREATURE_DISTANCE",
+    "parameters": [
+      {
+        "type": "CreatureParameter",
+        "name": "Creature Entry",
+        "description": "Creature entry to find in given distance"
+      },
+      {
+        "type": "Parameter",
+        "required": true,
+        "name": "Distance",
+      }
+    ],
+    "description": "{pram1value:choose(0):Any creature|Creature {pram1}} in {pram2} yd"
+  },
+  {
+    "id": 12,
+    "name": "SMART_TARGET_STORED",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Variable ID",
+        "description": "Stored through action STORE_TARGET target ID"
+      },
+    ],   
+    "description": "storedTarget[{pram1}]"
+  },
+  {
+    "id": 13,
+    "name": "SMART_TARGET_GAMEOBJECT_RANGE",
+    "parameters": [
+      {
+        "type": "GameobjectParameter",
+        "name": "Gameobject",
+        "description": "Gameobject Entry to find"
+      },
+      {
+        "type": "Parameter",
+        "name": "Minimum distance",
+      },
+      {
+        "type": "Parameter",
+        "required": true,
+        "name": "Maximum distance",
+      }
+    ],
+    "description": "{pram1value:choose(0):Any gameobject|Gameobject {pram1}} in {pram2} - {pram3} yards"
+  },
+  {
+    "id": 14,
+    "name": "SMART_TARGET_GAMEOBJECT_GUID",
+    "parameters": [
+      {
+        "type": "GameobjectGUIDParameter",
+        "name": "Gameobject GUID",
+        "description": "Gameobject GUID to find"
+      },
+      {
+        "type": "GameobjectParameter",
+        "name": "Gameobject Entry",
+        "description": "It is used only to confirm found GUID is of this entry. Can be left to 0."
+      }
+    ],
+    "description": "Gameobject {pram1}"
+  },
+  {
+    "id": 15,
+    "name": "SMART_TARGET_GAMEOBJECT_DISTANCE",
+    "parameters": [
+      {
+        "type": "GameobjectParameter",
+        "name": "Gameobject Entry",
+        "description": "Gameobject entry to find in given distance"
+      },
+      {
+        "type": "Parameter",
+        "required": true,
+        "name": "Distance",
+      }
+    ],
+    "description": "{pram1value:choose(0):Any gameobject|Gameobject {pram1}} in {pram2} yd"
+  },
+  {
+    "id": 16,
+    "name": "SMART_TARGET_INVOKER_PARTY",
+    "description": "Party invoker",
+    "help": "If in group, target will be player who created a party, if not, it will be action invoker"
+  },
+  {
+    "id": 17,
+    "name": "SMART_TARGET_PLAYER_RANGE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Minimum distance",
+      },
+      {
+        "type": "Parameter",
+        "required": true,
+        "name": "Maximum distance",
+      }
+    ],  
+    "description": "Players in {pram1} - {pram2} yards",
+    "help": "Finds *all* players in given range"
+  },
+  {
+    "id": 18,
+    "name": "SMART_TARGET_PLAYER_DISTANCE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "required": true,
+        "name": "Distance",
+      }
+    ],  
+    "description": "Players in {pram1} yards",
+    "help": "Finds *all* players in distance"
+  },
+  {
+    "id": 19,
+    "name": "SMART_TARGET_CLOSEST_CREATURE",
+    "parameters": [
+      {
+        "type": "CreatureParameter",
+        "name": "Creature",
+        "required": true,
+        "description": "Creature Entry to find"
+      },
+      {
+        "type": "Parameter",
+        "name": "Distance",
+        "description": "Maximum distance to check for creature. If 0, will find in 100 yards, but it is not recommended"
+      },
+      {
+        "type": "BoolParameter",
+        "name": "Dead",
+        "description": "If true, only dead creatures will be returned. If false, only alive creatures will be returned."
+      }
+    ],
+    "description": "Closest {pram3value:choose(0):alive|dead} creature {pram1} in {pram2value:choose(0):100|{pram2}} yards"
+  },
+  {
+    "id": 20,
+    "name": "SMART_TARGET_CLOSEST_GAMEOBJECT",
+    "parameters": [
+      {
+        "type": "GameobjectParameter",
+        "name": "Gameobject",
+        "required": true,
+        "description": "Gameobject Entry to find"
+      },
+      {
+        "type": "Parameter",
+        "name": "Distance",
+        "description": "Maximum distance to check for gameobject. If 0, will find in 100 yards, but it is not recommended"
+      }
+    ],
+    "description": "Closest gameobject {pram1} in {pram2value:choose(0):100|{pram2}} yards"
+  },
+  {
+    "id": 21,
+    "name": "SMART_TARGET_CLOSEST_PLAYER",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Distance",
+        "description": "Maximum distance to check for player."
+      }
+    ],
+    "description": "Closest player in {pram1} yards"
+  },
+  {
+    "id": 22,
+    "name": "SMART_TARGET_ACTION_INVOKER_VEHICLE",
+    "description": "Invoker's vehicle",
+    "help": "Unit's vehicle who caused this event to occur"
+  },
+  {
+    "id": 23,
+    "name": "SMART_TARGET_OWNER_OR_SUMMONER",
+    "description": "Owner/Summoner",
+    "help": "Unit's owner or summoner. Keep in mind in action Summon Creature, target is NOT summoner, the summoner is still SAI creature"
+  },
+  {
+    "id": 24,
+    "name": "SMART_TARGET_THREAT_LIST",
+    "description": "Threat list",
+    "help": "All units on creature's threat list"
+  },
+  {
+    "id": 25,
+    "name": "SMART_TARGET_CLOSEST_ENEMY",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Distance",
+        "required": true,
+        "description": "Maximum distance to check for enemy"
+      },
+      {
+        "type": "BoolParameter",
+        "name": "Player only",
+        "description": "If true, only players will be returned"
+      }      
+    ],
+    "description": "Closest enemy {pram2value:choose(0):creature|player} in {pram1} yards"
+  },
+  {
+    "id": 26,
+    "name": "SMART_TARGET_CLOSEST_FRIENDLY",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Distance",
+        "required": true,
+        "description": "Maximum distance to check for friendly unit"
+      },
+      {
+        "type": "BoolParameter",
+        "name": "Player only",
+        "description": "If true, only players will be returned"
+      }      
+    ],
+    "description": "Closest friendly {pram2value:choose(0):creature|player} in {pram1} yards"
+  },
+]

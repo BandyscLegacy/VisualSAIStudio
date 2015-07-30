@@ -12,16 +12,29 @@ namespace VisualSAIStudio
     public abstract class SmartElement : DrawableContainerElement
     {
         protected List<ParameterConditional> conditionals = new List<ParameterConditional>();
+        protected string output;
+        protected string readable;
+
         public Parameter[] parameters { get; set; }
         public int ID { get; set; }
-        protected string readable;
         public string name;
 
-        public SmartElement()
+
+        public SmartElement(int ID, string name, string readable)
         {
+            this.ID = ID;
+            this.name = name;
+            this.readable = readable;
             parameters = new Parameter[6];
             for (int i = 0; i < 6; ++i)
                 SetParameter(i, new NullParameter(), false);
+        }
+
+        public SmartElement(SmartGenericJSONData data) : this(data.id, data.name, data.description)
+        {
+            AddParameters(data.parameters);
+            AddConditionals(data.conditions);
+            ParameterValueChanged(this, new EventArgs());
         }
 
         public void SetParameter(int index, Parameter parameter, bool invalide = true)
@@ -39,7 +52,7 @@ namespace VisualSAIStudio
             this.conditionals.Add(conditional);
         }
 
-        protected virtual void paramValueChanged(object sender, EventArgs e)
+        protected virtual void ParameterValueChanged(object sender, EventArgs e)
         {
             RequestUpdate(sender, e);
         }
@@ -53,7 +66,7 @@ namespace VisualSAIStudio
 
         public void Invalide()
         {
-            paramValueChanged(this, new EventArgs());
+            ParameterValueChanged(this, new EventArgs());
         }
 
         public virtual List<Warning> Validate()
@@ -76,7 +89,7 @@ namespace VisualSAIStudio
 
         public virtual void UpdateParams(int index, int value)
         {
-            UpdateParamsInternal(index, value);
+            this.parameters[index].SetValue(value);
             Invalide();
         }
 
@@ -125,13 +138,9 @@ namespace VisualSAIStudio
             }
         }
 
-        protected abstract void UpdateParamsInternal(int index, int value);
-
-        public abstract string GetReadableString();
-
         public override string ToString()
         {
-            return readable;
+            return output;
         }
     }
 

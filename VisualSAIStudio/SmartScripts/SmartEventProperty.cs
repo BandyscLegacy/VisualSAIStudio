@@ -187,7 +187,7 @@ namespace VisualSAIStudio.SmartScripts
         public float target_x
         {
             get { return ((SmartAction)element).target.position[0]; }
-            set { action.target.position[0] = value; action.Invalide(); }
+            set { action.target.position[0] = value; action.target.Invalide(); action.Invalide(); }
         }
 
         [CategoryAttribute("Target Position"),
@@ -195,7 +195,7 @@ namespace VisualSAIStudio.SmartScripts
         public float target_y
         {
             get { return ((SmartAction)element).target.position[1]; }
-            set { action.target.position[1] = value; action.Invalide(); }
+            set { action.target.position[1] = value; action.target.Invalide();  action.Invalide(); }
         }
 
         [CategoryAttribute("Target Position")]
@@ -203,7 +203,7 @@ namespace VisualSAIStudio.SmartScripts
         public float target_z
         {
             get { return ((SmartAction)element).target.position[2]; }
-            set { action.target.position[2] = value; action.Invalide(); }
+            set { action.target.position[2] = value; action.target.Invalide(); action.Invalide(); }
         }
 
         [CategoryAttribute("Target Position")]
@@ -211,7 +211,7 @@ namespace VisualSAIStudio.SmartScripts
         public float target_o
         {
             get { return ((SmartAction)element).target.position[3]; }
-            set { action.target.position[3] = value; action.Invalide(); }
+            set { action.target.position[3] = value; action.target.Invalide(); action.Invalide(); }
         }
 
 
@@ -222,7 +222,7 @@ namespace VisualSAIStudio.SmartScripts
         public int targetpram1
         {
             get { return ((SmartAction)element).target.parameters[0].GetValue(); }
-            set { ((SmartAction)element).target.parameters[0].SetValue(value); element.Invalide(); }
+            set { ((SmartAction)element).target.UpdateParams(0, value); element.Invalide(); }
         }
 
         [CategoryAttribute("Target"),
@@ -231,7 +231,7 @@ namespace VisualSAIStudio.SmartScripts
         public int targetpram2
         {
             get { return ((SmartAction)element).target.parameters[1].GetValue(); }
-            set { ((SmartAction)element).target.parameters[1].SetValue(value); element.Invalide(); }
+            set { ((SmartAction)element).target.UpdateParams(1, value); element.Invalide(); }
         }
 
         [CategoryAttribute("Target")]
@@ -240,7 +240,7 @@ namespace VisualSAIStudio.SmartScripts
         public int targetpram3
         {
             get { return ((SmartAction)element).target.parameters[2].GetValue(); }
-            set { ((SmartAction)element).target.parameters[2].SetValue(value); element.Invalide(); }
+            set { ((SmartAction)element).target.UpdateParams(2, value); element.Invalide(); }
         }
 
 

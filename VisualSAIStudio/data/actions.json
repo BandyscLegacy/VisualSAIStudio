@@ -1,0 +1,1958 @@
+[
+  {
+    "id": 0,
+    "name": "SMART_ACTION_NONE",
+    "description": "Do nothing"
+  },
+
+  {
+    "id": 1,
+    "name": "SMART_ACTION_TALK",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Group ID",
+        "description": "Group id from table creature_text. Random text will be said if multiple rows with the same group"
+      },
+      {
+        "type": "Parameter",
+        "name": "Delay",
+        "description": "Duration to wait before TEXT_OVER event is triggered"
+      }
+    ],
+    "description": "{target}: Talk {pram1}"
+  },
+
+  {
+    "id": 2,
+    "name": "SMART_ACTION_SET_FACTION",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Faction Id",
+        "description": "Use 0 to reset"
+      }
+    ],
+    "description": "{target}: {pram1value:choose(0):Reset faction|Set faction to {pram1}}"
+  },
+
+  {
+    "id": 3,
+    "name": "SMART_ACTION_MORPH_TO_ENTRY_OR_MODEL",
+    "parameters": [
+      {
+        "type": "CreatureParameter",
+        "name": "Creature",
+        "description": "Use 0 for both to reset"
+      },
+      {
+        "type": "Parameter",
+        "name": "Model id",
+        "description": "Use 0 for both to reset"
+      }
+    ],
+    "description": "{target}: {pram1value:choose(0):{pram2value:choose(0):Demorph|Morph to model {pram2}}|{pram2value:choose(0):Morph to model from creature {pram1}|Invalid morph ({pram1}, {pram2}}}"
+  },
+
+  {
+    "id": 4,
+    "name": "SMART_ACTION_SOUND",
+    "parameters": [
+      {
+        "type": "SoundParameter",
+        "name": "Sound ID"
+      },
+      {
+        "type": "BoolParameter",
+        "name": "Only to self",
+        "description": "True - only target will hear the sound, false - everyone in visibility range will hear the sound"
+      }
+    ],
+    "description": "Play sound {pram1} to {pram2value:choose(0):every player in visibility range of {target}|{target}}"
+  },
+
+  {
+    "id": 5,
+    "name": "SMART_ACTION_PLAY_EMOTE",
+    "parameters": [
+      {
+        "type": "EmoteParameter",
+        "name": "Emote ID",
+        "description": "Emote id to play"
+      }
+    ],
+    "description": "{target}: Play emote {pram1}"
+  },
+
+  {
+    "id": 6,
+    "name": "SMART_ACTION_FAIL_QUEST",
+    "parameters": [
+      {
+        "type": "QuestParameter",
+        "name": "Quest ID",
+        "description": "Quest ID to mark as failed. Only for players"
+      }
+    ],
+    "description": "{target}: Fail quest {pram1}"
+  },
+
+  {
+    "id": 7,
+    "name": "SMART_ACTION_ADD_QUEST",
+    "parameters": [
+      {
+        "type": "QuestParameter",
+        "name": "Quest ID",
+        "description": "Add quest, only for players"
+      }
+    ],
+    "description": "{target}: Add quest {pram1}"
+  },
+
+  {
+    "id": 8,
+    "name": "SMART_ACTION_SET_REACT_STATE",
+    "parameters": [
+      {
+        "type": "SwitchParameter",
+        "name": "ReactState",
+        "values": {
+          "0": {"name": "REACT_PASSIVE"},
+          "1": {"name": "REACT_DEFENSIVE"},
+          "2": {"name": "REACT_AGGRESSIVE"}
+        }
+      }
+    ],    
+    "description": "{target}: Set react state to {pram1}"
+  },
+
+  {
+    "id": 9,
+    "name": "SMART_ACTION_ACTIVATE_GOBJECT",
+    "description": "{target}: Activate (only gameobject)"
+  },
+
+  {
+    "id": 10,
+    "name": "SMART_ACTION_RANDOM_EMOTE",
+    "parameters": [
+      {
+        "type": "EmoteParameter",
+        "name": "Emote 1",
+        "description": "If 0, the emote will be skipped"
+      },
+      {
+        "type": "EmoteParameter",
+        "name": "Emote 2",
+        "description": "If 0, the emote will be skipped"
+      },
+      {
+        "type": "EmoteParameter",
+        "name": "Emote 3",
+        "description": "If 0, the emote will be skipped"
+      },
+      {
+        "type": "EmoteParameter",
+        "name": "Emote 4",
+        "description": "If 0, the emote will be skipped"
+      },
+      {
+        "type": "EmoteParameter",
+        "name": "Emote 5",
+        "description": "If 0, the emote will be skipped"
+      },
+      {
+        "type": "EmoteParameter",
+        "name": "Emote 6",
+        "description": "If 0, the emote will be skipped"
+      }
+    ],
+    "description": "{target}: Play random emote: {pram1value:choose(0):|{pram1}, }{pram2value:choose(0):|{pram2}, }{pram3value:choose(0):|{pram3}, }{pram4value:choose(0):|{pram4}, }{pram5value:choose(0):|{pram5}, }{pram6value:choose(0):|{pram6}}"
+  },
+
+  {
+    "id": 11,
+    "name": "SMART_ACTION_CAST",
+    "parameters": [
+      {
+        "type": "SpellParameter",
+        "name": "Spell",
+        "description": "Spell id to cast"
+      },
+      {
+        "type": "CastFlagsParameter",
+        "name": "Cast Flags"
+      }
+    ],
+    "description": "Self: Cast spell {pram1} on {target}"
+  },
+
+  {
+    "id": 12,
+    "name": "SMART_ACTION_SUMMON_CREATURE",
+    "parameters": [
+      {
+        "type": "CreatureParameter",
+        "name": "Creature",
+        "description": "Creature Entry to summon"
+      },
+      {
+        "type": "SummonTypeParameter",
+        "name": "Summon Type"
+      },
+      {
+        "type": "Parameter",
+        "name": "Duration",
+        "description": "In ms"
+      },
+      {
+        "type": "Parameter",
+        "name": "Storage ID",
+        "description": "Target variable id to store summoned creature"
+      },
+      {
+        "type": "BoolParameter",
+        "name": "Attack Invoker"
+      }
+    ],
+    "description": "Self: Summon creature {pram1} at {targetid:choose(8):{targetcoords}|{target}, moved by offset {targetcoords}}{pram5value:choose(0):| and attack {target}}"
+  },
+
+  {
+    "id": 13,
+    "name": "SMART_ACTION_THREAT_SINGLE_PCT",
+    "parameters": [
+      {
+        "type": "PercentageParameter",
+        "name": "Increment",
+        "description": "Modify threat of target by %"
+      },
+      {
+        "type": "PercentageParameter",
+        "name": "Decrement",
+        "description": "Modify threat of target by %"
+      }
+    ],
+    "description": "Self: {pram1value:choose(0):Decrement|Increment} threat of {target} by {pram1value:choose(0):{pram2}|{pram1}}"
+  },
+
+  {
+    "id": 14,
+    "name": "SMART_ACTION_THREAT_ALL_PCT",
+    "parameters": [
+      {
+        "type": "PercentageParameter",
+        "name": "Increment",
+        "description": "Modify threat of all units in threat list by %"
+      },
+      {
+        "type": "PercentageParameter",
+        "name": "Decrement",
+        "description": "Modify threat of all units in threat list by %"
+      }
+    ],
+    "description": "Self: {pram1value:choose(0):Decrement|Increment} threat of all units in threat list by {pram1value:choose(0):{pram2}|{pram1}}"
+  },
+
+  {
+    "id": 15,
+    "name": "SMART_ACTION_CALL_AREAEXPLOREDOREVENTHAPPENS",
+    "parameters": [
+      {
+        "type": "QuestParameter",
+        "name": "Quest ID",
+        "description": "Trigger quest group event. Also complete the quest"
+      }
+    ],
+    "description": "{target}: Call quest {pram1} group event happened"
+  },
+
+
+  {
+    "id": 16,
+    "name": "SMART_ACTION_SET_INGAME_PHASE_GROUP",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Phase ID",
+        "description": "This is actual unit phase"
+      }
+    ],
+    "description": "{target}: Set phase {pram1}"
+  },
+
+  {
+    "id": 17,
+    "name": "SMART_ACTION_SET_EMOTE_STATE",
+    "parameters": [
+      {
+        "type": "EmoteParameter",
+        "name": "Emote ID"
+      }
+    ],
+    "description": "{target}: Set emote state (UNIT_NPC_EMOTESTATE) to {pram1}"
+  },
+
+  {
+    "id": 18,
+    "name": "SMART_ACTION_SET_UNIT_FLAG",
+    "parameters": [
+       {
+        "type": "FlagParameter",
+        "name": "Flags",
+        "values": {
+          "1": {"name": "UNIT_FLAG_SERVER_CONTROLLED", "description": "set only when unit movement is controlled by server - by SPLINE/MONSTER_MOVE packets, together with UNIT_FLAG_STUNNED; only set to units controlled by client; client function CGUnit_C::IsClientControlled returns false when set for owner"},
+          "2": {"name": "UNIT_FLAG_NON_ATTACKABLE", "description": "not attackable"},
+          "4": {"name": "UNIT_FLAG_DISABLE_MOVE"},
+          "8": {"name": "UNIT_FLAG_PVP_ATTACKABLE", "description": "allow apply pvp rules to attackable state in addition to faction dependent state"},
+          "16": {"name": "UNIT_FLAG_RENAME"},
+          "32": {"name": "UNIT_FLAG_PREPARATION", "description": "don't take reagents for spells with SPELL_ATTR5_NO_REAGENT_WHILE_PREP"},
+          "64": {"name": "UNIT_FLAG_UNK_6"},
+          "128": {"name": "UNIT_FLAG_NOT_ATTACKABLE_1", "description": "?? (UNIT_FLAG_PVP_ATTACKABLE | UNIT_FLAG_NOT_ATTACKABLE_1) is NON_PVP_ATTACKABLE"},
+          "256": {"name": "UNIT_FLAG_IMMUNE_TO_PC", "description": "disables combat/assistance with PlayerCharacters (PC) - see Unit::_IsValidAttackTarget, Unit::_IsValidAssistTarget"},
+          "512": {"name": "UNIT_FLAG_IMMUNE_TO_NPC", "description": "disables combat/assistance with NonPlayerCharacters (NPC) - see Unit::_IsValidAttackTarget, Unit::_IsValidAssistTarget"},
+          "1024": {"name": "UNIT_FLAG_LOOTING", "description": "loot animation"},
+          "2048": {"name": "UNIT_FLAG_PET_IN_COMBAT", "description": "in combat?, 2.0.8"},
+          "4096": {"name": "UNIT_FLAG_PVP", "description": "changed in 3.0.3"},
+          "8192": {"name": "UNIT_FLAG_SILENCED"},
+          "16384": {"name": "UNIT_FLAG_UNK_14", "description": "2.0.8"},
+          "32768": {"name": "UNIT_FLAG_UNK_15"},
+          "65536": {"name": "UNIT_FLAG_UNK_16"},
+          "131072": {"name": "UNIT_FLAG_PACIFIED"},
+          "262144": {"name": "UNIT_FLAG_STUNNED"},
+          "524288": {"name": "UNIT_FLAG_IN_COMBAT"},
+          "1048576": {"name": "UNIT_FLAG_TAXI_FLIGHT", "description": "disable casting at client side spell not allowed by taxi flight (mounted?), probably used with 0x4 flag"},
+          "2097152": {"name": "UNIT_FLAG_DISARMED", "description": "3.0.3, disable melee spells casting..., \"Required melee weapon\" added to melee spells tooltip."},
+          "4194304": {"name": "UNIT_FLAG_CONFUSED"},
+          "8388608": {"name": "UNIT_FLAG_FLEEING"},
+          "16777216": {"name": "UNIT_FLAG_PLAYER_CONTROLLED", "description": "used in spell Eyes of the Beast for pet... let attack by controlled creature"},
+          "33554432": {"name": "UNIT_FLAG_NOT_SELECTABLE"},
+          "67108864": {"name": "UNIT_FLAG_SKINNABLE"},
+          "134217728": {"name": "UNIT_FLAG_MOUNT"},
+          "268435456": {"name": "UNIT_FLAG_UNK_28"},
+          "536870912": {"name": "UNIT_FLAG_UNK_29", "description": "used in Feing Death spell"},
+          "1073741824": {"name": "UNIT_FLAG_SHEATHE"}
+         }
+       },    
+       {
+        "type": "SwitchParameter",
+        "name": "Type",
+        "values": {
+          "0": {"name": "UNIT_FLAGS"},
+          "1": {"name": "UNIT_FLAGS_2"}
+        }
+      }
+    ],   
+    "description": "{target}: Set {pram2value:choose(0):UNIT_FLAGS to {pram1}|UNIT_FLAGS_2 to {pram1value}}"
+  },
+
+  {
+    "id": 19,
+    "name": "SMART_ACTION_REMOVE_UNIT_FLAG",
+    "parameters": [
+       {
+        "type": "FlagParameter",
+        "name": "Flags",
+        "values": {
+          "1": {"name": "UNIT_FLAG_SERVER_CONTROLLED", "description": "set only when unit movement is controlled by server - by SPLINE/MONSTER_MOVE packets, together with UNIT_FLAG_STUNNED; only set to units controlled by client; client function CGUnit_C::IsClientControlled returns false when set for owner"},
+          "2": {"name": "UNIT_FLAG_NON_ATTACKABLE", "description": "not attackable"},
+          "4": {"name": "UNIT_FLAG_DISABLE_MOVE"},
+          "8": {"name": "UNIT_FLAG_PVP_ATTACKABLE", "description": "allow apply pvp rules to attackable state in addition to faction dependent state"},
+          "16": {"name": "UNIT_FLAG_RENAME"},
+          "32": {"name": "UNIT_FLAG_PREPARATION", "description": "don't take reagents for spells with SPELL_ATTR5_NO_REAGENT_WHILE_PREP"},
+          "64": {"name": "UNIT_FLAG_UNK_6"},
+          "128": {"name": "UNIT_FLAG_NOT_ATTACKABLE_1", "description": "?? (UNIT_FLAG_PVP_ATTACKABLE | UNIT_FLAG_NOT_ATTACKABLE_1) is NON_PVP_ATTACKABLE"},
+          "256": {"name": "UNIT_FLAG_IMMUNE_TO_PC", "description": "disables combat/assistance with PlayerCharacters (PC) - see Unit::_IsValidAttackTarget, Unit::_IsValidAssistTarget"},
+          "512": {"name": "UNIT_FLAG_IMMUNE_TO_NPC", "description": "disables combat/assistance with NonPlayerCharacters (NPC) - see Unit::_IsValidAttackTarget, Unit::_IsValidAssistTarget"},
+          "1024": {"name": "UNIT_FLAG_LOOTING", "description": "loot animation"},
+          "2048": {"name": "UNIT_FLAG_PET_IN_COMBAT", "description": "in combat?, 2.0.8"},
+          "4096": {"name": "UNIT_FLAG_PVP", "description": "changed in 3.0.3"},
+          "8192": {"name": "UNIT_FLAG_SILENCED"},
+          "16384": {"name": "UNIT_FLAG_UNK_14", "description": "2.0.8"},
+          "32768": {"name": "UNIT_FLAG_UNK_15"},
+          "65536": {"name": "UNIT_FLAG_UNK_16"},
+          "131072": {"name": "UNIT_FLAG_PACIFIED"},
+          "262144": {"name": "UNIT_FLAG_STUNNED"},
+          "524288": {"name": "UNIT_FLAG_IN_COMBAT"},
+          "1048576": {"name": "UNIT_FLAG_TAXI_FLIGHT", "description": "disable casting at client side spell not allowed by taxi flight (mounted?), probably used with 0x4 flag"},
+          "2097152": {"name": "UNIT_FLAG_DISARMED", "description": "3.0.3, disable melee spells casting..., \"Required melee weapon\" added to melee spells tooltip."},
+          "4194304": {"name": "UNIT_FLAG_CONFUSED"},
+          "8388608": {"name": "UNIT_FLAG_FLEEING"},
+          "16777216": {"name": "UNIT_FLAG_PLAYER_CONTROLLED", "description": "used in spell Eyes of the Beast for pet... let attack by controlled creature"},
+          "33554432": {"name": "UNIT_FLAG_NOT_SELECTABLE"},
+          "67108864": {"name": "UNIT_FLAG_SKINNABLE"},
+          "134217728": {"name": "UNIT_FLAG_MOUNT"},
+          "268435456": {"name": "UNIT_FLAG_UNK_28"},
+          "536870912": {"name": "UNIT_FLAG_UNK_29", "description": "used in Feing Death spell"},
+          "1073741824": {"name": "UNIT_FLAG_SHEATHE"}
+         }
+       },    
+       {
+        "type": "SwitchParameter",
+        "name": "Type",
+        "values": {
+          "0": {"name": "UNIT_FLAGS"},
+          "1": {"name": "UNIT_FLAGS_2"}
+        }
+      }
+    ], 
+    "description": "{target}: Remove {pram2value:choose(0):UNIT_FLAGS to {pram1}|UNIT_FLAGS_2 to {pram1value}}"
+  },
+
+  {
+    "id": 20,
+    "name": "SMART_ACTION_AUTO_ATTACK",
+    "parameters": [
+      {
+        "type": "BoolParameter",
+        "name": "Allow Attack State",
+        "description": "0 = stop attack, 1 = attack"
+      }
+    ],
+    "description": "Self: {pram1value:choose(0):Disable|Enable} auto attack"
+  },
+
+  {
+    "id": 21,
+    "name": "SMART_ACTION_ALLOW_COMBAT_MOVEMENT",
+    "parameters": [
+      {
+        "type": "BoolParameter",
+        "name": "Allow Combat Movement",
+        "description": "0 = stop combat based movement, 1 = enable combat movement"
+      }
+    ],
+    "description": "Self: {pram1value:choose(0):Disable|Enable} combat based movement"
+  },
+
+  {
+    "id": 22,
+    "name": "SMART_ACTION_SET_EVENT_PHASE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Phase",
+        "description": "Note: This is Smart AI event phase, not actual creature phasemask"
+      }
+    ],
+    "description": "Self: Set event phase to {pram1}"
+  },
+
+  {
+    "id": 23,
+    "name": "SMART_ACTION_INC_EVENT_PHASE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Increment"
+      },
+      {
+        "type": "Parameter",
+        "name": "Decrement"
+      }
+    ],
+    "description": "Self: Increment phase by {pram1} and decrement by {pram2}"
+  },
+
+  {
+    "id": 24,
+    "name": "SMART_ACTION_EVADE",
+    "description": "Self: Evade"
+  },
+
+  {
+    "id": 25,
+    "name": "SMART_ACTION_FLEE_FOR_ASSIST",
+    "parameters": [
+      {
+        "type": "EmoteParameter",
+        "name": "With Emote",
+        "description": "If set, creature will flee for assist with emote"
+      }
+    ],
+    "description": "Self: Flee for assist"
+  },
+
+  {
+    "id": 26,
+    "name": "SMART_ACTION_CALL_GROUPEVENTHAPPENS",
+    "parameters": [
+      {
+        "type": "QuestParameter",
+        "name": "Quest"
+      }
+    ],
+    "description": "{target}: Call event happened from quest {pram1} for the whole group"
+  },
+
+  {
+    "id": 28,
+    "name": "SMART_ACTION_REMOVEAURASFROMSPELL",
+    "parameters": [
+      {
+        "type": "SpellParameter",
+        "name": "Spell",
+        "description": "Spell id to remove aura, if 0, all auras will be removed"
+      }
+    ],
+    "description": "{target}: {pram1value:choose(0):Remove all auras|Remove aura due to spell {pram1}}"
+  },
+
+  {
+    "id": 29,
+    "name": "SMART_ACTION_FOLLOW",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Distance",
+        "description": "0 = default"
+      },
+      {
+        "type": "Parameter",
+        "name": "Angle",
+        "description": "0 = default"
+      },
+      {
+        "type": "Parameter",
+        "name": "EndCreatureEntry"
+      },
+      {
+        "type": "Parameter",
+        "name": "Credit"
+      },
+      {
+        "type": "SwitchParameter",
+        "name": "Credit Type",
+        "values": {
+          "0": {"name": "Monster kill", "description": "Kill credit from parameter `credit` will be counted up"},
+          "1": {"name": "Event", "description": "has to be checked what it is"}
+        }
+      }
+    ],
+    "description": "Self: Follow {target} by distance {pram1}, angle {pram2}"
+  },
+
+  {
+    "id": 30,
+    "name": "SMART_ACTION_RANDOM_PHASE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Phase Id 1"
+      },
+      {
+        "type": "Parameter",
+        "name": "Phase Id 2"
+      },
+      {
+        "type": "Parameter",
+        "name": "Phase Id 3"
+      },
+      {
+        "type": "Parameter",
+        "name": "Phase Id 4"
+      },
+      {
+        "type": "Parameter",
+        "name": "Phase Id 5"
+      },
+      {
+        "type": "Parameter",
+        "name": "Phase Id 6"
+      }
+    ],
+    "description": "Self: Set random event phase between: {pram1}, {pram2}, {pram3}, {pram4}, {pram5}, {pram6}"
+  },
+
+  {
+    "id": 31,
+    "name": "SMART_ACTION_RANDOM_PHASE_RANGE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Phase Min",
+        "description": "Minimum phase to random between (SAI phase)"
+      },
+      {
+        "type": "Parameter",
+        "name": "Phase Max",
+        "description": "Maximum phase to random between (SAI phase)"
+      }
+    ],
+    "description": "Self: Set random event phase between range {pram1} and {pram2}"
+  },
+
+  {
+    "id": 32,
+    "name": "SMART_ACTION_RESET_GOBJECT",
+    "description": "{target}: Reset (gameobject)"
+  },
+
+  {
+    "id": 33,
+    "name": "SMART_ACTION_CALL_KILLEDMONSTER",
+    "parameters": [
+      {
+        "type": "CreatureParameter",
+        "name": "Creature"
+      }
+    ],
+    "description": "{target}: Give kill credit {pram1}"
+  },
+
+  {
+    "id": 34,
+    "name": "SMART_ACTION_SET_INST_DATA",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Field"
+      },
+      {
+        "type": "Parameter",
+        "name": "Data"
+      }
+    ],
+    "description": "Set instance data #{pram1} to {pram2}"
+  },
+
+  {
+    "id": 35,
+    "name": "SMART_ACTION_SET_INST_DATA64",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Field"
+      },
+      {
+        "type": "Parameter",
+        "name": "Data"
+      }
+    ],
+    "description": "Set instance data64 #{pram1} to {pram2}"
+  },
+
+  {
+    "id": 36,
+    "name": "SMART_ACTION_UPDATE_TEMPLATE",
+    "parameters": [
+      {
+        "type": "CreatureParameter",
+        "name": "Entry"
+      }
+    ],
+    "description": "{target}: Update template as if it was creature {pram1}"
+  },
+
+  {
+    "id": 37,
+    "name": "SMART_ACTION_DIE",
+    "description": "Self: Die"
+  },
+
+  {
+    "id": 38,
+    "name": "SMART_ACTION_SET_IN_COMBAT_WITH_ZONE",
+    "description": "Self: Set in combat with current zone"
+  },
+
+  {
+    "id": 39,
+    "name": "SMART_ACTION_CALL_FOR_HELP",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Radius"
+      }
+    ],
+    "description": "Self: Call for help within {pram1} yards"
+  },
+
+  {
+    "id": 40,
+    "name": "SMART_ACTION_SET_SHEATH",
+    "parameters": [
+      {
+        "type": "SwitchParameter",
+        "name": "Sheath Type",
+        "values": {
+          "0": {"name": "Unarmed"},
+          "1": {"name": "Melee"},
+          "2": {"name": "Ranged"}
+        }
+      }
+    ],
+    "description": "Self: Set sheath to {pram1}"
+  },
+
+  {
+    "id": 41,
+    "name": "SMART_ACTION_FORCE_DESPAWN",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Delay"
+      }
+    ],
+    "description": "{target}: Despawn {pram1value:choose(0):instantly|in {pram1} ms}"
+  },
+
+  {
+    "id": 42,
+    "name": "SMART_ACTION_SET_INVINCIBILITY_HP_LEVEL",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "MinHpValue(+pct"
+      },
+      {
+        "type": "Parameter",
+        "name": "-flat)"
+      }
+    ],
+    "description": "What is it?"
+  },
+
+  {
+    "id": 43,
+    "name": "SMART_ACTION_MOUNT_TO_ENTRY_OR_MODEL",
+    "parameters": [
+      {
+        "type": "CreatureParameter",
+        "name": "Creature entry"
+      },
+      {
+        "type": "Parameter",
+        "name": "Model Id"
+      }
+    ],
+    "description": "{target}: {pram1value:choose(0):{pram2value:choose(0):Dismount|Mount to model {pram2}}|{pram2value:choose(0):Mount to creature {pram1}|Invalid mount ({pram1}, {pram2}}}"
+  },
+
+  {
+    "id": 44,
+    "name": "SMART_ACTION_SET_INGAME_PHASE_ID",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Phase ID"
+      }
+    ],
+    "description": "{target}: Set phase id to {pram1}"
+  },
+
+  {
+    "id": 45,
+    "name": "SMART_ACTION_SET_DATA",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Field"
+      },
+      {
+        "type": "Parameter",
+        "name": "Data"
+      }
+    ],
+    "description": "{target}: Set creature data #{pram1} to {pram2}"
+  },
+
+  {
+    "id": 46,
+    "name": "SMART_ACTION_MOVE_FORWARD",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Distance"
+      }
+    ],
+    "description": "Self: Move forward {pram1} yards"
+  },
+
+  {
+    "id": 47,
+    "name": "SMART_ACTION_SET_VISIBILITY",
+    "parameters": [
+      {
+        "type": "BoolParameter",
+        "name": "Visible"
+      }
+    ],
+    "description": "Self: Set {pram1value:choose(0):in|}visible"
+  },
+    
+
+  {
+    "id": 48,
+    "name": "SMART_ACTION_SET_ACTIVE",
+    "description": "Self: Set active (are you sure?)"
+  },
+
+  {
+    "id": 49,
+    "name": "SMART_ACTION_ATTACK_START",
+    "description": "Self: Attack {target}"
+  },
+
+  {
+    "id": 50,
+    "name": "SMART_ACTION_SUMMON_GO",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Game Object"
+      },
+      {
+        "type": "Parameter",
+        "name": "Despawn Time",
+        "description": "In ms"
+      }
+    ],
+    "description": "{target}: Summon gameobject {pram1} at {targetid:choose(8):{targetcoords}|my position, moved by offset {targetcoords}} and despawn in {pram2} ms"
+  },
+
+  {
+    "id": 51,
+    "name": "SMART_ACTION_KILL_UNIT",
+    "description": "{target}: Kill self ({target})"
+  },
+
+  {
+    "id": 52,
+    "name": "SMART_ACTION_ACTIVATE_TAXI",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Taxi ID"
+      }
+    ],
+    "description": "{target}: Take taxi {pram1}"
+  },
+
+  {
+    "id": 53,
+    "name": "SMART_ACTION_WP_START",
+    "parameters": [
+       {
+        "type": "SwitchParameter",
+        "name": "Run/Walk",
+        "values": {
+          "0": {"name": "Walk"},
+          "1": {"name": "Run"}
+        }
+      },
+      {
+        "type": "Parameter",
+        "name": "Path ID",
+        "required": true
+      },
+      {
+        "type": "BoolParameter",
+        "name": "Repeat"
+      },    
+      {
+        "type": "QuestParameter",
+        "name": "Quest",
+        "description": "Quest to complete when path ends (escort quest)"
+      },
+      {
+        "type": "Parameter",
+        "name": "Despawn time",
+        "description": "Despawn time after finishing the path"
+      },
+      {
+        "type": "SwitchParameter",
+        "name": "React State",
+        "values": {
+          "0": {"name": "Passive"},
+          "1": {"name": "Defensive"},
+          "2": {"name": "Aggressive"}
+        }
+      }
+    ],
+    "description": "Self: Start path #{pram2}, {pram1value:choose(0):walk|run}, {pram3value:choose(0):do not repeat|repeat}, {pram6}"
+  },
+
+  {
+    "id": 54,
+    "name": "SMART_ACTION_WP_PAUSE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Duration",
+        "description": "Miliseconds to wait before resuming path"
+      }
+    ],
+    "description": "Self: Pause path for {pram1} ms"
+  },
+
+  {
+    "id": 55,
+    "name": "SMART_ACTION_WP_STOP",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Despawn Time",
+        "description": "Time to wait before despawn"
+      },
+      {
+        "type": "QuestParameter",
+        "name": "Quest",
+        "description": "Quest id to mark as complete or failed"
+      },
+      {
+        "type": "SwitchParameter",
+        "name": "Fail/Complete",
+        "description": "Quest will be marked as either completed or failed",
+        "values": {
+          "0": {"name": "Complete"},
+          "1": {"name": "Fail"}
+        }
+      }
+    ],    
+    "description": "Self: Stop path{pram1value:choose(0):, despawn instantly|, despawn in {pram1} ms}{pram2value:choose(0):|{pram3value:choose(0):, complete|, fail} quest {pram2}}"
+  },
+
+  {
+    "id": 56,
+    "name": "SMART_ACTION_ADD_ITEM",
+    "parameters": [
+      {
+        "type": "ItemParameter",
+        "name": "Item"
+      },
+      {
+        "type": "Parameter",
+        "name": "Count"
+      }
+    ],
+    "description": "{target}: Add item {pram2}x{pram1}"
+  },
+
+  {
+    "id": 57,
+    "name": "SMART_ACTION_REMOVE_ITEM",
+    "parameters": [
+      {
+        "type": "ItemParameter",
+        "name": "Item"
+      },
+      {
+        "type": "Parameter",
+        "name": "Count"
+      }
+    ],
+    "description": "{target}: Remove item {pram2}x{pram1}"
+  },
+
+  {
+    "id": 58,
+    "name": "SMART_ACTION_INSTALL_AI_TEMPLATE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "AITemplateID"
+      }
+    ],
+    "description": "Self: Install AI Template {pram1}"
+  },
+
+  {
+    "id": 59,
+    "name": "SMART_ACTION_SET_RUN",
+    "parameters": [
+      {
+        "type": "SwitchParameter",
+        "name": "Movement Type",
+        "values": {
+          "0": {"name": "Walk"},
+          "1": {"name": "Run"}
+        }
+      }
+    ],
+    "description": "Self: {pram1value:choose(0):Set walk|Set run}"
+  },
+
+  {
+    "id": 60,
+    "name": "SMART_ACTION_SET_FLY",
+    "parameters": [
+      {
+        "type": "BoolParameter",
+        "name": "Enable",
+        "description": "If true, flight will be enabled"
+      }
+    ],
+    "description": "Self: {pram1value:choose(0):Disable|Enable} flight"
+  },
+
+  {
+    "id": 61,
+    "name": "SMART_ACTION_SET_SWIM",
+    "parameters": [
+      {
+        "type": "BoolParameter",
+        "name": "Enable",
+        "description": "If true, swimming will be enabled"
+      }
+    ],
+    "description": "Self: {pram1value:choose(0):Disable|Enable} swimming"
+  },
+
+  {
+    "id": 62,
+    "name": "SMART_ACTION_TELEPORT",
+    "parameters": [
+      {
+        "type": "ZoneAreaParameter",
+        "name": "Map ID"
+      }
+    ],
+    "description": "Teleport {target} to {targetcoords} on map {pram1}"
+  },
+
+  {
+    "id": 63,
+    "name": "SMART_ACTION_STORE_VARIABLE_DECIMAL",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Variable ID"
+      },
+      {
+        "type": "Parameter",
+        "name": "Value"
+      }
+    ],
+    "description": "Self: Variable_{pram1} = {pram2}"
+  },
+
+  {
+    "id": 64,
+    "name": "SMART_ACTION_STORE_TARGET_LIST",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Variable ID"
+      }
+    ],
+    "description": "Self: Target_{pram1} = {target}"
+  },
+
+  {
+    "id": 65,
+    "name": "SMART_ACTION_WP_RESUME",
+    "description": "Self: Resume path"
+  },
+
+  {
+    "id": 66,
+    "name": "SMART_ACTION_SET_ORIENTATION",
+    "description": "Self: {targetid:choose(1|8):Look at home position|Look at {targetcoords}|Look at {target}}"
+  },
+
+  {
+    "id": 67,
+    "name": "SMART_ACTION_CREATE_TIMED_EVENT",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Timed event id",
+        "description": "This timed event will be triggered"
+      },
+      {
+        "type": "Parameter",
+        "name": "Initial Min",
+        "description": "In miliseconds"
+      },
+      {
+        "type": "Parameter",
+        "name": "Initial Max",
+        "description": "In miliseconds"
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Min",
+        "description": "(only if it repeats)"
+      },
+      {
+        "type": "Parameter",
+        "name": "Repeat Max",
+        "description": "(only if it repeats)"
+      },
+      {
+        "type": "PercentageParameter",
+        "name": "Chance"
+      }
+    ],
+    "description": "Trigger timed event #{pram1} in {pram2} - {pram3} ms{pram4value:choose(0):| and then trigger every {pram4} - {pram5} ms}{pram6value:choose(0):| with {pram6} chance}"
+  },
+
+  {
+    "id": 68,
+    "name": "SMART_ACTION_PLAYMOVIE",
+    "parameters": [
+      {
+        "type": "MovieParameter",
+        "name": "Entry"
+      }
+    ],
+    "description": "{target}: Play movie {pram1}"
+  },
+
+  {
+    "id": 69,
+    "name": "SMART_ACTION_MOVE_TO_POS",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "PointId"
+      }
+    ],
+    "description": "Self: Move to {targetid:choose(8):position {targetcoords}|{target}} (point id {pram1})"
+  },
+
+  {
+    "id": 70,
+    "name": "SMART_ACTION_RESPAWN_TARGET",
+    "description": "{target}: Respawn"
+  },
+
+  {
+    "id": 71,
+    "name": "SMART_ACTION_EQUIP",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Eqipment ID",
+        "description": "Entry from table creature_equip_template"
+      },
+      {
+        "type": "Parameter",
+        "name": "Slotmask",
+        "description": "If 0 (or 7) all items will be equiped, 1, 2, 4 are bits for next three items (you can add them)"
+      },
+      {
+        "type": "ItemParameter",
+        "name": "Slot 1",
+        "description": "Only if equipement id is 0"
+      },
+      {
+        "type": "ItemParameter",
+        "name": "Slot 2",
+        "description": "Only if equipement id is 0"
+      },
+      {
+        "type": "ItemParameter",
+        "name": "Slot 3",
+        "description": "Only if equipement id is 0"
+      }
+    ],
+    "description": "{target}: {pram1value:choose(0):Equip items {pram3}, {pram4}, {pram5}|Eqipt items from creature {pram1}}"
+  },
+
+  {
+    "id": 72,
+    "name": "SMART_ACTION_CLOSE_GOSSIP",
+    "description": "{target}: Close gossip"
+  },
+
+  {
+    "id": 73,
+    "name": "SMART_ACTION_TRIGGER_TIMED_EVENT",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "ID",
+        "description": "Must be greater or equal than 1"
+      }
+    ],
+    "description": "Self: Trigger timed event {pram1}"
+  },
+
+  {
+    "id": 74,
+    "name": "SMART_ACTION_REMOVE_TIMED_EVENT",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "ID",
+        "description": "Must be greater or equal than 1"
+      }
+    ],
+    "description": "Self: Remove timed event {pram1}"
+  },
+
+  {
+    "id": 75,
+    "name": "SMART_ACTION_ADD_AURA",
+    "parameters": [
+      {
+        "type": "SpellParameter",
+        "name": "Spell"
+      }
+    ],
+    "description": "{target}: Add aura {pram1}"
+  },
+
+  {
+    "id": 76,
+    "name": "SMART_ACTION_OVERRIDE_SCRIPT_BASE_OBJECT",
+    "description": "SMART_ACTION_OVERRIDE_SCRIPT_BASE_OBJECT (WARNING: CAN CRASH CORE)"
+  },
+
+  {
+    "id": 77,
+    "name": "SMART_ACTION_RESET_SCRIPT_BASE_OBJECT",
+    "description": "SMART_ACTION_RESET_SCRIPT_BASE_OBJECT"
+  },
+
+  {
+    "id": 78,
+    "name": "SMART_ACTION_CALL_SCRIPT_RESET",
+    "description": "Self: Call OnReset() event"
+  },
+
+  {
+    "id": 79,
+    "name": "SMART_ACTION_SET_RANGED_MOVEMENT",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Distance"
+      },
+      {
+        "type": "Parameter",
+        "name": "angle"
+      }
+    ],
+    "description": "{target}: Chase its victim in {pram1} yards (angle {pram2}°)"
+  },
+
+  {
+    "id": 80,
+    "name": "SMART_ACTION_CALL_TIMED_ACTIONLIST",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "ID",
+        "description": "overwrites already running actionlist?"
+      }
+    ],
+    "description": "Start timed action list id #{pram1}"
+  },
+
+  {
+    "id": 81,
+    "name": "SMART_ACTION_SET_NPC_FLAG",
+    "parameters": [
+       {
+        "type": "FlagParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "UNIT_NPC_FLAG_NONE"},
+          "1": {"name": "UNIT_NPC_FLAG_GOSSIP"},
+          "2": {"name": "UNIT_NPC_FLAG_QUESTGIVER"},
+          "16": {"name": "UNIT_NPC_FLAG_TRAINER"},
+          "32": {"name": "UNIT_NPC_FLAG_TRAINER_CLASS"},
+          "64": {"name": "UNIT_NPC_FLAG_TRAINER_PROFESSION"},
+          "128": {"name": "UNIT_NPC_FLAG_VENDOR"},
+          "256": {"name": "UNIT_NPC_FLAG_VENDOR_AMMO", "description": "General goods vendor"},
+          "512": {"name": "UNIT_NPC_FLAG_VENDOR_FOOD"},
+          "1024": {"name": "UNIT_NPC_FLAG_VENDOR_POISON"},
+          "2048": {"name": "UNIT_NPC_FLAG_VENDOR_REAGENT"},
+          "4096": {"name": "UNIT_NPC_FLAG_REPAIR"},
+          "8192": {"name": "UNIT_NPC_FLAG_FLIGHTMASTER"},
+          "16384": {"name": "UNIT_NPC_FLAG_SPIRITHEALER"},
+          "32768": {"name": "UNIT_NPC_FLAG_SPIRITGUIDE"},
+          "65536": {"name": "UNIT_NPC_FLAG_INNKEEPER"},
+          "131072": {"name": "UNIT_NPC_FLAG_BANKER"},
+          "262144": {"name": "UNIT_NPC_FLAG_PETITIONER"},
+          "524288": {"name": "UNIT_NPC_FLAG_TABARDDESIGNER"},
+          "1048576": {"name": "UNIT_NPC_FLAG_BATTLEMASTER"},
+          "2097152": {"name": "UNIT_NPC_FLAG_AUCTIONEER"},
+          "4194304": {"name": "UNIT_NPC_FLAG_STABLEMASTER"},
+          "8388608": {"name": "UNIT_NPC_FLAG_GUILD_BANKER"},
+          "16777216": {"name": "UNIT_NPC_FLAG_SPELLCLICK"},
+          "33554432": {"name": "UNIT_NPC_FLAG_PLAYER_VEHICLE"},
+          "67108864": {"name": "UNIT_NPC_FLAG_MAILBOX"},
+          "134217728": {"name": "UNIT_NPC_FLAG_REFORGER"},
+          "268435456": {"name": "UNIT_NPC_FLAG_TRANSMOGRIFIER"},
+          "536870912": {"name": "UNIT_NPC_FLAG_VAULTKEEPER", "description": "void storage"}
+         }
+       }
+    ],    
+    "description": "{target}: Set npc flags {pram1}"
+  },
+
+  {
+    "id": 82,
+    "name": "SMART_ACTION_ADD_NPC_FLAG",
+    "parameters": [
+       {
+        "type": "FlagParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "UNIT_NPC_FLAG_NONE"},
+          "1": {"name": "UNIT_NPC_FLAG_GOSSIP"},
+          "2": {"name": "UNIT_NPC_FLAG_QUESTGIVER"},
+          "16": {"name": "UNIT_NPC_FLAG_TRAINER"},
+          "32": {"name": "UNIT_NPC_FLAG_TRAINER_CLASS"},
+          "64": {"name": "UNIT_NPC_FLAG_TRAINER_PROFESSION"},
+          "128": {"name": "UNIT_NPC_FLAG_VENDOR"},
+          "256": {"name": "UNIT_NPC_FLAG_VENDOR_AMMO", "description": "General goods vendor"},
+          "512": {"name": "UNIT_NPC_FLAG_VENDOR_FOOD"},
+          "1024": {"name": "UNIT_NPC_FLAG_VENDOR_POISON"},
+          "2048": {"name": "UNIT_NPC_FLAG_VENDOR_REAGENT"},
+          "4096": {"name": "UNIT_NPC_FLAG_REPAIR"},
+          "8192": {"name": "UNIT_NPC_FLAG_FLIGHTMASTER"},
+          "16384": {"name": "UNIT_NPC_FLAG_SPIRITHEALER"},
+          "32768": {"name": "UNIT_NPC_FLAG_SPIRITGUIDE"},
+          "65536": {"name": "UNIT_NPC_FLAG_INNKEEPER"},
+          "131072": {"name": "UNIT_NPC_FLAG_BANKER"},
+          "262144": {"name": "UNIT_NPC_FLAG_PETITIONER"},
+          "524288": {"name": "UNIT_NPC_FLAG_TABARDDESIGNER"},
+          "1048576": {"name": "UNIT_NPC_FLAG_BATTLEMASTER"},
+          "2097152": {"name": "UNIT_NPC_FLAG_AUCTIONEER"},
+          "4194304": {"name": "UNIT_NPC_FLAG_STABLEMASTER"},
+          "8388608": {"name": "UNIT_NPC_FLAG_GUILD_BANKER"},
+          "16777216": {"name": "UNIT_NPC_FLAG_SPELLCLICK"},
+          "33554432": {"name": "UNIT_NPC_FLAG_PLAYER_VEHICLE"},
+          "67108864": {"name": "UNIT_NPC_FLAG_MAILBOX"},
+          "134217728": {"name": "UNIT_NPC_FLAG_REFORGER"},
+          "268435456": {"name": "UNIT_NPC_FLAG_TRANSMOGRIFIER"},
+          "536870912": {"name": "UNIT_NPC_FLAG_VAULTKEEPER", "description": "void storage"}
+         }
+       }
+    ],    
+    "description": "{target}: Add npc flags {pram1}"
+  },
+
+  {
+    "id": 83,
+    "name": "SMART_ACTION_REMOVE_NPC_FLAG",
+    "parameters": [
+       {
+        "type": "FlagParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "UNIT_NPC_FLAG_NONE"},
+          "1": {"name": "UNIT_NPC_FLAG_GOSSIP"},
+          "2": {"name": "UNIT_NPC_FLAG_QUESTGIVER"},
+          "16": {"name": "UNIT_NPC_FLAG_TRAINER"},
+          "32": {"name": "UNIT_NPC_FLAG_TRAINER_CLASS"},
+          "64": {"name": "UNIT_NPC_FLAG_TRAINER_PROFESSION"},
+          "128": {"name": "UNIT_NPC_FLAG_VENDOR"},
+          "256": {"name": "UNIT_NPC_FLAG_VENDOR_AMMO", "description": "General goods vendor"},
+          "512": {"name": "UNIT_NPC_FLAG_VENDOR_FOOD"},
+          "1024": {"name": "UNIT_NPC_FLAG_VENDOR_POISON"},
+          "2048": {"name": "UNIT_NPC_FLAG_VENDOR_REAGENT"},
+          "4096": {"name": "UNIT_NPC_FLAG_REPAIR"},
+          "8192": {"name": "UNIT_NPC_FLAG_FLIGHTMASTER"},
+          "16384": {"name": "UNIT_NPC_FLAG_SPIRITHEALER"},
+          "32768": {"name": "UNIT_NPC_FLAG_SPIRITGUIDE"},
+          "65536": {"name": "UNIT_NPC_FLAG_INNKEEPER"},
+          "131072": {"name": "UNIT_NPC_FLAG_BANKER"},
+          "262144": {"name": "UNIT_NPC_FLAG_PETITIONER"},
+          "524288": {"name": "UNIT_NPC_FLAG_TABARDDESIGNER"},
+          "1048576": {"name": "UNIT_NPC_FLAG_BATTLEMASTER"},
+          "2097152": {"name": "UNIT_NPC_FLAG_AUCTIONEER"},
+          "4194304": {"name": "UNIT_NPC_FLAG_STABLEMASTER"},
+          "8388608": {"name": "UNIT_NPC_FLAG_GUILD_BANKER"},
+          "16777216": {"name": "UNIT_NPC_FLAG_SPELLCLICK"},
+          "33554432": {"name": "UNIT_NPC_FLAG_PLAYER_VEHICLE"},
+          "67108864": {"name": "UNIT_NPC_FLAG_MAILBOX"},
+          "134217728": {"name": "UNIT_NPC_FLAG_REFORGER"},
+          "268435456": {"name": "UNIT_NPC_FLAG_TRANSMOGRIFIER"},
+          "536870912": {"name": "UNIT_NPC_FLAG_VAULTKEEPER", "description": "void storage"}
+         }
+       }
+    ],    
+    "description": "{target}: Remove npc flags {pram1}"
+  },
+
+  {
+    "id": 84,
+    "name": "SMART_ACTION_SIMPLE_TALK",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Group ID",
+        "description": "Makes target say its line from creature_text. If player, line from creature_text from this entry will be said. Doesn't trigger TEXT_OVER"
+      }
+    ],
+    "description": "{target}: Talk {pram1}"
+  },
+
+  {
+    "id": 85,
+    "name": "SMART_ACTION_INVOKER_CAST",
+    "parameters": [
+      {
+        "type": "SpellParameter",
+        "name": "Spell"
+      },
+      {
+        "type": "CastFlagsParameter",
+        "name": "Cast Flags"
+      }
+    ],
+    "description": "Invoker: Cast spell {pram1} to {target}"
+  },
+
+  {
+    "id": 86,
+    "name": "SMART_ACTION_CROSS_CAST",
+    "parameters": [
+      {
+        "type": "SpellParameter",
+        "name": "Spell"
+      },
+      {
+        "type": "CastFlagsParameter",
+        "name": "Cast Flags"
+      },
+      {
+        "type": "SwitchParameter",
+        "name": "Caster Target Type",
+        "required": true,
+        "values": {
+          "0": {"name": "SMART_TARGET_NONE"},
+          "1": {"name": "SMART_TARGET_SELF"},
+          "2": {"name": "SMART_TARGET_VICTIM"},
+          "3": {"name": "SMART_TARGET_HOSTILE_SECOND_AGGRO"},
+          "4": {"name": "SMART_TARGET_HOSTILE_LAST_AGGRO"},
+          "5": {"name": "SMART_TARGET_HOSTILE_RANDOM"},
+          "6": {"name": "SMART_TARGET_HOSTILE_RANDOM_NOT_TOP"},
+          "7": {"name": "SMART_TARGET_ACTION_INVOKER"},
+          "8": {"name": "SMART_TARGET_POSITION"},
+          "9": {"name": "SMART_TARGET_CREATURE_RANGE"},
+          "10": {"name": "SMART_TARGET_CREATURE_GUID"},
+          "11": {"name": "SMART_TARGET_CREATURE_DISTANCE"},
+          "12": {"name": "SMART_TARGET_STORED"},
+          "13": {"name": "SMART_TARGET_GAMEOBJECT_RANGE"},
+          "14": {"name": "SMART_TARGET_GAMEOBJECT_GUID"},
+          "15": {"name": "SMART_TARGET_GAMEOBJECT_DISTANCE"},
+          "16": {"name": "SMART_TARGET_INVOKER_PARTY"},
+          "17": {"name": "SMART_TARGET_PLAYER_RANGE"},
+          "18": {"name": "SMART_TARGET_PLAYER_DISTANCE"},
+          "19": {"name": "SMART_TARGET_CLOSEST_CREATURE"},
+          "20": {"name": "SMART_TARGET_CLOSEST_GAMEOBJECT"},
+          "21": {"name": "SMART_TARGET_CLOSEST_PLAYER"},
+          "22": {"name": "SMART_TARGET_ACTION_INVOKER_VEHICLE"},
+          "23": {"name": "SMART_TARGET_OWNER_OR_SUMMONER"},
+          "24": {"name": "SMART_TARGET_THREAT_LIST"},
+          "25": {"name": "SMART_TARGET_CLOSEST_ENEMY"},
+          "26": {"name": "SMART_TARGET_CLOSEST_FRIENDLY"}
+        }
+      },
+      {
+        "type": "Parameter",
+        "name": "Caster Target param 1"
+      },
+      {
+        "type": "Parameter",
+        "name": "Caster Target param 2"
+      },
+      {
+        "type": "Parameter",
+        "name": "Caster Target param 3",
+        "description": "+the orignal target fields as Destination target; CasterTargets will cast spellID on all Targets (use with caution if targeting multiple * multiple units)"
+      }
+    ],
+    "description": "{pram3}: Cast spell {pram1}{pram2value:choose(0):| with flags {pram2}} at {target}"
+  },
+
+
+  {
+    "id": 87,
+    "name": "SMART_ACTION_CALL_RANDOM_TIMED_ACTIONLIST",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Action List ID 1"
+      },
+      {
+        "type": "Parameter",
+        "name": "Action List ID 2"
+      },
+      {
+        "type": "Parameter",
+        "name": "Action List ID 3"
+      },
+      {
+        "type": "Parameter",
+        "name": "Action List ID 4"
+      },
+      {
+        "type": "Parameter",
+        "name": "Action List ID 5"
+      },
+      {
+        "type": "Parameter",
+        "name": "Action List ID 6"
+      }
+    ],
+    "description": "{target}: Call random timed action list: {pram1}, {pram2}, {pram3}, {pram4}, {pram5}, {pram6}"
+  },
+
+  {
+    "id": 88,
+    "name": "SMART_ACTION_CALL_RANDOM_RANGE_TIMED_ACTIONLIST",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Action List ID min"
+      },
+      {
+        "type": "Parameter",
+        "name": "Action List ID max"
+      }
+    ],
+    "description": "{target}: Call random timed action list between range {pram1} and {pram2}"
+  },
+
+  {
+    "id": 89,
+    "name": "SMART_ACTION_RANDOM_MOVE",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Distance",
+        "description": "If 0, creature will stay idle in place"
+      }
+    ],
+    "description": "{target}: {pram1value:choose(0):Stay in place|Move in radius {pram1} yards}"
+  },
+
+  {
+    "id": 90,
+    "name": "SMART_ACTION_SET_UNIT_FIELD_BYTES_1",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Bytes"
+      }
+    ],
+    "description": "{target}: Set UNIT_FIELD_BYTES_1 to {pram1}"
+  },
+
+  {
+    "id": 91,
+    "name": "SMART_ACTION_REMOVE_UNIT_FIELD_BYTES_1",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Bytes"
+      }
+    ],
+    "description": "{target}: Remove {pram1} bytes from UNIT_FIELD_BYTES_1"
+  },
+
+  {
+    "id": 92,
+    "name": "SMART_ACTION_INTERRUPT_SPELL",
+    "description": "{target}: Interrupt casted spell"
+  },
+
+  {
+    "id": 93,
+    "name": "SMART_ACTION_SEND_GO_CUSTOM_ANIM",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Animation id"
+      }
+    ],
+    "description": "{target}: Play custom animation (only gameobject)"
+  },
+
+  {
+    "id": 94,
+    "name": "SMART_ACTION_SET_DYNAMIC_FLAG",
+    "parameters": [
+       {
+        "type": "FlagParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "UNIT_DYNFLAG_NONE"},
+          "1": {"name": "UNIT_DYNFLAG_LOOTABLE"},
+          "2": {"name": "UNIT_DYNFLAG_TRACK_UNIT"},
+          "4": {"name": "UNIT_DYNFLAG_TAPPED"},
+          "8": {"name": "UNIT_DYNFLAG_TAPPED_BY_PLAYER"},
+          "16": {"name": "UNIT_DYNFLAG_SPECIALINFO"},
+          "32": {"name": "UNIT_DYNFLAG_DEAD"},
+          "64": {"name": "UNIT_DYNFLAG_REFER_A_FRIEND"},
+          "128": {"name": "UNIT_DYNFLAG_TAPPED_BY_ALL_THREAT_LIST"}
+         }
+       }
+    ],        
+    "description": "{target}: Set dynamic flags to {pram1}"
+  },
+
+  {
+    "id": 95,
+    "name": "SMART_ACTION_ADD_DYNAMIC_FLAG",
+    "parameters": [
+       {
+        "type": "FlagParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "UNIT_DYNFLAG_NONE"},
+          "1": {"name": "UNIT_DYNFLAG_LOOTABLE"},
+          "2": {"name": "UNIT_DYNFLAG_TRACK_UNIT"},
+          "4": {"name": "UNIT_DYNFLAG_TAPPED"},
+          "8": {"name": "UNIT_DYNFLAG_TAPPED_BY_PLAYER"},
+          "16": {"name": "UNIT_DYNFLAG_SPECIALINFO"},
+          "32": {"name": "UNIT_DYNFLAG_DEAD"},
+          "64": {"name": "UNIT_DYNFLAG_REFER_A_FRIEND"},
+          "128": {"name": "UNIT_DYNFLAG_TAPPED_BY_ALL_THREAT_LIST"}
+         }
+       }
+    ],    
+    "description": "{target}: Add {pram1} dynamic flag"
+  },
+
+  {
+    "id": 96,
+    "name": "SMART_ACTION_REMOVE_DYNAMIC_FLAG",
+    "parameters": [
+       {
+        "type": "FlagParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "UNIT_DYNFLAG_NONE"},
+          "1": {"name": "UNIT_DYNFLAG_LOOTABLE"},
+          "2": {"name": "UNIT_DYNFLAG_TRACK_UNIT"},
+          "4": {"name": "UNIT_DYNFLAG_TAPPED"},
+          "8": {"name": "UNIT_DYNFLAG_TAPPED_BY_PLAYER"},
+          "16": {"name": "UNIT_DYNFLAG_SPECIALINFO"},
+          "32": {"name": "UNIT_DYNFLAG_DEAD"},
+          "64": {"name": "UNIT_DYNFLAG_REFER_A_FRIEND"},
+          "128": {"name": "UNIT_DYNFLAG_TAPPED_BY_ALL_THREAT_LIST"}
+         }
+       }
+    ],    
+    "description": "{target}: Remove {pram1} dynamic flags"
+  },
+
+  {
+    "id": 97,
+    "name": "SMART_ACTION_JUMP_TO_POS",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Speed XY"
+      },
+      {
+        "type": "Parameter",
+        "name": "Speed Z"
+      }
+    ],
+    "description": "Self: Jump to pos {targetcoords} with speed XY {pram1} and speed Z {pram2}"
+  },
+
+  {
+    "id": 98,
+    "name": "SMART_ACTION_SEND_GOSSIP_MENU",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Menu Id",
+        "description": "From gossip_menu"
+      },
+      {
+        "type": "Parameter",
+        "name": "Text Id",
+        "description": "From npc_text"
+      }
+    ],
+    "description": "{target}: Send gossip ID {pram1} with text {pram2}"
+  },
+
+  {
+    "id": 99,
+    "name": "SMART_ACTION_GO_SET_LOOT_STATE",
+    "parameters": [
+      {
+        "type": "SwitchParameter",
+        "name": "State",
+        "values": {
+          "0": {"name": "GO_NOT_READY"},
+          "1": {"name": "GO_READY"},
+          "2": {"name": "GO_ACTIVATED"},
+          "3": {"name": "GO_JUST_DEACTIVATED"}
+        }
+      }
+    ],
+    "description": "{target}: Set loot state {pram1} (only gameobjects)"
+  },
+
+  {
+    "id": 100,
+    "name": "SMART_ACTION_SEND_TARGET_TO_TARGET",
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Variable ID"
+      }
+    ],
+    "description": "Self: Send stored target {pram1} to {target}"
+  },
+
+  {
+    "id": 101,
+    "name": "SMART_ACTION_SET_HOME_POS",
+    "description": "Self: Set home position to {targetid:choose(1|8):current position|{targetcoords}|position of {target}}"
+  },
+
+  {
+    "id": 102,
+    "name": "SMART_ACTION_SET_HEALTH_REGEN",
+    "parameters": [ 
+      {
+        "type": "BoolParameter",
+        "name": "Regenerate HP"
+      }
+    ],
+    "description": "{target}: {pram1value:choose(0):Do not regenerate HP|Regenerate HP}"
+  },
+
+  {
+    "id": 103,
+    "name": "SMART_ACTION_SET_ROOT",
+    "description": "{target}: Set rooted"
+  },
+
+{
+    "id": 104,
+    "name": "SMART_ACTION_SET_GO_FLAG",   
+    "parameters": [
+      {
+        "type": "FlagParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "GO_FLAG_IN_USE"},
+          "2": {"name": "GO_FLAG_LOCKED"},
+          "4": {"name": "GO_FLAG_INTERACT_COND"},
+          "8": {"name": "GO_FLAG_TRANSPORT"},
+          "16": {"name": "GO_FLAG_NOT_SELECTABLE"},
+          "32": {"name": "GO_FLAG_NODESPAWN"},
+          "64": {"name": "GO_FLAG_TRIGGERED"},
+          "512": {"name": "GO_FLAG_DAMAGED"},
+          "1024": {"name": "GO_FLAG_DESTROYED"}
+        }
+      }
+    ],
+    "description": "{target}: Set game object flags {pram1}"
+  },
+
+
+  {
+    "id": 105,
+    "name": "SMART_ACTION_ADD_GO_FLAG",   
+    "parameters": [
+      {
+        "type": "FlagParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "GO_FLAG_IN_USE"},
+          "2": {"name": "GO_FLAG_LOCKED"},
+          "4": {"name": "GO_FLAG_INTERACT_COND"},
+          "8": {"name": "GO_FLAG_TRANSPORT"},
+          "16": {"name": "GO_FLAG_NOT_SELECTABLE"},
+          "32": {"name": "GO_FLAG_NODESPAWN"},
+          "64": {"name": "GO_FLAG_TRIGGERED"},
+          "512": {"name": "GO_FLAG_DAMAGED"},
+          "1024": {"name": "GO_FLAG_DESTROYED"}
+        }
+      }
+    ],
+    "description": "{target}: Add game object flag {pram1}"
+  },
+
+
+  {
+    "id": 106,
+    "name": "SMART_ACTION_REMOVE_GO_FLAG",   
+    "parameters": [
+      {
+        "type": "FlagParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "GO_FLAG_IN_USE"},
+          "2": {"name": "GO_FLAG_LOCKED"},
+          "4": {"name": "GO_FLAG_INTERACT_COND"},
+          "8": {"name": "GO_FLAG_TRANSPORT"},
+          "16": {"name": "GO_FLAG_NOT_SELECTABLE"},
+          "32": {"name": "GO_FLAG_NODESPAWN"},
+          "64": {"name": "GO_FLAG_TRIGGERED"},
+          "512": {"name": "GO_FLAG_DAMAGED"},
+          "1024": {"name": "GO_FLAG_DESTROYED"}
+        }
+      }
+    ],
+    "description": "{target}: Remove game object flag {pram1}"
+  },
+
+
+  {
+    "id": 107,
+    "name": "SMART_ACTION_SUMMON_CREATURE_GROUP",   
+    "parameters": [
+      {
+        "type": "Parameter",
+        "name": "Summon group"
+      },
+      {
+        "type": "BoolParameter",
+        "name": "Attack me"
+      }
+    ],    
+    "description": "Self: Summon creature group {pram1}"
+  },
+
+
+
+
+  {
+    "id": 108,
+    "name": "SMART_ACTION_SET_POWER",   
+    "parameters": [
+      {
+        "type": "SwitchParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "POWER_MANA"},
+          "1": {"name": "POWER_RAGE"},
+          "2": {"name": "POWER_FOCUS"},
+          "3": {"name": "POWER_ENERGY"},
+          "4": {"name": "POWER_UNUSED"},
+          "5": {"name": "POWER_RUNES"},
+          "6": {"name": "POWER_RUNIC_POWER"},
+          "7": {"name": "POWER_SOUL_SHARDS"},
+          "8": {"name": "POWER_ECLIPSE"},
+          "9": {"name": "POWER_HOLY_POWER"},
+          "10": {"name": "POWER_ALTERNATE_POWER"}          
+        }
+      }
+    ],
+    "description": "{target}: Set power type to {pram1}"
+  },
+
+  {
+    "id": 109,
+    "name": "SMART_ACTION_ADD_POWER",
+    "parameters": [ 
+      {
+        "type": "SwitchParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "POWER_MANA"},
+          "1": {"name": "POWER_RAGE"},
+          "2": {"name": "POWER_FOCUS"},
+          "3": {"name": "POWER_ENERGY"},
+          "4": {"name": "POWER_UNUSED"},
+          "5": {"name": "POWER_RUNES"},
+          "6": {"name": "POWER_RUNIC_POWER"},
+          "7": {"name": "POWER_SOUL_SHARDS"},
+          "8": {"name": "POWER_ECLIPSE"},
+          "9": {"name": "POWER_HOLY_POWER"},
+          "10": {"name": "POWER_ALTERNATE_POWER"}          
+        }
+      },
+      {
+        "type": "Parameter",
+        "name": "Value"
+      }
+    ],  
+    "description": "{target}: Add {pram2} to power {pram1}"
+  },
+
+  {
+    "id": 110,
+    "name": "SMART_ACTION_REMOVE_POWER",
+    "parameters": [ 
+      {
+        "type": "SwitchParameter",
+        "name": "Flags",
+        "values": {
+          "0": {"name": "POWER_MANA"},
+          "1": {"name": "POWER_RAGE"},
+          "2": {"name": "POWER_FOCUS"},
+          "3": {"name": "POWER_ENERGY"},
+          "4": {"name": "POWER_UNUSED"},
+          "5": {"name": "POWER_RUNES"},
+          "6": {"name": "POWER_RUNIC_POWER"},
+          "7": {"name": "POWER_SOUL_SHARDS"},
+          "8": {"name": "POWER_ECLIPSE"},
+          "9": {"name": "POWER_HOLY_POWER"},
+          "10": {"name": "POWER_ALTERNATE_POWER"}          
+        }
+      },
+      {
+        "type": "Parameter",
+        "name": "Value"
+      }
+    ],
+    "description": "{target}: Remove {pram2} from power {pram1}"
+  },
+
+  {
+    "id": 111,
+    "name": "SMART_ACTION_GAME_EVENT_STOP",
+    "parameters": [ 
+      {
+        "type": "Parameter",
+        "name": "Event ID"
+      }
+    ], 
+    "description": "{target}: Stop game event {pram1}"
+  },
+
+  {
+    "id": 112,
+    "name": "SMART_ACTION_GAME_EVENT_START",
+    "parameters": [ 
+      {
+        "type": "Parameter",
+        "name": "Event ID"
+      }
+    ], 
+    "description": "{target}: Start game event {pram1}"
+  },
+
+  {
+    "id": 113,
+    "name": "SMART_ACTION_START_CLOSEST_WAYPOINT",
+    "parameters": [ 
+      {
+        "type": "Parameter",
+        "name": "Path 1"
+      },
+      {
+        "type": "Parameter",
+        "name": "Path 2"
+      },
+      {
+        "type": "Parameter",
+        "name": "Path 3"
+      },
+      {
+        "type": "Parameter",
+        "name": "Path 4"
+      },
+      {
+        "type": "Parameter",
+        "name": "Path 5"
+      },
+      {
+        "type": "Parameter",
+        "name": "Path 6"
+      }
+    ],
+    "description": "{target}: Start closest path: {pram1}, {pram2}, {pram3}, {pram4}, {pram5}, {pram6}"
+  }
+  
+]

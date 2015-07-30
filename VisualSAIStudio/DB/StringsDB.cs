@@ -12,6 +12,7 @@ namespace VisualSAIStudio
     public class StringsDB
     {
         private Dictionary<StorageType, ClientData> database = new Dictionary<StorageType, ClientData>();
+        public Dictionary<int, List<GuidEntry>> EntryToGuidCreature = new Dictionary<int, List<GuidEntry>>();
 
         public EventHandler CurrentAction = delegate { };
 
@@ -23,8 +24,29 @@ namespace VisualSAIStudio
             CurrentAction(this, new LoadingEventArgs("quests"));
             database.Add(StorageType.Quest, new ClientDataDB("title", "quest_template"));
 
-            CurrentAction(this, new LoadingEventArgs("quests"));
+            CurrentAction(this, new LoadingEventArgs("creatures"));
             database.Add(StorageType.Creature, new ClientDataDB("entry", "name", "creature_template"));
+
+            MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SELECT guid, creature.id, map, position_x, position_z, position_y, count(source_type) as smartAI FROM creature left join smart_scripts on source_type=0 and entryorguid=(-guid) group by guid "));
+            using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    GuidEntry guid = new GuidEntry();
+                    guid.id = Convert.ToInt32(reader["guid"]);
+                    guid.map = Convert.ToInt32(reader["map"]);
+                    guid.position_x = (float)Convert.ToDouble(reader["position_x"]);
+                    guid.position_y = (float)Convert.ToDouble(reader["position_y"]);
+                    guid.position_z = (float)Convert.ToDouble(reader["position_z"]);
+                    guid.smartAI = (Convert.ToInt32(reader["smartAI"])>0);
+
+                    int entry = Convert.ToInt32(reader["id"]);
+
+                    if (!EntryToGuidCreature.ContainsKey(entry))
+                        EntryToGuidCreature[entry] = new List<GuidEntry>();
+                    EntryToGuidCreature[entry].Add(guid);
+                }
+            }
 
             CurrentAction(this, new LoadingEventArgs("gameobjects"));
             database.Add(StorageType.GameObject, new ClientDataDB("entry", "name", "gameobject_template"));
@@ -50,32 +72,26 @@ namespace VisualSAIStudio
             CurrentAction(this, new LoadingEventArgs("skills"));
             database.Add(StorageType.Skill, new ClientDataDBC("SkillLine.dbc", 1));
 
-            CurrentAction(this, new LoadingEventArgs("events and actions"));
-            LoadEventsAndActions();
+            CurrentAction(this, new LoadingEventArgs("actions"));
+            Load(SmartScripts.SmartType.SMART_ACTION, "data/actions.json");
+
+            CurrentAction(this, new LoadingEventArgs("events"));
+            Load(SmartScripts.SmartType.SMART_EVENT, "data/events.json");
+
+            CurrentAction(this, new LoadingEventArgs("targets"));
+            Load(SmartScripts.SmartType.SMART_TARGET, "data/targets.json");
+
+            CurrentAction(this, new LoadingEventArgs("conditions"));
+            Load(SmartScripts.SmartType.SMART_CONDITION, "data/conditions.json");
         }
 
-        private void LoadEventsAndActions()
+        private void Load(SmartScripts.SmartType type, string file)
         {
-            string data;
-            if (File.Exists("data/custom_actions.json"))
+            if (File.Exists(file))
             {
-                data = File.ReadAllText("data/custom_actions.json");
-                List<SmartGenericJSONData> smart_generics = JsonConvert.DeserializeObject<List<SmartGenericJSONData>>(data);
-                smart_generics.ForEach(e => SmartFactory.AddAction(e));
+                List<SmartGenericJSONData> smart_generics = JsonConvert.DeserializeObject<List<SmartGenericJSONData>>(File.ReadAllText(file));
+                smart_generics.ForEach(e => SmartScripts.SmartFactory.GetInstance().Add(type, e));
             }
-            if (File.Exists("data/custom_events.json"))
-            {
-                data = File.ReadAllText("data/custom_events.json");
-                List<SmartGenericJSONData> smart_generics = JsonConvert.DeserializeObject<List<SmartGenericJSONData>>(data);
-                smart_generics.ForEach(e => SmartFactory.AddEvent(e));
-            }
-        }
-
-        private void LoadMovies()
-        {
-            //LoadDBCIntAndString(movies, "movie.dbc", 0);
-            ///foreach (int key in movies.Keys.ToList())
-            //    movies[key] = movies[key].Substring(movies[key].LastIndexOf("\\") + 1);
         }
 
         public string Get(StorageType storage, int id)
