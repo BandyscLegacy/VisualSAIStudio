@@ -70,12 +70,24 @@ namespace VisualSAIStudio
                     return new StringParameter(StorageType.Movie);
                 case "ZoneAreaParameter":
                     return new StringParameter(StorageType.Area);
+                case "MapParameter":
+                    return new StringParameter(StorageType.Map);
                 case "ClassParameter":
                     return new StringParameter(StorageType.Class);
                 case "GameobjectParameter":
                     return new StringParameter(StorageType.GameObject);
                 case "SkillParameter":
                     return new StringParameter(StorageType.Skill);
+                case "GameEventParameter":
+                    return new StringParameter(StorageType.GameEvent);
+                case "RaceParameter":
+                    return new StringParameter(StorageType.Race);
+                case "CreatureTypeParameter":
+                    return new StringParameter(StorageType.CreatureType);
+                case "PhaseParameter":
+                    return new StringParameter(StorageType.Phase);
+                case "AchievementParameter":
+                    return new StringParameter(StorageType.Achievement);
                 case "BoolParameter":
                     return new BoolParameter();
                 case "SwitchParameter":
@@ -86,6 +98,8 @@ namespace VisualSAIStudio
                     return new SpellSchoolParameter();
                 case "PercentageParameter":
                     return new PercentageParameter();
+                case "SummonTypeParameter":
+                    return new SummonTypeParameter();
                 case "Parameter":
                     return new Parameter();
             }

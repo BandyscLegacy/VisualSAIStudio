@@ -11,9 +11,9 @@ namespace VisualSAIStudio
     {
         public float[] position = new float[4];
 
-        public SmartTarget(int id, string name, string readable) : base (id, name, readable) { }
+        public SmartTarget(int id, string name, string readable) : base (id, name, readable, 3) { }
 
-        public SmartTarget(SmartGenericJSONData data) : base(data) {  }
+        public SmartTarget(SmartGenericJSONData data) : base(data, 3) {  }
 
         public string GetCoords()
         {

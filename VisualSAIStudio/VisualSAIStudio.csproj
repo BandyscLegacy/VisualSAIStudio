@@ -52,7 +52,14 @@
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastColoredTextBox">
+      <HintPath>..\packages\FCTB.2.16.11.0\lib\FastColoredTextBox.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -119,6 +126,12 @@
     <Compile Include="Forms\SelectSAI.Designer.cs">
       <DependentUpon>SelectSAI.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CodePreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CodePreview.Designer.cs">
+      <DependentUpon>CodePreview.cs</DependentUpon>
+    </Compile>
     <Compile Include="History\EditHistory.cs" />
     <Compile Include="History\OpenedHistory.cs" />
     <Compile Include="DB\ModalEditor.cs" />
@@ -134,6 +147,37 @@
     <Compile Include="Forms\ScratchWindow.Designer.cs">
       <DependentUpon>ScratchWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="MetroShell\Dwm.cs" />
+    <Compile Include="MetroShell\MetroForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MetroShell\WinAPI.cs" />
+    <Compile Include="SkinableControls\SkinableFastColoredTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkinableControls\SkinableHScroll.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkinableControls\SkinablePropertyGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SkinableControls\SkinableScratch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkinableControls\SkinableTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SkinableControls\SkinableTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SkinableControls\SkinableVScrollBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkinableControls\SkinableVScrollBar.Designer.cs">
+      <DependentUpon>SkinableVScrollBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SmartScripts\CommentGenerator.cs" />
+    <Compile Include="SmartScripts\Events\EVENT_LINK.cs" />
     <Compile Include="SmartScripts\SAIType.cs" />
     <Compile Include="SmartScripts\SmartEventsCollection.cs" />
     <Compile Include="DB\BinaryFormatExtensions.cs" />
@@ -173,6 +217,7 @@
     <Compile Include="Forms\StartPage.Designer.cs">
       <DependentUpon>StartPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="SmartScripts\SQLGenerator.cs" />
     <Compile Include="SmartScripts\Targets\SmartTarget.cs" />
     <Compile Include="DB\StringsDB.cs" />
     <Compile Include="SmartScripts\Warning.cs" />
@@ -211,8 +256,14 @@
     <EmbeddedResource Include="Forms\SelectSAI.resx">
       <DependentUpon>SelectSAI.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CodePreview.resx">
+      <DependentUpon>CodePreview.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetroShell\MetroForm.resx">
+      <DependentUpon>MetroForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -242,7 +293,17 @@
     <EmbeddedResource Include="Forms\ToolWindow.resx">
       <DependentUpon>ToolWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SkinableControls\SkinableHScroll.resx">
+      <DependentUpon>SkinableHScroll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkinableControls\SkinableVScrollBar.resx">
+      <DependentUpon>SkinableVScrollBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="data\actions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="data\conditions.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="data\database.json">

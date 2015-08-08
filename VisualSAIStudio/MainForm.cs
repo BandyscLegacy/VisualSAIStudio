@@ -13,10 +13,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using Newtonsoft.Json;
+using WeifenLuo.WinFormsUI.Docking.Themes;
 
 namespace VisualSAIStudio
 {
-    public partial class MainForm : Form
+    public partial class MainForm : MetroForm.MetroForm
     {
         public MainForm()
         {
@@ -36,9 +37,6 @@ namespace VisualSAIStudio
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
 
-            dockPanel1.Theme = new VS2012LightTheme();
-            vS2012ToolStripExtender1.SetEnableVS2012Style(this.menuStrip1, true);
-           
             CreateWindows();
             m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
 
@@ -47,14 +45,43 @@ namespace VisualSAIStudio
             else
                 PlaceWindows();
 
-            scratch = new ScratchWindow();
-            scratch.Show(dockPanel1);
-            scratch.ElementSelected += this_callback;
-            scratch.RequestWarnings += this_RequestWarnings;
+            NewSAIWindow(0, SmartScripts.SAIType.Creature);
 
             startPage = new StartPage();
             startPage.Show(dockPanel1);
 
+            //SelectSAI sss = new SelectSAI();
+            //sss.Show();
+
+
+            //only with new lib!
+            ThemeMgr.Instance.SetColorTable(new WeifenLuo.WinFormsUI.Docking.Colors.Dark());
+            this.dockPanel1.Theme = ThemeMgr.Instance.DockPanelTheme;
+            this.dockPanel1.Skin = ThemePanel.CreatePanelThemeValues();
+            this.menuStrip1.Renderer = ThemeMgr.Instance.Renderer;
+            this.menuStrip1.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
+            this.menuStrip1.ForeColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormText);
+            //no commit yet
+        }
+
+        private void NewSAIWindow(int entryorguid, SmartScripts.SAIType type)
+        {
+            scratch = new ScratchWindow();
+            scratch.Show(dockPanel1);
+            scratch.ElementSelected += this_callback;
+            scratch.RequestWarnings += this_RequestWarnings;
+            scratch.RequestNewSAIWindow += scratch_RequestNewSAIWindow;
+            scratch.type = type;
+            if (entryorguid > 0)
+            {
+                scratch.LoadFromDB(entryorguid);
+            }
+        }
+
+        void scratch_RequestNewSAIWindow(object sender, EventArgs e)
+        {
+            EventArgsRequestNewSAIWindow args = (EventArgsRequestNewSAIWindow)e;
+            NewSAIWindow(args.entryorguid, args.type);
         }
 
         private void CreateWindows()
@@ -239,5 +266,50 @@ namespace VisualSAIStudio
         {
             dockPanel1.SaveAsXml("data/layout.xml");
         }
+
+        private void darkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            
+        }
+
+        private void dockPanel1_ActiveContentChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ThemeMgr.Instance.SetColorTable(new WeifenLuo.WinFormsUI.Docking.Colors.Light());
+            this.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
+            this.dockPanel1.Theme = ThemeMgr.Instance.DockPanelTheme;
+            this.dockPanel1.Skin = ThemePanel.CreatePanelThemeValues();
+            this.menuStrip1.Renderer = ThemeMgr.Instance.Renderer;
+            this.menuStrip1.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
+            this.menuStrip1.ForeColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormText);
+        }
+
+        private void darkToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            ThemeMgr.Instance.SetColorTable(new WeifenLuo.WinFormsUI.Docking.Colors.Dark());
+            this.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
+            this.dockPanel1.Theme = ThemeMgr.Instance.DockPanelTheme;
+            this.dockPanel1.Skin = ThemePanel.CreatePanelThemeValues();
+            this.menuStrip1.Renderer = ThemeMgr.Instance.Renderer;
+            this.menuStrip1.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
+            this.menuStrip1.ForeColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormText);
+        }
+
+        private void generateSQLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Forms.CodePreview code = new Forms.CodePreview(scratch.GenerateSQLOutput(), FastColoredTextBoxNS.Language.SQL);
+            code.Show(dockPanel1);
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
     }
 }

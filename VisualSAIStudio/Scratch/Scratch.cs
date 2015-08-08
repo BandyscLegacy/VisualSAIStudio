@@ -21,10 +21,10 @@ namespace VisualSAIStudio
         private bool mousedown;
         private bool dragging;
 
-        private Brush brush;
-        private Pen pen;
-        private Font font;
-        private Font mini_font;
+        protected Brush brush;
+        protected Pen pen;
+        protected Font font;
+        protected Font mini_font;
 
 
         public DrawableElementsCollection elements;
@@ -182,22 +182,12 @@ namespace VisualSAIStudio
         }
 
 
-        private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            this.Refresh();
-        }
-
         private void vScrollBar_ValueChanged(object sender, EventArgs e)
         {
             this.Refresh();
         }
 
         private void Scratch_VisibleChanged(object sender, EventArgs e)
-        {
-            this.Refresh();
-        }
-
-        private void hScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
             this.Refresh();
         }

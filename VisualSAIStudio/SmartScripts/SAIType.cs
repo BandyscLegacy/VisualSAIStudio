@@ -22,9 +22,9 @@ namespace VisualSAIStudio.SmartScripts
 
     public enum SmartType
     {
-        SMART_EVENT,
-        SMART_ACTION,
-        SMART_TARGET,
-        SMART_CONDITION,
+        SMART_EVENT = 0,
+        SMART_ACTION = 1,
+        SMART_TARGET = 2,
+        SMART_CONDITION = 3,
     }
 }

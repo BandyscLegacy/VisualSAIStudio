@@ -29,7 +29,6 @@ namespace VisualSAIStudio
         }
         protected override void OnCreateMainForm()
         {
-            StringsDB.GetInstance();
 
             // Then create the main form, the splash screen will close automatically
             this.MainForm = new MainForm();

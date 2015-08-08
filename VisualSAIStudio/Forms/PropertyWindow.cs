@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
+using WeifenLuo.WinFormsUI.Docking.Colors;
+using WeifenLuo.WinFormsUI.Docking.Themes;
 
 namespace VisualSAIStudio
 {
@@ -21,7 +23,7 @@ namespace VisualSAIStudio
 
         private void PropertyWindow_Load(object sender, EventArgs e)
         {
-
+           
         }
 
         public void SetObject(object ob)

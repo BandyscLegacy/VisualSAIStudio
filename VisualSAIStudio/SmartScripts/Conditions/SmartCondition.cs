@@ -20,9 +20,9 @@ namespace VisualSAIStudio
         public bool invert { get; set; }
         public ConditionTarget target { get; set; }
 
-        public SmartCondition(int id, string name, string readable) : base(id, name, readable) {  }
+        public SmartCondition(int id, string name, string readable) : base(id, name, readable, 3) {  }
 
-        public SmartCondition(SmartGenericJSONData data) : base(data) { }
+        public SmartCondition(SmartGenericJSONData data) : base(data, 3) { }
 
         protected override void ParameterValueChanged(object sender, EventArgs e)
         {

@@ -49,14 +49,14 @@ namespace VisualSAIStudio
                 connection.Open();
                 return true;
             }
-            catch (MySqlException ex)
+            catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 //When handling errors, you can your application's response based 
                 //on the error number.
                 //The two most common error numbers when connecting are as follows:
                 //0: Cannot connect to server.
                 //1045: Invalid user name and/or password.
-                switch (ex.Number)
+                /*switch (ex.Number)
                 {
                     case 0:
                         MessageBox.Show("Cannot connect to server. Contact administrator");
@@ -65,7 +65,8 @@ namespace VisualSAIStudio
                     case 1045:
                         MessageBox.Show("Invalid username/password, please try again");
                         break;
-                }
+                }*/
+                MessageBox.Show(ex.Message);
                 return false;
             }
         }

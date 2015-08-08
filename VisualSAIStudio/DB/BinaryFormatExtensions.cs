@@ -73,7 +73,7 @@ namespace DBCViewer
     {
         public static BinaryReader FromFile(string fileName)
         {
-            return new BinaryReader(new FileStream(fileName, FileMode.Open), Encoding.UTF8);
+            return new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.UTF8);
         }
 
         #region ReadPackedGuid

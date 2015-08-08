@@ -23,11 +23,14 @@ namespace VisualSAIStudio.SmartScripts
                 smart_name_to_id[type] = new Dictionary<string,int>();
             }
 
-            smart_id_data[type].Add(data.id, data);
-            smart_name_to_id[type].Add(data.name, data.id);
+            if (!smart_id_data[type].ContainsKey(data.id))
+            {
+                smart_id_data[type].Add(data.id, data);
+                smart_name_to_id[type].Add(data.name, data.id);
+                if (type == SmartType.SMART_EVENT)
+                    events_name_types.Add(data.name, data.valid_types);
+            }
 
-            if (type == SmartType.SMART_EVENT)
-                events_name_types.Add(data.name, data.valid_types);
         }
 
         public SmartEvent EventFactory(int id)

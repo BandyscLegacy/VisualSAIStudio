@@ -28,40 +28,40 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.vScrollBar = new System.Windows.Forms.VScrollBar();
-            this.hScrollBar = new System.Windows.Forms.HScrollBar();
+            this.hScrollBar = new SkinableControls.SkinableHScrollBar();
+            this.vScrollBar = new VisualSAIStudio.SkinableControls.SkinableVScrollBar();
             this.SuspendLayout();
-            // 
-            // vScrollBar
-            // 
-            this.vScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar.Location = new System.Drawing.Point(825, 0);
-            this.vScrollBar.Maximum = 1000;
-            this.vScrollBar.Name = "vScrollBar";
-            this.vScrollBar.Size = new System.Drawing.Size(17, 460);
-            this.vScrollBar.SmallChange = 10;
-            this.vScrollBar.TabIndex = 0;
-            this.vScrollBar.Tag = false;
-            this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar_Scroll);
-            this.vScrollBar.ValueChanged += new System.EventHandler(this.vScrollBar_ValueChanged);
             // 
             // hScrollBar
             // 
             this.hScrollBar.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.hScrollBar.Location = new System.Drawing.Point(0, 443);
             this.hScrollBar.Name = "hScrollBar";
-            this.hScrollBar.Size = new System.Drawing.Size(825, 17);
+            this.hScrollBar.Size = new System.Drawing.Size(842, 17);
             this.hScrollBar.TabIndex = 1;
-            this.hScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar_Scroll);
             this.hScrollBar.ValueChanged += new System.EventHandler(this.hScrollBar_ValueChanged);
+            // 
+            // vScrollBar
+            // 
+            this.vScrollBar.BigStep = 20;
+            this.vScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
+            this.vScrollBar.Location = new System.Drawing.Point(825, 0);
+            this.vScrollBar.Maximum = 100;
+            this.vScrollBar.Minimum = 0;
+            this.vScrollBar.Name = "vScrollBar";
+            this.vScrollBar.Size = new System.Drawing.Size(17, 443);
+            this.vScrollBar.SmallStep = 5;
+            this.vScrollBar.TabIndex = 2;
+            this.vScrollBar.Value = 0;
+            this.vScrollBar.ValueChanged += new System.EventHandler(this.vScrollBar_ValueChanged);
             // 
             // Scratch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.hScrollBar);
             this.Controls.Add(this.vScrollBar);
+            this.Controls.Add(this.hScrollBar);
             this.Name = "Scratch";
             this.Size = new System.Drawing.Size(842, 460);
             this.Load += new System.EventHandler(this.Scratch_Load);
@@ -75,7 +75,7 @@
 
         #endregion
 
-        private System.Windows.Forms.VScrollBar vScrollBar;
-        private System.Windows.Forms.HScrollBar hScrollBar;
+        private SkinableControls.SkinableHScrollBar hScrollBar;
+        private SkinableControls.SkinableVScrollBar vScrollBar;
     }
 }

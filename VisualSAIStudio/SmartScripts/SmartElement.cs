@@ -13,24 +13,36 @@ namespace VisualSAIStudio
     {
         protected List<ParameterConditional> conditionals = new List<ParameterConditional>();
         protected string output;
-        protected string readable;
+        private string _readable;
+        public string readable
+        {
+            get
+            {
+                return _readable;
+            }
+            set
+            {
+                _readable = value;
+                ParameterValueChanged(this, new EventArgs());
+            }
+        }
 
         public Parameter[] parameters { get; set; }
         public int ID { get; set; }
         public string name;
 
 
-        public SmartElement(int ID, string name, string readable)
+        public SmartElement(int ID, string name, string readable, int parameters_count)
         {
             this.ID = ID;
             this.name = name;
-            this.readable = readable;
-            parameters = new Parameter[6];
-            for (int i = 0; i < 6; ++i)
+            this._readable = readable;
+            parameters = new Parameter[parameters_count];
+            for (int i = 0; i < parameters_count; ++i)
                 SetParameter(i, new NullParameter(), false);
         }
 
-        public SmartElement(SmartGenericJSONData data) : this(data.id, data.name, data.description)
+        public SmartElement(SmartGenericJSONData data, int parameters_count) : this(data.id, data.name, data.description, parameters_count)
         {
             AddParameters(data.parameters);
             AddConditionals(data.conditions);

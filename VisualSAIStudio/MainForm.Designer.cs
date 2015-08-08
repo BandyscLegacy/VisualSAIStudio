@@ -36,6 +36,7 @@
             this.gOTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detectConflictsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.validateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eventsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.actionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,7 +50,7 @@
             this.lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.textBox8 = new VisualSAIStudio.SkinableControls.SkinableTextBox();
             this.scratch1 = new VisualSAIStudio.Scratch();
             this.vS2012ToolStripExtender1 = new VisualSAIStudio.VS2012ToolStripExtender(this.components);
             this.menuStrip1.SuspendLayout();
@@ -64,9 +65,10 @@
             this.styleToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(955, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1290, 24);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // fileToolStripMenuItem
             // 
@@ -74,7 +76,8 @@
             this.loadFromDBToolStripMenuItem,
             this.gOTestToolStripMenuItem,
             this.detectConflictsToolStripMenuItem,
-            this.validateToolStripMenuItem});
+            this.validateToolStripMenuItem,
+            this.generateSQLToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -108,6 +111,13 @@
             this.validateToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.validateToolStripMenuItem.Text = "Validate";
             this.validateToolStripMenuItem.Click += new System.EventHandler(this.validateToolStripMenuItem_Click);
+            // 
+            // generateSQLToolStripMenuItem
+            // 
+            this.generateSQLToolStripMenuItem.Name = "generateSQLToolStripMenuItem";
+            this.generateSQLToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.generateSQLToolStripMenuItem.Text = "Generate SQL";
+            this.generateSQLToolStripMenuItem.Click += new System.EventHandler(this.generateSQLToolStripMenuItem_Click);
             // 
             // windowToolStripMenuItem
             // 
@@ -193,12 +203,14 @@
             this.lightToolStripMenuItem.Name = "lightToolStripMenuItem";
             this.lightToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.lightToolStripMenuItem.Text = "Light";
+            this.lightToolStripMenuItem.Click += new System.EventHandler(this.lightToolStripMenuItem_Click);
             // 
             // darkToolStripMenuItem
             // 
             this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
             this.darkToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.darkToolStripMenuItem.Text = "Dark";
+            this.darkToolStripMenuItem.Click += new System.EventHandler(this.darkToolStripMenuItem_Click_1);
             // 
             // dockPanel1
             // 
@@ -216,9 +228,13 @@
             // 
             // textBox8
             // 
+            this.textBox8.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox8.Location = new System.Drawing.Point(460, 3);
             this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(168, 20);
+            this.textBox8.NormalColor = System.Drawing.Color.Black;
+            this.textBox8.Placeholder = null;
+            this.textBox8.PlaceholderColor = System.Drawing.Color.Gray;
+            this.textBox8.Size = new System.Drawing.Size(168, 13);
             this.textBox8.TabIndex = 11;
             this.textBox8.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox8_KeyDown);
             // 
@@ -242,7 +258,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(955, 660);
+            this.ClientSize = new System.Drawing.Size(1290, 1054);
             this.Controls.Add(this.dockPanel1);
             this.Controls.Add(this.textBox8);
             this.Controls.Add(this.menuStrip1);
@@ -250,6 +266,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Visual SAI Studio by bandysc";
+            this.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -266,7 +283,7 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadFromDBToolStripMenuItem;
-        private System.Windows.Forms.TextBox textBox8;
+        private SkinableControls.SkinableTextBox textBox8;
         private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem windowToolStripMenuItem;
@@ -283,6 +300,7 @@
         private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gOTestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateSQLToolStripMenuItem;
     }
 }
 

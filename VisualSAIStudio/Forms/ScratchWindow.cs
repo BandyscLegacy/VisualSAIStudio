@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VisualSAIStudio.SmartScripts;
 using WeifenLuo.WinFormsUI.Docking;
+using VisualSAIStudio.Forms;
 
 namespace VisualSAIStudio
 {
@@ -20,10 +21,44 @@ namespace VisualSAIStudio
         private DropResult dropResult;
         private SmartEventsCollection events = new SmartEventsCollection();
 
-        public EventHandler ElementSelected = delegate { };
-        public EventHandler RequestWarnings = delegate { };
+        public event EventHandler RequestNewSAIWindow = delegate { }; 
+        public event EventHandler ElementSelected = delegate { };
+        public event EventHandler RequestWarnings = delegate { };
 
-        public SAIType type;
+        private SAIType _type;
+        public SAIType type
+        {
+            get
+            {
+                return _type;
+            }
+            set
+            {
+                _type = value;
+                UpdateCaption();
+            }
+        }
+
+        private int _entryorguid;
+        private int entryorguid
+        {
+            get
+            {
+                return _entryorguid;
+            }
+            set
+            {
+                _entryorguid = value;
+                UpdateCaption();
+            }
+        }
+
+        private void UpdateCaption()
+        {
+            this.Text = type.ToString();
+            if (entryorguid > 0)
+                this.Text += " (" + entryorguid + ")";
+        }
 
         public ScratchWindow()
         {
@@ -60,6 +95,7 @@ namespace VisualSAIStudio
         // I know, it it TOTAL MESS
         public void LoadFromDB(int entryorguid)
         {
+            this.entryorguid = entryorguid;
             DBConnect connect = new DBConnect();
             bool opened = connect.OpenConnection();
 
@@ -96,7 +132,7 @@ namespace VisualSAIStudio
                 }
             }
 
-            cmd = connect.Query("SELECT * FROM smart_scripts WHERE source_type = 0 and entryorguid = "+entryorguid + " order by id");
+            cmd = connect.Query("SELECT * FROM smart_scripts WHERE source_type = "+(int)type+" and entryorguid = "+entryorguid + " order by id");
             SmartEvent prev = null;
             using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
             {
@@ -258,60 +294,7 @@ namespace VisualSAIStudio
         // I know, it it TOTAL MESS
         public String GenerateSQLOutput()
         {
-            int event_id = 0;
-            int entryorguid = 0;
-            int source_type = 0;
-            StringBuilder resres = new StringBuilder();
-            foreach (SmartEvent e in events)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendFormat("({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, ",
-                    "@ENTRY", source_type, event_id, (e.GetActions().Count==1?0:event_id+1), e.ID, (int)e.phasemask, e.chance, (int)e.flags, 
-                e.parameters[0].GetValue(), e.parameters[1].GetValue(), e.parameters[2].GetValue(), e.parameters[3].GetValue());
-
-                SmartAction first_action = e.GetAction(0);
-                sb.AppendFormat("{0}, ", first_action.ID);
-                for (int i = 0; i < 6; i++)
-                    sb.AppendFormat("{0}, ", first_action.parameters[i].GetValue());
-                sb.AppendFormat("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, \"{8}\"),", 
-                    first_action.target.ID, 
-                    first_action.target.parameters[0],
-                    first_action.target.parameters[1],
-                    first_action.target.parameters[2],
-                    first_action.target.position[0],
-                    first_action.target.position[1],
-                    first_action.target.position[2],
-                    first_action.target.position[3],
-                    e + " - " + first_action.ToString());
-                resres.AppendLine(sb.ToString());
-
-                event_id++;
-
-                for (int index = 1; index < e.GetActions().Count; ++index)
-                {
-                    SmartAction action = e.GetAction(index);
-                    StringBuilder sb2 = new StringBuilder();
-                    sb2.AppendFormat("({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, ",
-                    "@ENTRY", source_type, event_id, (e.GetActions().Count - 1 == index ? 0 : event_id + 1), 61, 0, 100, 0, 
-                        0,0,0,0);
-                    sb2.AppendFormat("{0}, ", action.ID);
-                    for (int i = 0; i < 6; i++)
-                        sb2.AppendFormat("{0}, ", action.parameters[i].GetValue());
-                    sb2.AppendFormat("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, \"{8}\"),",
-                        first_action.target.ID,
-                        first_action.target.parameters[0],
-                        first_action.target.parameters[1],
-                        first_action.target.parameters[2],
-                        first_action.target.position[0],
-                        first_action.target.position[1],
-                        first_action.target.position[2],
-                        first_action.target.position[3],
-                        e + " - " + first_action.ToString());
-                    resres.AppendLine(sb2.ToString());
-                    event_id++;
-                }
-            }
-            return resres.ToString();
+            return SQLGenerator.GenerateSAISQL(type, entryorguid, events);
         }
 
         public void DetectConflicts()
@@ -384,6 +367,38 @@ namespace VisualSAIStudio
         private void scratch1_DragLeave(object sender, EventArgs e)
         {
             dropResult = DropResult.NONE;
+        }
+
+        private void scratch1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void scratch1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (ModifierKeys.HasFlag(Keys.Control))
+            {
+                SmartEvent selected = Selected();
+                if (selected!= null)
+                {
+                    SmartAction action = selected.GetSelectedAction();
+                    if (action != null && action.ID == 80) // TRIGGER TIMED EVENT
+                    {
+                        RequestNewSAIWindow(this, new EventArgsRequestNewSAIWindow(action.parameters[0].GetValue(), SAIType.TimedActionList));
+                    }
+                }
+            }
+        }
+    }
+    public class EventArgsRequestNewSAIWindow : EventArgs
+    {
+        public int entryorguid { get; set; }
+        public SAIType type { get; set; }
+
+        public EventArgsRequestNewSAIWindow(int entryorguid, SAIType type)
+        {
+            this.entryorguid = entryorguid;
+            this.type = type;
         }
     }
 }

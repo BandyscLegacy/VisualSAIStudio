@@ -1,0 +1,650 @@
+[
+	{
+	  "id": 0,
+	  "name": "CONDITION_NONE",
+	  "description": "Always true"
+	},
+
+	{
+	  "id": 1,
+	  "name": "CONDITION_AURA",
+	  "parameters": [
+	    {
+	      "type": "SpellParameter",
+	      "name": "Spell",
+	      "description": "Aura from this spell id"
+	    },
+	    {
+	      "type": "SwitchParameter",
+	      "name": "Spell Effect Index",
+	      "values": {
+	      	"0": {"name": "EFFECT_0"},
+	      	"1": {"name": "EFFECT_1"},
+	      	"2": {"name": "EFFECT_2"}
+	      },
+	      "description": "Each spell has 'effects', you can see them in Spell Work"
+	    }
+	  ],
+	  "description": "If {target} has aura of spell {pram1}, effect {pram2}"
+	},
+
+	{
+	  "id": 2,
+	  "name": "CONDITION_ITEM",
+	  "parameters": [
+	    {
+	      "type": "ItemParameter",
+	      "name": "Item",
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "Amount",
+	      "description": "Minimum amount of items to mark condition as met"
+	    },
+	    {
+	      "type": "BoolParameter",
+	      "name": "Check bank",
+	      "description": "If true, core will check items in bank too"
+	    }
+	  ],
+	  "description": "If {target} has {pram2} of item {pram1} in backpack{pram3value:choose(0):| or in bank}"
+	},
+
+	{
+	  "id": 3,
+	  "name": "CONDITION_ITEM_EQUIPPED",
+	  "parameters": [
+	    {
+	      "type": "ItemParameter",
+	      "name": "Item",
+	      "description": "Item id to check (this condition applies only to players!)"
+	    },
+	  ],
+	  "description": "If {target} has equiped item {pram1}"
+	},
+
+	{
+	  "id": 4,
+	  "name": "CONDITION_ZONEID",
+	  "parameters": [
+	    {
+	      "type": "ZoneAreaParameter",
+	      "name": "Zone"
+	    },
+	  ],
+	  "description": "If {target} in zone {pram1}"
+	},
+
+	{
+	  "id": 5,
+	  "name": "CONDITION_REPUTATION_RANK",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "Faction",
+	      "description": "Faction ID to test"
+	    },
+	    {
+	      "type": "SwitchParameter",
+	      "name": "Minimum rank",
+	      "values":
+	      {
+	      	"0": {"name": "REP_HATED"},
+	      	"1": {"name": "REP_HOSTILE"},
+	      	"2": {"name": "REP_UNFRIENDLY"},
+	      	"3": {"name": "REP_NEUTRAL"},
+	      	"4": {"name": "REP_FRIENDLY"},
+	      	"5": {"name": "REP_HONORED"},
+	      	"6": {"name": "REP_REVERED"},
+	      	"7": {"name": "REP_EXALTED"}
+	      }
+	    },
+	  ],
+	  "description": "If {target} has at least reputation {pram2} to faction {pram1}"
+	},
+
+	{
+	  "id": 6,
+	  "name": "CONDITION_TEAM",
+	  "parameters": [
+	    {
+	      "type": "SwitchParameter",
+	      "name": "Team",
+	      "description": "Team to test. Only applies to players",
+	      "values": {
+	      	"67": {"name": "Horde"},
+	      	"469": {"name": "Alliance"}
+	      }
+	    },
+	  ],
+	  "description": "If {target} belongs to {pram1}"
+	},
+
+	{
+	  "id": 7,
+	  "name": "CONDITION_SKILL",
+	  "parameters": [
+	    {
+	      "type": "SkillParameter",
+	      "name": "Skill",
+	      "description": "Skill ID to test"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "Minimum skill value"
+	    },
+	  ],
+	  "description": "If {target} has at least value {pram2} for skill {pram1}"
+	},
+
+	{
+	  "id": 8,
+	  "name": "CONDITION_QUESTREWARDED",
+	  "parameters": [
+	    {
+	      "type": "QuestParameter",
+	      "name": "Quest",
+	      "description": "Quest ID to check"
+	    },
+	  ],
+	  "description": "If {target} has quest {pram1} rewarded"
+	},
+
+	{
+	  "id": 9,
+	  "name": "CONDITION_QUESTTAKEN",
+	  "parameters": [
+	    {
+	      "type": "QuestParameter",
+	      "name": "Quest",
+	      "description": "Quest ID to check"
+	    },
+	  ],
+	  "description": "If {target} has quest {pram1} active"
+	},
+
+	{
+	  "id": 10,
+	  "name": "CONDITION_DRUNKENSTATE",
+	  "parameters": [
+	    {
+	      "type": "SwitchParameter",
+	      "name": "Drunken State",
+	      "values": {
+	      	"0": {"name": "DRUNKEN_SOBER"},
+	      	"1": {"name": "DRUNKEN_TIPSY"},
+	      	"2": {"name": "DRUNKEN_DRUNK"},
+	      	"3": {"name": "DRUNKEN_SMASHED"},	      	
+	      }
+	    },
+	  ],
+	  "description": "If {target} has drunk state {pram1}"
+	},
+	{
+	  "id": 11,
+	  "name": "CONDITION_WORLD_STATE",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "Variable Index"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "Variable Value"
+	    },
+	  ],
+	  "description": "If world variable {pram1} is set to {pram2}"
+	},
+
+	{
+	  "id": 12,
+	  "name": "CONDITION_ACTIVE_EVENT",
+	  "parameters": [
+	    {
+	      "type": "GameEventParameter",
+	      "name": "Event"
+	    },
+	  ],
+	  "description": "If event {pram1} is active"
+	},
+
+	{
+	  "id": 13,
+	  "name": "CONDITION_INSTANCE_INFO",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "Data Type",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "Value",
+	      "description": "If BOSS_STATE, avaliable values: NOT_STARTED = 0, IN_PROGRESS = 1, FAIL = 2, DONE = 3, SPECIAL = 4, TO_BE_DECIDED = 5"
+	    },
+	    {
+	      "type": "SwitchParameter",
+	      "name": "Type",
+	      "values": {
+	      	    "0": {"name": "INSTANCE_INFO_DATA"},
+			    "1": {"name": "INSTANCE_INFO_GUID_DATA"},
+			    "2": {"name": "INSTANCE_INFO_BOSS_STATE"},
+			    "3": {"name": "INSTANCE_INFO_DATA64"}
+	      }
+	    }
+	  ],
+	  "description": "If {pram3value:choose(0|1|2|3):instance data {pram1} equals {pram2}|??????|boss {pram1} {pram2value:choose(0|1|2|3|4|5):has not started|is in progress|failed|special state|is to be decided?}|data64[{pram1}] = {pram2}}"
+	},
+
+	{
+	  "id": 14,
+	  "name": "CONDITION_QUEST_NONE",
+	  "parameters": [
+	    {
+	      "type": "QuestParameter",
+	      "name": "Quest",
+	      "description": "Quest ID to check"
+	    },
+	  ],
+	  "description": "If {target} has never finished not has active quest {pram1}"
+	},
+
+	{
+	  "id": 15,
+	  "name": "CONDITION_CLASS",
+	  "parameters": [
+	    {
+	      "type": "ClassParameter",
+	      "name": "Class",
+	      "description": "Only for players"
+	    },
+	  ],
+	  "description": "If {target} is class {pram1}"
+	},
+
+	{
+	  "id": 16,
+	  "name": "CONDITION_RACE",
+	  "parameters": [
+	    {
+	      "type": "RaceParameter",
+	      "name": "Race",
+	      "description": "Only for players"
+	    },
+	  ],
+	  "description": "If {target} is race {pram1}"
+	},
+
+	{
+	  "id": 17,
+	  "name": "CONDITION_ACHIEVEMENT",
+	  "parameters": [
+	    {
+	      "type": "AchievementParameter",
+	      "name": "Achievement"
+	    },
+	  ],
+	  "description": "If {target} has achievement {pram1} completed"
+	},
+
+	{
+	  "id": 18,
+	  "name": "CONDITION_TITLE",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "Title ID"
+	    },
+	  ],
+	  "description": "If {target} has title {pram1}"
+	},
+
+	{
+	  "id": 19,
+	  "name": "CONDITION_SPAWNMASK",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "Spawn mask"
+	    },
+	  ],
+	  "description": "If {target} in spawn mask {pram1}"
+	},
+
+	{
+	  "id": 20,
+	  "name": "CONDITION_GENDER",
+	  "parameters": [
+	    {
+	      "type": "SwitchParameter",
+	      "name": "Gender",
+	      "values": {
+	      	"0": {"name": "GENDER_MALE"},
+	      	"1": {"name": "GENDER_FEMALE"},
+	      	"2": {"name": "GENDER_NONE"}
+	      }
+	    },
+	  ],
+	  "description": "If {target} is {pram1}"
+	},
+
+	{
+	  "id": 21,
+	  "name": "CONDITION_UNIT_STATE",
+	  "parameters": [
+	    {
+	      "type": "FlagParameter",
+	      "name": "Unit State",
+	      "values": {
+	      	"1": {"name": "UNIT_STATE_DIED", "description": "player has fake death aura"}, 
+	      	"2": {"name": "UNIT_STATE_MELEE_ATTACKING", "description": "player is melee attacking someone"},  
+	      	"8": {"name": "UNIT_STATE_STUNNED"},
+	      	"16": {"name": "UNIT_STATE_ROAMING"},
+	      	"32": {"name": "UNIT_STATE_CHASE"},
+	      	"128": {"name": "UNIT_STATE_FLEEING"},
+	      	"256": {"name": "UNIT_STATE_IN_FLIGHT", "description": "player is in flight mode"},     
+	      	"512": {"name": "UNIT_STATE_FOLLOW"},
+	      	"1024": {"name": "UNIT_STATE_ROOT"},
+	      	"2048": {"name": "UNIT_STATE_CONFUSED"},
+	      	"4096": {"name": "UNIT_STATE_DISTRACTED"},
+	      	"8192": {"name": "UNIT_STATE_ISOLATED", "description": "area auras do not affect other players"}, 
+	      	"16384": {"name": "UNIT_STATE_ATTACK_PLAYER"},
+	      	"32768": {"name": "UNIT_STATE_CASTING"},
+	      	"65536": {"name": "UNIT_STATE_POSSESSED"},
+	      	"131072": {"name": "UNIT_STATE_CHARGING"},
+	      	"262144": {"name": "UNIT_STATE_JUMPING"},
+	      	"1048576": {"name": "UNIT_STATE_MOVE"},
+	      	"2097152": {"name": "UNIT_STATE_ROTATING"},
+	      	"4194304": {"name": "UNIT_STATE_EVADE"},
+	      	"8388608": {"name": "UNIT_STATE_ROAMING_MOVE"},
+	      	"16777216": {"name": "UNIT_STATE_CONFUSED_MOVE"},
+	      	"33554432": {"name": "UNIT_STATE_FLEEING_MOVE"},
+	      	"67108864": {"name": "UNIT_STATE_CHASE_MOVE"},
+	      	"134217728": {"name": "UNIT_STATE_FOLLOW_MOVE"},
+	      	"268435456": {"name": "UNIT_STATE_IGNORE_PATHFINDING"},  
+	      }
+	    },
+	  ],
+	  "description": "If {target} has unit state {pram1}"
+	},
+
+	{
+	  "id": 22,
+	  "name": "CONDITION_MAPID",
+	  "parameters": [
+	    {
+	      "type": "MapParameter",
+	      "name": "Map"
+	    },
+	  ],
+	  "description": "If {target} in map {pram1}"
+	},
+
+	{
+	  "id": 23,
+	  "name": "CONDITION_AREAID",
+	  "parameters": [
+	    {
+	      "type": "ZoneAreaParameter",
+	      "name": "Area"
+	    },
+	  ],
+	  "description": "If {target} in area {pram1}"
+	},
+
+	{
+	  "id": 24,
+	  "name": "CONDITION_CREATURE_TYPE",
+	  "parameters": [
+	    {
+	      "type": "CreatureTypeParameter",
+	      "name": "Type",
+	      "description": "From creature_template.type"
+	    },
+	  ],
+	  "description": "If {target} is {pram1}"
+	},
+
+	{
+	  "id": 25,
+	  "name": "CONDITION_SPELL",
+	  "parameters": [
+	    {
+	      "type": "SpellParameter",
+	      "name": "Spell",
+	      "description": "Only for players"
+	    },
+	  ],
+	  "description": "If {target} has learned spell {pram1}"
+	},
+
+	{
+	  "id": 26,
+	  "name": "CONDITION_PHASEID",
+	  "parameters": [
+	    {
+	      "type": "PhaseParameter",
+	      "name": "Phase"
+	    },
+	  ],
+	  "description": "If {target} in phase {pram1}"
+	},
+
+	{
+	  "id": 27,
+	  "name": "CONDITION_LEVEL",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "level",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "ComparisonType",
+	      "description": "DEF"
+	    },
+	  ],
+	  "description": "true if unit's level is equal to param1 (param2 can modify the statement)"
+	},
+
+	{
+	  "id": 28,
+	  "name": "CONDITION_QUEST_COMPLETE",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "quest_id",
+	      "description": "DEF"
+	    },
+	  ],
+	  "description": "true if player has quest_id with all objectives complete, but not yet rewarded"
+	},
+
+	{
+	  "id": 29,
+	  "name": "CONDITION_NEAR_CREATURE",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "creature_entry",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "distance",
+	      "description": "DEF"
+	    },
+	  ],
+	  "description": "true if there is a creature of entry in range"
+	},
+
+	{
+	  "id": 30,
+	  "name": "CONDITION_NEAR_GAMEOBJECT",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "gameobject_entry",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "distance",
+	      "description": "DEF"
+	    },
+	  ],
+	  "description": "true if there is a gameobject of entry in range"
+	},
+
+	{
+	  "id": 31,
+	  "name": "CONDITION_OBJECT_ENTRY_GUID",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "TypeID",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "entry",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "guid",
+	      "description": "DEF"
+	    }
+	  ],
+	  "description": "true if object is type TypeID and the entry is 0 or matches entry of the object or matches guid of the object"
+	},
+
+	{
+	  "id": 32,
+	  "name": "CONDITION_TYPE_MASK",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "TypeMask",
+	      "description": "DEF"
+	    },
+	  ],
+	  "description": "true if object is type object's TypeMask matches provided TypeMask"
+	},
+
+	{
+	  "id": 33,
+	  "name": "CONDITION_RELATION_TO",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "ConditionTarget",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "RelationType",
+	      "description": "DEF"
+	    },
+	  ],
+	  "description": "true if object is in given relation with object specified by ConditionTarget"
+	},
+
+	{
+	  "id": 34,
+	  "name": "CONDITION_REACTION_TO",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "ConditionTarget",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "rankMask",
+	      "description": "DEF"
+	    },
+	  ],
+	  "description": "true if object's reaction matches rankMask object specified by ConditionTarget"
+	},
+
+	{
+	  "id": 35,
+	  "name": "CONDITION_DISTANCE_TO",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "ConditionTarget",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "distance",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "ComparisonType",
+	      "description": "DEF"
+	    }
+	  ],
+	  "description": "true if object and ConditionTarget are within distance given by parameters"
+	},
+
+	{
+	  "id": 36,
+	  "name": "CONDITION_ALIVE",
+	  "description": "true if unit is alive"
+	},
+
+	{
+	  "id": 37,
+	  "name": "CONDITION_HP_VAL",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "hpVal",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "ComparisonType",
+	      "description": "DEF"
+	    },
+	  ],
+	  "description": "true if unit's hp matches given value"
+	},
+
+	{
+	  "id": 38,
+	  "name": "CONDITION_HP_PCT",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "hpPct",
+	      "description": "DEF"
+	    },
+	    {
+	      "type": "Parameter",
+	      "name": "ComparisonType",
+	      "description": "DEF"
+	    },
+	  ],
+	  "description": "true if unit's hp matches given pct"
+	},
+
+	{
+	  "id": 39,
+	  "name": "CONDITION_TERRAIN_SWAP",
+	  "parameters": [
+	    {
+	      "type": "Parameter",
+	      "name": "terrainSwap",
+	      "description": "DEF"
+	    },
+	  ],
+	  "description": "true if object is in terrainswap"
+	}
+
+]

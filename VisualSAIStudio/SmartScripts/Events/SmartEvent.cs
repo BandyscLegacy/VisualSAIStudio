@@ -92,7 +92,7 @@ namespace VisualSAIStudio
         public SmartEventFlag flags { get; set; }
 
 
-        public SmartEvent(SmartGenericJSONData data) : base(data)
+        public SmartEvent(SmartGenericJSONData data) : base(data, 4)
         {
             this.chance = 100;
 
@@ -375,7 +375,7 @@ namespace VisualSAIStudio
             Brush brush = default_brush;
             if (selected)
             {
-                brush = new SolidBrush(Color.FromArgb(255, 230, 230, 230));
+                brush = new SolidBrush(Color.FromArgb(20, 0, 0, 0));
                 graphics.FillRectangle(brush, x, y, width, size.Height);
             }
             brush = default_brush;

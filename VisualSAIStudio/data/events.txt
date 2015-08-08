@@ -51,7 +51,7 @@ Damage
  On charmed,SMART_EVENT_CHARMED
  On victim charmed,SMART_EVENT_CHARMED_TARGET
 Gossip
- On gossip selected,SMART_EVENT_GOSSIP_SELECT
+ On gossip option selected,SMART_EVENT_GOSSIP_SELECT
  On gossip dialog shown,SMART_EVENT_GOSSIP_HELLO
 Texts
  On emote received,SMART_EVENT_RECEIVE_EMOTE

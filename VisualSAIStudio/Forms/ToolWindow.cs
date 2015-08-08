@@ -23,11 +23,20 @@ namespace VisualSAIStudio
         {
             InitializeComponent();
             this.Text = title;
+            this.textBox.Placeholder = "Search " + title;
+            this.treeView.Scroll += treeView_Scroll;
+            this.treeView.MouseWheel += treeView_MouseWheel;
             this.HideOnClose = true;
+
+
             LoadSmartFromFile(file);
             Reload();
             saitype = SAIType.Gameobject;
         }
+
+
+
+
         public void SetSAIType(SAIType type)
         {
             this.saitype = type;
@@ -84,6 +93,8 @@ namespace VisualSAIStudio
                         parent2.Expand();
                 }
             }
+            scroll.Maximum = CountVisibleNodes() - treeView.VisibleCount;
+            scroll.Value = treeView.TopNode==null?0:treeView.TopNode.Index;
         }
 
         private void LoadSmartFromFile(string file)
@@ -137,5 +148,99 @@ namespace VisualSAIStudio
         {
             Reload();
         }
+
+        private void scroll_ValueChanged(object sender, EventArgs e)
+        {
+            treeView.TopNode = GetTopNode(scroll.Value, treeView.Nodes, 0);
+        }
+
+
+        void treeView_MouseWheel(object sender, MouseEventArgs e)
+        {
+            scroll.Value = CountNodesAbove(treeView.TopNode);
+            Console.WriteLine(treeView.TopNode.Text + " " + CountNodesAbove(treeView.TopNode));
+        }
+
+        void treeView_Scroll(object sender, SkinableControls.SkinableTreeView.ScrollEventArgs e)
+        {
+            scroll.Value = CountNodesAbove(e.Top);
+        }
+
+
+        private TreeNode GetTopNode(int dest, TreeNodeCollection treeNodeCollection, int count)
+        {
+            foreach (TreeNode node in treeNodeCollection)
+            {
+                if (count == dest)
+                    return node;
+
+                count++;
+
+                if (node.IsExpanded && node.Nodes.Count > 0)
+                {
+                    TreeNode ret = GetTopNode(dest, node.Nodes, count);
+                    if (ret!=null)
+                        return ret;
+                    count += node.Nodes.Count;
+                }
+            }
+            return null;
+        }
+
+
+        private int CountVisibleNodes()
+        {
+            int count = 0;
+            foreach (TreeNode node in treeView.Nodes)
+            {
+                count++;
+                if (node.IsExpanded)
+                    count += node.Nodes.Count;
+            }
+            return count;
+        }
+
+
+        private int CountNodesAbove(TreeNode treeNode)
+        {
+            int count = 0;
+            foreach (TreeNode node in treeView.Nodes)
+            {
+                if (node == treeNode)
+                    break;
+                
+                count++;
+
+                if (node.IsExpanded)
+                {
+                    foreach (TreeNode child in node.Nodes)
+                    {
+                        if (child == treeNode)
+                            break;
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        private void treeView_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            scroll.Maximum = CountVisibleNodes() - treeView.VisibleCount;
+            scroll.Value = treeView.TopNode.Index;
+        }
+
+        private void treeView_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+            scroll.Maximum = CountVisibleNodes() - treeView.VisibleCount;
+            scroll.Value = treeView.TopNode.Index;
+        }
+
+        private void ToolWindow_Resize(object sender, EventArgs e)
+        {
+            treeView.Size = new Size(this.ClientSize.Width+System.Windows.Forms.SystemInformation.VerticalScrollBarWidth,
+                this.ClientSize.Height - 13 + System.Windows.Forms.SystemInformation.HorizontalScrollBarHeight);
+        }
+
     }
 }

@@ -13,11 +13,23 @@ namespace VisualSAIStudio
     {
         private Dictionary<StorageType, ClientData> database = new Dictionary<StorageType, ClientData>();
         public Dictionary<int, List<GuidEntry>> EntryToGuidCreature = new Dictionary<int, List<GuidEntry>>();
-
         public EventHandler CurrentAction = delegate { };
 
         public void LoadAll()
         {
+            CurrentAction(this, new LoadingEventArgs("actions"));
+            Load(SmartScripts.SmartType.SMART_ACTION, "data/actions.json");
+
+            CurrentAction(this, new LoadingEventArgs("events"));
+            Load(SmartScripts.SmartType.SMART_EVENT, "data/events.json");
+
+            CurrentAction(this, new LoadingEventArgs("targets"));
+            Load(SmartScripts.SmartType.SMART_TARGET, "data/targets.json");
+
+            CurrentAction(this, new LoadingEventArgs("conditions"));
+            Load(SmartScripts.SmartType.SMART_CONDITION, "data/conditions.json");
+
+
             CurrentAction(this, new LoadingEventArgs("spells"));
             database.Add(StorageType.Spell, new ClientDataDBC("spell.dbc", 20));
 
@@ -27,7 +39,7 @@ namespace VisualSAIStudio
             CurrentAction(this, new LoadingEventArgs("creatures"));
             database.Add(StorageType.Creature, new ClientDataDB("entry", "name", "creature_template"));
 
-            MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SELECT guid, creature.id, map, position_x, position_z, position_y, count(source_type) as smartAI FROM creature left join smart_scripts on source_type=0 and entryorguid=(-guid) group by guid "));
+            /*MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SELECT guid, creature.id, map, position_x, position_z, position_y, count(source_type) as smartAI FROM creature left join smart_scripts on source_type=0 and entryorguid=(-guid) group by guid "));
             using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
@@ -46,10 +58,13 @@ namespace VisualSAIStudio
                         EntryToGuidCreature[entry] = new List<GuidEntry>();
                     EntryToGuidCreature[entry].Add(guid);
                 }
-            }
+            }*/
 
             CurrentAction(this, new LoadingEventArgs("gameobjects"));
             database.Add(StorageType.GameObject, new ClientDataDB("entry", "name", "gameobject_template"));
+
+            CurrentAction(this, new LoadingEventArgs("game events"));
+            database.Add(StorageType.GameEvent, new ClientDataDB("EventEntry", "description", "game_event"));
 
             CurrentAction(this, new LoadingEventArgs("items"));
             database.Add(StorageType.Item, new ClientDataDBC("item-sparse.db2", 98));
@@ -63,8 +78,23 @@ namespace VisualSAIStudio
             CurrentAction(this, new LoadingEventArgs("classes"));
             database.Add(StorageType.Class, new ClientDataDBC("chrClasses.dbc", 2));
 
-            CurrentAction(this, new LoadingEventArgs("areas"));
+            CurrentAction(this, new LoadingEventArgs("races"));
+            database.Add(StorageType.Race, new ClientDataDBC("chrRaces.dbc", 10));
+
+            CurrentAction(this, new LoadingEventArgs("achievement"));
+            database.Add(StorageType.Achievement, new ClientDataDBC("achievement.dbc", 3));
+
+            CurrentAction(this, new LoadingEventArgs("zones and areas"));
             database.Add(StorageType.Area, new ClientDataDBC("AreaTable.dbc", 10));
+
+            CurrentAction(this, new LoadingEventArgs("maps"));
+            database.Add(StorageType.Map, new ClientDataDBC("Map.dbc", 0));
+
+            CurrentAction(this, new LoadingEventArgs("creature types"));
+            database.Add(StorageType.CreatureType, new ClientDataDBC("CreatureType.dbc", 0));
+
+            CurrentAction(this, new LoadingEventArgs("phases"));
+            database.Add(StorageType.Phase, new ClientDataDBC("Phase.dbc", 0));
 
             CurrentAction(this, new LoadingEventArgs("emotes"));
             database.Add(StorageType.Emote, new ClientDataDBC("Emotes.dbc", 0));
@@ -72,17 +102,6 @@ namespace VisualSAIStudio
             CurrentAction(this, new LoadingEventArgs("skills"));
             database.Add(StorageType.Skill, new ClientDataDBC("SkillLine.dbc", 1));
 
-            CurrentAction(this, new LoadingEventArgs("actions"));
-            Load(SmartScripts.SmartType.SMART_ACTION, "data/actions.json");
-
-            CurrentAction(this, new LoadingEventArgs("events"));
-            Load(SmartScripts.SmartType.SMART_EVENT, "data/events.json");
-
-            CurrentAction(this, new LoadingEventArgs("targets"));
-            Load(SmartScripts.SmartType.SMART_TARGET, "data/targets.json");
-
-            CurrentAction(this, new LoadingEventArgs("conditions"));
-            Load(SmartScripts.SmartType.SMART_CONDITION, "data/conditions.json");
         }
 
         private void Load(SmartScripts.SmartType type, string file)
@@ -106,7 +125,9 @@ namespace VisualSAIStudio
 
         public Dictionary<int, string> GetDictionary(StorageType storage)
         {
-            return database[storage].GetDictionary();
+            if (database.ContainsKey(storage))
+                return database[storage].GetDictionary();
+            return null;
         }
 
         private static StringsDB instance;
@@ -144,6 +165,12 @@ namespace VisualSAIStudio
         Area,
         Emote,
         Skill,
+        GameEvent,
+        Race,
+        Achievement,
+        Map,
+        CreatureType,
+        Phase,
     }
 
     public abstract class ClientData
@@ -180,7 +207,10 @@ namespace VisualSAIStudio
         {
             try
             {
-                MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SELECT {0}, {1} FROM {2} order by {0}", id_column, string_column, table));
+                DBConnect db = new DBConnect();
+                db.OpenConnection();
+                MySql.Data.MySqlClient.MySqlCommand cmd = db.Query(String.Format("SELECT {0}, {1} FROM {2} order by {0}", id_column, string_column, table));
+
                 using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -188,6 +218,7 @@ namespace VisualSAIStudio
                         values.Add(Convert.ToInt32(reader[id_column]), Convert.ToString(reader[string_column]));
                     }
                 }
+                db.CloseConnection();
             }
             catch (System.InvalidOperationException e)
             {
@@ -197,19 +228,20 @@ namespace VisualSAIStudio
 
         public ClientDataDB(string string_column, string table)
         {
+           /* string id_column = null;
             try
             {
                 MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SHOW columns FROM {0}", table));
                 MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
-                string id_column = (string)reader["field"];
+                id_column = (string)reader["field"];
                 reader.Close();
-                Load(id_column, string_column, table);
             }
             catch (System.InvalidOperationException e)
             {
                 // TODO: show config option to configure sql connection
             }
+            Load(id_column, string_column, table);*/
         }
     }
 
