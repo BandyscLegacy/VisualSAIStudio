@@ -26,7 +26,6 @@ namespace VisualSAIStudio
 
         public SmartAction(SmartGenericJSONData data) : base(data, 6) {
             this.target = new SMART_TARGET_NONE();
-            ParameterValueChanged(this, new EventArgs());
         }
 
         public override void Copy(SmartElement prev)

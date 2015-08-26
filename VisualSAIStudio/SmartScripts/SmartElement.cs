@@ -40,6 +40,7 @@ namespace VisualSAIStudio
             parameters = new Parameter[parameters_count];
             for (int i = 0; i < parameters_count; ++i)
                 SetParameter(i, new NullParameter(), false);
+            Invalide();
         }
 
         public SmartElement(SmartGenericJSONData data, int parameters_count) : this(data.id, data.name, data.description, parameters_count)

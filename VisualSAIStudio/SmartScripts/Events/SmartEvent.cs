@@ -96,6 +96,8 @@ namespace VisualSAIStudio
         {
             this.chance = 100;
 
+            Invalide();
+
             /** @TODO: MOVE TO ScratchWindow **/
             this.MouseDown += this_mouseDown;
             this.MouseUp += this_mouseUp;
