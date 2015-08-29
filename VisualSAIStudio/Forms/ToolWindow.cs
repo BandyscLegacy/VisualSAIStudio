@@ -18,8 +18,8 @@ namespace VisualSAIStudio
         TreeNode collection = new TreeNode();
 
         SAIType saitype;
-
-        public ToolWindow(String file, String title)
+        SmartType type;
+        public ToolWindow(String file, String title, SmartType type)
         {
             InitializeComponent();
             this.Text = title;
@@ -27,15 +27,11 @@ namespace VisualSAIStudio
             this.treeView.Scroll += treeView_Scroll;
             this.treeView.MouseWheel += treeView_MouseWheel;
             this.HideOnClose = true;
-
+            this.type = type;
 
             LoadSmartFromFile(file);
             Reload();
-            saitype = SAIType.Gameobject;
         }
-
-
-
 
         public void SetSAIType(SAIType type)
         {
@@ -47,7 +43,6 @@ namespace VisualSAIStudio
         {
             return this.GetType() + "/" + this.Text;
         }
-
 
 
         //@TODO: to rewrite >.<
@@ -121,6 +116,8 @@ namespace VisualSAIStudio
             {
                 child = new TreeNode(line.Substring(0, comma));
                 child.Tag = line.Substring(comma + 1);
+                if (!SmartFactory.GetInstance().SmartExist(type, (string)child.Tag))
+                    Console.WriteLine("!" + child.Tag + " doesn't exist!");
             }
             else
                 child = new TreeNode(line);

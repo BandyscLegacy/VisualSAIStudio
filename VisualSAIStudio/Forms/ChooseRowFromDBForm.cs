@@ -17,7 +17,7 @@ namespace VisualSAIStudio
         public ChooseRowFromDBForm(StorageType storage)
         {
             InitializeComponent();
-            data = StringsDB.GetInstance().GetDictionary(storage);
+            data = DB.GetInstance().GetStringDictionary(storage);
             this.Text = "Select " + storage.ToString().ToLower();
         }
 
@@ -52,14 +52,18 @@ namespace VisualSAIStudio
             items.AddObjects(list);
         }
 
-        private void txtSearch_TextChanged(object sender, EventArgs e)
+        private void Filter()
         {
             int id;
             if (int.TryParse(txtSearch.Text, out id))
                 LoadItemsInt(txtSearch.Text);
             else
                 LoadItems(txtSearch.Text.ToLower());
+        }
 
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            Filter();
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -84,7 +88,8 @@ namespace VisualSAIStudio
     {
         public int key { get; set; }
         public string value { get; set; }
-        public KeyValue (int key, string value) : this()
+        public KeyValue(int key, string value)
+            : this()
         {
             this.key = key;
             this.value = value;

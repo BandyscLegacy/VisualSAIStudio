@@ -65,7 +65,7 @@
             this.styleToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1290, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1514, 24);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -85,21 +85,21 @@
             // loadFromDBToolStripMenuItem
             // 
             this.loadFromDBToolStripMenuItem.Name = "loadFromDBToolStripMenuItem";
-            this.loadFromDBToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.loadFromDBToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.loadFromDBToolStripMenuItem.Text = "Load from DB";
             this.loadFromDBToolStripMenuItem.Click += new System.EventHandler(this.loadFromDBToolStripMenuItem_Click);
             // 
             // gOTestToolStripMenuItem
             // 
             this.gOTestToolStripMenuItem.Name = "gOTestToolStripMenuItem";
-            this.gOTestToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.gOTestToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.gOTestToolStripMenuItem.Text = "GO test";
             this.gOTestToolStripMenuItem.Click += new System.EventHandler(this.gOTestToolStripMenuItem_Click);
             // 
             // detectConflictsToolStripMenuItem
             // 
             this.detectConflictsToolStripMenuItem.Name = "detectConflictsToolStripMenuItem";
-            this.detectConflictsToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.detectConflictsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.detectConflictsToolStripMenuItem.Text = "Detect Conflicts";
             this.detectConflictsToolStripMenuItem.Click += new System.EventHandler(this.detectConflictsToolStripMenuItem_Click);
             // 
@@ -108,7 +108,7 @@
             this.validateToolStripMenuItem.Name = "validateToolStripMenuItem";
             this.validateToolStripMenuItem.ShortcutKeyDisplayString = "F5";
             this.validateToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.validateToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.validateToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.validateToolStripMenuItem.Text = "Validate";
             this.validateToolStripMenuItem.Click += new System.EventHandler(this.validateToolStripMenuItem_Click);
             // 
@@ -228,7 +228,9 @@
             // 
             // textBox8
             // 
+            this.textBox8.BackColor = System.Drawing.SystemColors.Control;
             this.textBox8.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox8.ForeColor = System.Drawing.Color.Gray;
             this.textBox8.Location = new System.Drawing.Point(460, 3);
             this.textBox8.Name = "textBox8";
             this.textBox8.NormalColor = System.Drawing.Color.Black;

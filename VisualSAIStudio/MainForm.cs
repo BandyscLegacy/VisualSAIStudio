@@ -49,19 +49,21 @@ namespace VisualSAIStudio
 
             startPage = new StartPage();
             startPage.Show(dockPanel1);
-
-            //SelectSAI sss = new SelectSAI();
-            //sss.Show();
-
+            startPage.LoadRequest += startPage_LoadRequest;
 
             //only with new lib!
-            ThemeMgr.Instance.SetColorTable(new WeifenLuo.WinFormsUI.Docking.Colors.Dark());
+            ThemeMgr.Instance.SetColorTable(new WeifenLuo.WinFormsUI.Docking.Colors.Light());
             this.dockPanel1.Theme = ThemeMgr.Instance.DockPanelTheme;
             this.dockPanel1.Skin = ThemePanel.CreatePanelThemeValues();
             this.menuStrip1.Renderer = ThemeMgr.Instance.Renderer;
             this.menuStrip1.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
             this.menuStrip1.ForeColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormText);
             //no commit yet
+        }
+
+        private void startPage_LoadRequest(object sender, EventArgs e)
+        {
+            //((LoadRequestEventArgs)e).type
         }
 
         private void NewSAIWindow(int entryorguid, SmartScripts.SAIType type)
@@ -86,10 +88,10 @@ namespace VisualSAIStudio
 
         private void CreateWindows()
         {
-            events = new ToolWindow("data/events.txt", "Events");
-            conditions = new ToolWindow("data/conditions.txt", "Conditions");
-            targets = new ToolWindow("data/targets.txt", "Targets");
-            actions = new ToolWindow("data/actions.txt", "Actions");
+            events = new ToolWindow("data/events.txt", "Events", SmartScripts.SmartType.SMART_EVENT);
+            conditions = new ToolWindow("data/conditions.txt", "Conditions", SmartScripts.SmartType.SMART_CONDITION);
+            targets = new ToolWindow("data/targets.txt", "Targets", SmartScripts.SmartType.SMART_TARGET);
+            actions = new ToolWindow("data/actions.txt", "Actions", SmartScripts.SmartType.SMART_ACTION);
             properties = new PropertyWindow();
             errors = new ErrorsWindow();
             errors.WarningSelected += this_warningSelected;
@@ -191,8 +193,13 @@ namespace VisualSAIStudio
 
         private void loadFromDBToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ScratchWindow w = new ScratchWindow();
-            w.Show(dockPanel1);
+            SelectSAI c = new SelectSAI();
+            c.ShowDialog();
+            if (c.DialogResult == System.Windows.Forms.DialogResult.OK)
+            {
+                NewSAIWindow(c.Value, SmartScripts.SAIType.Creature);
+            }
+
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

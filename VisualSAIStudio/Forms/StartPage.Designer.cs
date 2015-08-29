@@ -17,67 +17,69 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
-            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
-            this.linkLabel4 = new System.Windows.Forms.LinkLabel();
+            this.LoadCreature = new System.Windows.Forms.LinkLabel();
+            this.LoadGameObject = new System.Windows.Forms.LinkLabel();
+            this.LoadAreaTrigger = new System.Windows.Forms.LinkLabel();
+            this.LoadTimedActionList = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
-            // linkLabel1
+            // LoadCreature
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Font = new System.Drawing.Font("Calibri Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
-            this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.linkLabel1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
-            this.linkLabel1.Location = new System.Drawing.Point(59, 146);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(124, 19);
-            this.linkLabel1.TabIndex = 0;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Load creature SAI";
+            this.LoadCreature.AutoSize = true;
+            this.LoadCreature.Font = new System.Drawing.Font("Calibri Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadCreature.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
+            this.LoadCreature.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.LoadCreature.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
+            this.LoadCreature.Location = new System.Drawing.Point(59, 146);
+            this.LoadCreature.Name = "LoadCreature";
+            this.LoadCreature.Size = new System.Drawing.Size(124, 19);
+            this.LoadCreature.TabIndex = 0;
+            this.LoadCreature.TabStop = true;
+            this.LoadCreature.Text = "Load creature SAI";
+            this.LoadCreature.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LoadCreature_LinkClicked);
             // 
-            // linkLabel2
+            // LoadGameObject
             // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Font = new System.Drawing.Font("Calibri Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
-            this.linkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.linkLabel2.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
-            this.linkLabel2.Location = new System.Drawing.Point(59, 170);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(145, 19);
-            this.linkLabel2.TabIndex = 1;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "Load gameobject SAI";
+            this.LoadGameObject.AutoSize = true;
+            this.LoadGameObject.Font = new System.Drawing.Font("Calibri Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadGameObject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
+            this.LoadGameObject.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.LoadGameObject.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
+            this.LoadGameObject.Location = new System.Drawing.Point(59, 170);
+            this.LoadGameObject.Name = "LoadGameObject";
+            this.LoadGameObject.Size = new System.Drawing.Size(145, 19);
+            this.LoadGameObject.TabIndex = 1;
+            this.LoadGameObject.TabStop = true;
+            this.LoadGameObject.Text = "Load gameobject SAI";
+            this.LoadGameObject.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LoadGameObject_LinkClicked);
             // 
-            // linkLabel3
+            // LoadAreaTrigger
             // 
-            this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Font = new System.Drawing.Font("Calibri Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
-            this.linkLabel3.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.linkLabel3.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
-            this.linkLabel3.Location = new System.Drawing.Point(59, 194);
-            this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(143, 19);
-            this.linkLabel3.TabIndex = 2;
-            this.linkLabel3.TabStop = true;
-            this.linkLabel3.Text = "Load areatrigger SAI";
+            this.LoadAreaTrigger.AutoSize = true;
+            this.LoadAreaTrigger.Font = new System.Drawing.Font("Calibri Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadAreaTrigger.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
+            this.LoadAreaTrigger.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.LoadAreaTrigger.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
+            this.LoadAreaTrigger.Location = new System.Drawing.Point(59, 194);
+            this.LoadAreaTrigger.Name = "LoadAreaTrigger";
+            this.LoadAreaTrigger.Size = new System.Drawing.Size(143, 19);
+            this.LoadAreaTrigger.TabIndex = 2;
+            this.LoadAreaTrigger.TabStop = true;
+            this.LoadAreaTrigger.Text = "Load areatrigger SAI";
             // 
-            // linkLabel4
+            // LoadTimedActionList
             // 
-            this.linkLabel4.AutoSize = true;
-            this.linkLabel4.Font = new System.Drawing.Font("Calibri Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
-            this.linkLabel4.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.linkLabel4.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
-            this.linkLabel4.Location = new System.Drawing.Point(59, 216);
-            this.linkLabel4.Name = "linkLabel4";
-            this.linkLabel4.Size = new System.Drawing.Size(149, 19);
-            this.linkLabel4.TabIndex = 3;
-            this.linkLabel4.TabStop = true;
-            this.linkLabel4.Text = "Load timed action list";
+            this.LoadTimedActionList.AutoSize = true;
+            this.LoadTimedActionList.Font = new System.Drawing.Font("Calibri Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadTimedActionList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
+            this.LoadTimedActionList.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.LoadTimedActionList.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(90)))), ((int)(((byte)(160)))));
+            this.LoadTimedActionList.Location = new System.Drawing.Point(59, 216);
+            this.LoadTimedActionList.Name = "LoadTimedActionList";
+            this.LoadTimedActionList.Size = new System.Drawing.Size(149, 19);
+            this.LoadTimedActionList.TabIndex = 3;
+            this.LoadTimedActionList.TabStop = true;
+            this.LoadTimedActionList.Text = "Load timed action list";
             // 
             // StartPage
             // 
@@ -87,10 +89,10 @@
             this.BackgroundImage = global::VisualSAIStudio.Properties.Resources.start;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(790, 475);
-            this.Controls.Add(this.linkLabel4);
-            this.Controls.Add(this.linkLabel3);
-            this.Controls.Add(this.linkLabel2);
-            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.LoadTimedActionList);
+            this.Controls.Add(this.LoadAreaTrigger);
+            this.Controls.Add(this.LoadGameObject);
+            this.Controls.Add(this.LoadCreature);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Name = "StartPage";
             this.Text = "Start Page";
@@ -102,9 +104,9 @@
 
         #endregion
 
-        private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.LinkLabel linkLabel2;
-        private System.Windows.Forms.LinkLabel linkLabel3;
-        private System.Windows.Forms.LinkLabel linkLabel4;
+        private System.Windows.Forms.LinkLabel LoadCreature;
+        private System.Windows.Forms.LinkLabel LoadGameObject;
+        private System.Windows.Forms.LinkLabel LoadAreaTrigger;
+        private System.Windows.Forms.LinkLabel LoadTimedActionList;
     }
 }

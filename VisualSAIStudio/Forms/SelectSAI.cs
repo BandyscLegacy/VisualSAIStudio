@@ -13,6 +13,8 @@ namespace VisualSAIStudio
 {
     public partial class SelectSAI : Form
     {
+        public int Value { get; private set; }
+
         public SelectSAI()
         {
             InitializeComponent();
@@ -20,134 +22,57 @@ namespace VisualSAIStudio
 
         private void SelectSAI_Load(object sender, EventArgs e)
         {
-            Dictionary<int, string> data = StringsDB.GetInstance().GetDictionary(StorageType.Creature);
-            Dictionary<int, List<GuidEntry>> data2 = StringsDB.GetInstance().EntryToGuidCreature;
-            List<GuidEntry> asa = new List<GuidEntry>();
-            foreach (int key in data.Keys)
+            Dictionary<int, string> data = DB.GetInstance().GetStringDictionary(StorageType.Creature);
+
+
+
+            listView.ClearObjects();
+            List<EntryNameSAI> list = new List<EntryNameSAI>();
+            foreach (int id in data.Keys)
             {
-                //if (key > 5)
-                ///    break;
-                GuidEntry xax = new GuidEntry();
-                xax.id = key;
-                xax.name = data[key];
-                asa.Add(xax);
+                list.Add(new EntryNameSAI(id, data[id], DB.GetInstance().Contains(StorageType.CreatureEntryWithAI, id)?"Yes":""));
             }
-            treeView1.Roots = asa;
-            this.treeView1.CanExpandGetter = delegate(object x)
-            {
-                return (((GuidEntry)x).name!=null) && data2.ContainsKey(((GuidEntry)x).id);
-            };
-            this.treeView1.ChildrenGetter = delegate(object x)
-            {
-                GuidEntry o = (GuidEntry)x;
-                return data2[o.id];
-            };
+
+            listView.AddObjects(list);
+            listView.UseFiltering = true;
+            listView.UseFilterIndicator = true;
             
-            /*Func<int, int> getId = (x => x);//x.EmployeeId);
-            Func<int, int?> getParentId = (x => (int?)null);//x.ManagerId);
-            Func<int, string> getDisplayName = (x => data[x]);
-
-            // Load items into TreeViewFast
-            treeView1.LoadItems(data.Keys.ToList(), getId, getParentId, getDisplayName);
-
-
-            Dictionary<int, List<int>> data2 = StringsDB.GetInstance().EntryToGuidCreature;
-            foreach (int key in data2.Keys)
-            {
-                Func<int, int> getId2 = (x => x);//x.EmployeeId);
-                Func<int, int?> getParentId2 = (x => key);//x.ManagerId);
-                Func<int, string> getDisplayName2 = (x => x.ToString());
-
-                // Load items into TreeViewFast
-                treeView1.LoadItems<int>(data2[key], getId2, getParentId2, getDisplayName2);
-            }*/
-
-
-        }
-
-        private void treeView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            int o;
-            treeView1.ResetColumnFiltering();
-            //treeView1.ModelFilter = TextMatchFilter.Contains(treeView1, "6548159");
+            listView.ModelFilter = TextMatchFilter.Contains(listView, txtSearch.Text);
+        }
 
-            
-            switch (cmbType.SelectedIndex)
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            if (listView.SelectedObject == null)
+                this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            else
             {
-                case 0:
-                    treeView1.ModelFilter = new FilterByName(txtSearch.Text.ToLower());
-                    break;
-                case 1:
-                    if (int.TryParse(txtSearch.Text, out o))
-                     treeView1.ModelFilter = new FilterByEntry(o);
-                    
-                    break;
-                case 2:
-                    if (int.TryParse(txtSearch.Text, out o))
-                        treeView1.ModelFilter = new FilterByGUID(o);
-                    
-                    break;
+                Value = ((EntryNameSAI)listView.SelectedObject).entry;
+                this.DialogResult = System.Windows.Forms.DialogResult.OK;
             }
+            this.Close();
+        }
+
+        private void listView_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            btnOk_Click(sender, e);
         }
     }
 
-    public class FilterByName : IModelFilter
+    public struct EntryNameSAI
     {
-        private string p;
-
-        public FilterByName(string p)
-        {
-            this.p = p;
-        }
-        public bool Filter(object modelObject)
-        {
-            GuidEntry g = ((GuidEntry)modelObject);
-            if (g.name==null)
-                return false;
-            return g.name.ToLower().Contains(p);
-        }
-    }
-
-    public class FilterByEntry : IModelFilter
-    {
-        private int entry;
-        public FilterByEntry(int entry)
+        public int entry { get; set; }
+        public string name { get; set; }
+        public string sai {get; set; }
+        public EntryNameSAI(int entry, string name, string sai) : this()
         {
             this.entry = entry;
-        }
-        public bool Filter(object modelObject)
-        {
-            GuidEntry g = ((GuidEntry)modelObject);
-            if (g.name == null)
-                return true;
-            return g.id == entry;
-        }
-    }
-    public class FilterByGUID : IModelFilter
-    {
-        private int entry;
-        public FilterByGUID(int entry)
-        {
-            this.entry = entry;
-        }
-        public bool Filter(object modelObject)
-        {
-            GuidEntry g = ((GuidEntry)modelObject);
-            return g.id == entry;
+            this.name = name;
+            this.sai = sai;
         }
     }
 
-    public class XYZZ : IModelFilter
-    {
-        public bool Filter(object modelObject)
-        {
-            GuidEntry g = ((GuidEntry)modelObject);
-            return g.id == 6548159;
-        }
-    }
 }

@@ -27,7 +27,25 @@ namespace VisualSAIStudio.SkinableControls
             this.BackColor = ThemeMgr.Instance.getColor(IKnownColors.contentBackcolor);
             this.ForeColor = ThemeMgr.Instance.getColor(IKnownColors.FormText);
             this.brush = new SolidBrush(ThemeMgr.Instance.getColor(IKnownColors.FormText));
-            this.Refresh();
+            this.Invalidate();
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // SkinableScratch
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.Name = "SkinableScratch";
+            this.Load += new System.EventHandler(this.SkinableScratch_Load);
+            this.ResumeLayout(false);
+
+        }
+
+        private void SkinableScratch_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

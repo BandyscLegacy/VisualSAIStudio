@@ -69,7 +69,7 @@ namespace VisualSAIStudio
             if (attrs.Count<StorageTypeAttribute>() > 0)
             {
                 StorageType type = attrs.First<StorageTypeAttribute>().type;
-                string name = StringsDB.GetInstance().Get(type, int.Parse(value.ToString()));
+                string name = DB.GetInstance().GetString(type, int.Parse(value.ToString()));
                 if (name == null)
                     return "Unknown " + type + " (" + value + ")";
                 else

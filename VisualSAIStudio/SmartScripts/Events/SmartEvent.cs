@@ -86,6 +86,7 @@ namespace VisualSAIStudio
         private ContextMenuStrip contextMenu = new ContextMenuStrip();
         private Point mouse;
         private bool dragging;
+        public int actualID { get; set; }
 
         public int chance {get; set;}
         public SmartPhaseMask phasemask { get; set; }

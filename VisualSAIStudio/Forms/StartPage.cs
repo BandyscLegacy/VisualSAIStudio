@@ -9,11 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using VisualSAIStudio.History;
+using VisualSAIStudio.Forms;
 
 namespace VisualSAIStudio
 {
     public partial class StartPage : DockContent
     {
+
+        public event EventHandler LoadRequest = delegate { };
+
         public StartPage()
         {
             InitializeComponent();
@@ -35,5 +39,26 @@ namespace VisualSAIStudio
             ll.Text = action.type.ToString() + "  - " + action.name + " (" + action.entry + ")";
             this.Controls.Add(ll);
         }
+
+        private void LoadCreature_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LoadRequest(this, new LoadRequestEventArgs(SmartScripts.SAIType.Creature));
+        }
+
+        private void LoadGameObject_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LoadRequest(this, new LoadRequestEventArgs(SmartScripts.SAIType.Gameobject));
+        }
+
+    }
+
+    public class LoadRequestEventArgs : EventArgs
+    {
+        public SmartScripts.SAIType type {get; set;}
+        public LoadRequestEventArgs(SmartScripts.SAIType type)
+        {
+            this.type = type;
+        }
     }
 }
+

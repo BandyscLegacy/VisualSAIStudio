@@ -33,6 +33,14 @@ namespace VisualSAIStudio.SmartScripts
 
         }
 
+        public bool SmartExist(SmartType type, string id)
+        {
+            if (!smart_id_data.ContainsKey(type))
+                return false;
+
+            return (smart_name_to_id.ContainsKey(type) && smart_name_to_id[type].ContainsKey(id));
+        }
+
         public SmartEvent EventFactory(int id)
         {
             if (smart_id_data.ContainsKey(SmartType.SMART_EVENT) && smart_id_data[SmartType.SMART_EVENT].ContainsKey(id))

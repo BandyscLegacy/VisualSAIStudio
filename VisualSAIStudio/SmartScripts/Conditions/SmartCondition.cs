@@ -44,7 +44,11 @@ namespace VisualSAIStudio
         public override System.Drawing.Size Draw(System.Drawing.Graphics graphics, int x, int y, int width, int height, Brush brush, Pen pen, Font font, Font mini_font, bool setRect = true)
         {
             SizeF size = graphics.MeasureString(ToString(), font);
-            graphics.DrawString(ToString(), font, brush, x, y);
+
+            if (invert)
+                graphics.DrawString("x", font, Brushes.Red, x, y);
+
+            graphics.DrawString(ToString(), font, brush, x + ((invert)?15:0), y);
 
             if (setRect)
                 SetRect(x, y, width, (int)size.Height + 6);
@@ -58,6 +62,7 @@ namespace VisualSAIStudio
 
     public class CONDITION_LOGICAL_OR : SmartCondition
     {
-        public CONDITION_LOGICAL_OR() : base(-1, "CONDITION_LOGICAL_OR", "or") { }
+        public static int ID = -1;
+        public CONDITION_LOGICAL_OR() : base(ID, "CONDITION_LOGICAL_OR", "or") { }
     }
 }

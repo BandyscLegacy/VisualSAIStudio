@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using WeifenLuo.WinFormsUI.Docking.Colors;
 using WeifenLuo.WinFormsUI.Docking.Themes;
+using VisualSAIStudio.MetroShell;
 
 namespace MetroForm
 {
@@ -227,8 +228,25 @@ namespace MetroForm
             }
         }
 
+        protected Color _AccentColor;
+        protected Pen AccentPen;
+        protected Brush AccentBrush;
+        public Color AccentColor
+        {
+            get
+            {
+                return _AccentColor;
+            }
+            set
+            {
+                _AccentColor = value;
+                AccentBrush = new SolidBrush(value);
+                AccentPen = new Pen(AccentBrush);
+            }
+        }
         private Bitmap IconResized;
         protected Panel content {get; private set;}
+        private Pen WindowControlsPen { get; set; }
         public Color TitleColor { get; set; }
         public Font TitleFont { get; set; }
         //
@@ -280,15 +298,19 @@ namespace MetroForm
             this.Resize += Form1_Resized;
             this.Activated += Form1_Activated;
             this.MouseDown += Form1_MouseDown;
+            this.MouseUp += Form1_MouseUp;
             this.MouseMove += Form1_MouseMove;
             this.Paint += MetroForm_Paint;
             this.MouseLeave += MetroForm_MouseLeave;
+            this.AccentColor = Color.FromArgb(0, 122, 204);
             ThemeMgr.Instance.RegisterControl(this);
         }
 
         void MetroForm_MouseLeave(object sender, EventArgs e)
         {
             resizeDir = ResizeDirection.None;
+            mouse.X = 0;
+            this.Invalidate();
         }
 
         ~MetroForm()
@@ -296,12 +318,51 @@ namespace MetroForm
             ThemeMgr.Instance.UnregisterControl(this);
         }
 
+        private Point mouse;
+        private bool mouse_down;
+
         private void MetroForm_Paint(object sender, PaintEventArgs e)
         {
+
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+
+
+
+            if (mouse.Y < 26 && mouse.X > e.ClipRectangle.Width - 102)
+            {
+                if (mouse.X > e.ClipRectangle.Width - 34)
+                {
+                    e.Graphics.FillRectangle(mouse_down ? AccentBrush : Brushes.Gray, e.ClipRectangle.Width - 34, 0, 34, 26);
+                }
+                else if (mouse.X > e.ClipRectangle.Width - 68)
+                {
+                    e.Graphics.FillRectangle(mouse_down ? AccentBrush : Brushes.Gray, e.ClipRectangle.Width - 68, 0, 34, 26);
+                }
+                else
+                {
+                    e.Graphics.FillRectangle(mouse_down ? AccentBrush : Brushes.Gray, e.ClipRectangle.Width - 102, 0, 34, 26);
+                }
+            }
+
+
+            e.Graphics.FillRectangle(WindowControlsPen.Brush, e.ClipRectangle.Width - 89, 16, 9, 3);
+
+
+
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            e.Graphics.DrawLine(WindowControlsPen, e.ClipRectangle.Width - 21, 11, e.ClipRectangle.Width - 14, 18);
+            e.Graphics.DrawLine(WindowControlsPen, e.ClipRectangle.Width - 21, 18, e.ClipRectangle.Width - 14, 11);
+
+            e.Graphics.DrawRectangle(WindowControlsPen, e.ClipRectangle.Width - 55, 10, 9, 9);
+            e.Graphics.DrawRectangle(WindowControlsPen, e.ClipRectangle.Width - 55, 11, 9, 1);
+
+
             if (IconResized != null)
                 e.Graphics.DrawImage(IconResized, 5, 5);
             e.Graphics.DrawString(this.Text, this.TitleFont, new SolidBrush(this.TitleColor), 5+16+5, 7);
+
+            e.Graphics.DrawRectangle(AccentPen, 0, 0, e.ClipRectangle.Width - 1, e.ClipRectangle.Height - 1);
         }
 
         private void Form1_Resized(object sender, EventArgs e)
@@ -320,22 +381,48 @@ namespace MetroForm
             Dwm.DwmExtendFrameIntoClientArea(this.Handle, ref dwmMargins);
         }
 
+        private void Form1_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouse_down = false;
+            this.Invalidate();
+
+            switch (GetTtitlebarRegion())
+            {
+                case TitleBarRegion.Minimize:
+                    this.WindowState = FormWindowState.Minimized;
+                    break;
+                case TitleBarRegion.Maximize:
+                    this.WindowState = (this.WindowState == FormWindowState.Maximized ? FormWindowState.Normal : FormWindowState.Maximized);
+                    break;
+                case TitleBarRegion.Close:
+                    this.Close();
+                    break;
+            }
+        }
+
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
 
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-                if (this.Width - BorderWidth > e.Location.X && e.Location.X > BorderWidth && e.Location.Y > BorderWidth && e.Location.Y < this.Height - BorderWidth)
+                mouse_down = true;
+                this.Invalidate();
+
+                if (!(mouse.Y < 26 && mouse.X > this.Width - 102))
                 {
-                    MoveControl(this.Handle);
-                }
-                else
-                {
-                    if (this.WindowState != FormWindowState.Maximized)
+                    if (this.Width - BorderWidth > e.Location.X && e.Location.X > BorderWidth && e.Location.Y > BorderWidth && e.Location.Y < this.Height - BorderWidth)
                     {
-                        ResizeForm(resizeDir);
+                        MoveControl(this.Handle);
+                    }
+                    else
+                    {
+                        if (this.WindowState != FormWindowState.Maximized)
+                        {
+                            ResizeForm(resizeDir);
+                        }
                     }
                 }
+
             }
         }
 
@@ -343,8 +430,12 @@ namespace MetroForm
         {
 
             //Calculate which direction to resize based on mouse position
+            mouse.X = e.X;
+            mouse.Y = e.Y;
+            mouse_down = (e.Button == System.Windows.Forms.MouseButtons.Left);
+            this.Invalidate();
 
-
+            
             {
                 if (e.Location.X < BorderWidth & e.Location.Y < BorderWidth)
                 {
@@ -394,6 +485,18 @@ namespace MetroForm
 
         }
 
+        private TitleBarRegion GetTtitlebarRegion()
+        {
+            if (mouse.X < 32)
+                return TitleBarRegion.Icon;
+            else if (mouse.X < this.Width - 102)
+                return TitleBarRegion.Title;
+            else if (mouse.X < this.Width - 68)
+                return TitleBarRegion.Minimize;
+            else if (mouse.X < this.Width - 34)
+                return TitleBarRegion.Maximize;
+            return TitleBarRegion.Close;
+        }
 
         private void MoveControl(IntPtr hWnd)
         {
@@ -465,7 +568,40 @@ namespace MetroForm
         {
             this.BackColor = ThemeMgr.Instance.getColor(IKnownColors.FormBackground);
             this.TitleColor = ThemeMgr.Instance.getColor(IKnownColors.FormText);
+            this.WindowControlsPen = new Pen(new SolidBrush(this.TitleColor));
             this.Refresh();
         }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // MetroForm
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Name = "MetroForm";
+            this.Load += new System.EventHandler(this.MetroForm_Load);
+            this.ResumeLayout(false);
+
+        }
+
+        private void MetroForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
+    }
+}
+
+namespace VisualSAIStudio.MetroShell
+{
+    public enum TitleBarRegion
+    {
+        Icon,
+        Title,
+        Minimize,
+        Maximize,
+        Close
     }
 }

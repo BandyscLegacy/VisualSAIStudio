@@ -158,6 +158,9 @@
     <Compile Include="SkinableControls\SkinableHScroll.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="SkinableControls\SkinableListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SkinableControls\SkinablePropertyGrid.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -219,7 +222,7 @@
     </Compile>
     <Compile Include="SmartScripts\SQLGenerator.cs" />
     <Compile Include="SmartScripts\Targets\SmartTarget.cs" />
-    <Compile Include="DB\StringsDB.cs" />
+    <Compile Include="DB\DB.cs" />
     <Compile Include="SmartScripts\Warning.cs" />
     <Compile Include="Forms\SplashScreen.cs">
       <SubType>Form</SubType>
@@ -295,6 +298,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SkinableControls\SkinableHScroll.resx">
       <DependentUpon>SkinableHScroll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkinableControls\SkinableScratch.resx">
+      <DependentUpon>SkinableScratch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SkinableControls\SkinableVScrollBar.resx">
       <DependentUpon>SkinableVScrollBar.cs</DependentUpon>

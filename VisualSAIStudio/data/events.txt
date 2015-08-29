@@ -77,7 +77,7 @@ Distance
  When creature in distance,SMART_EVENT_DISTANCE_CREATURE
  When gameobject in distance,SMART_EVENT_DISTANCE_GAMEOBJECT
  When is behind victim,SMART_EVENT_IS_BEHIND_TARGET
-Health, mana
+Health; mana
  On heal received,SMART_EVENT_RECEIVE_HEAL
  When health between,SMART_EVENT_HEALT_PCT
  When mana between,SMART_EVENT_MANA_PCT

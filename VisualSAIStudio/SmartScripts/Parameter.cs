@@ -56,6 +56,8 @@ namespace VisualSAIStudio
         {
             switch (param)
             {
+                case "CastFlagsParameter":
+                    return new CastFlagsParameter();
                 case "SpellParameter":
                     return new StringParameter(StorageType.Spell);
                 case "EmoteParameter":
@@ -293,7 +295,7 @@ namespace VisualSAIStudio
         public override void SetValue(int value)
         {
             base.SetValue(value);
-            str = StringsDB.GetInstance().Get(storageType, value);
+            str = DB.GetInstance().GetString(storageType, value);
             if (str == null)
                 str = value.ToString();
             else

@@ -24,16 +24,23 @@ namespace VisualSAIStudio
 
         private void SplashScreen_Load(object sender, EventArgs e)
         {
-            StringsDB.GetInstance().CurrentAction += this_eventHandler;
+
         }
 
         private void this_eventHandler(object sender, EventArgs e)
         {
             loading = ((LoadingEventArgs)e).loading;
+
+            if (this.IsDisposed)
+                return;
+
             this.Invoke(new MethodInvoker(delegate
             {
-                this.Refresh();
+                if (!this.IsDisposed)
+                    this.Refresh();
             }));
+            
+
         }
         protected override void OnPaintBackground(System.Windows.Forms.PaintEventArgs e)
         {
@@ -50,6 +57,18 @@ namespace VisualSAIStudio
         {
             if (!startup)
                 this.Close();
+        }
+
+        private void SplashScreen_Shown(object sender, EventArgs e)
+        {
+            DB.GetInstance().CurrentAction += this_eventHandler;
+
+        }
+
+        private void SplashScreen_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DB.GetInstance().CurrentAction -= this_eventHandler;
+            Application.DoEvents();       
         }
 
     }

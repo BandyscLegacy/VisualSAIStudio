@@ -51,7 +51,7 @@
             // treeView
             // 
             this.treeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.treeView.Indent = 5;
+            this.treeView.Indent = 7;
             this.treeView.Location = new System.Drawing.Point(0, 13);
             this.treeView.Name = "treeView";
             this.treeView.ShowLines = false;

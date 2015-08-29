@@ -123,11 +123,13 @@ namespace VisualSAIStudio
                         conditions[id].Add(new CONDITION_LOGICAL_OR());
 
                     SmartCondition cond = SmartFactory.GetInstance().ConditionFactory(Convert.ToInt32(reader["ConditionTypeOrReference"]));
-                    cond.parameters[0].SetValue(Convert.ToInt32(reader["ConditionValue1"]));
-                    cond.parameters[1].SetValue(Convert.ToInt32(reader["ConditionValue2"]));
-                    cond.parameters[2].SetValue(Convert.ToInt32(reader["ConditionValue3"]));
-                    conditions[id].Add(cond);
+                    cond.UpdateParams(0,(Convert.ToInt32(reader["ConditionValue1"])));
+                    cond.UpdateParams(1,(Convert.ToInt32(reader["ConditionValue2"])));
+                    cond.UpdateParams(2,(Convert.ToInt32(reader["ConditionValue3"])));
+                    cond.invert = (Convert.ToInt32(reader["NegativeCondition"]) == 1);
 
+
+                    conditions[id].Add(cond);
                     prevelsegroup = Convert.ToInt32(reader["ElseGroup"]);
                 }
             }
@@ -290,11 +292,10 @@ namespace VisualSAIStudio
             scratch1.Refresh();
         }
 
-        // @TODO: to rewrite ASAP!!
-        // I know, it it TOTAL MESS
+
         public String GenerateSQLOutput()
         {
-            return SQLGenerator.GenerateSAISQL(type, entryorguid, events);
+            return SQLGenerator.GenerateSAISQL(type, entryorguid, events)+"\n\n\n"+SQLGenerator.GenerateConditionsSQL(type, entryorguid, events);
         }
 
         public void DetectConflicts()

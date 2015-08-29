@@ -1,4 +1,11 @@
 [
+
+	{
+	  "id": -1,
+	  "name": "CONDITION_LOGICAL_OR",
+	  "description": "or"	
+	},
+
 	{
 	  "id": 0,
 	  "name": "CONDITION_NONE",
@@ -436,16 +443,23 @@
 	  "parameters": [
 	    {
 	      "type": "Parameter",
-	      "name": "level",
-	      "description": "DEF"
+	      "name": "Level",
+	      "description": "Level to compare"
 	    },
 	    {
-	      "type": "Parameter",
-	      "name": "ComparisonType",
-	      "description": "DEF"
+	      "type": "SwitchParameter",
+	      "name": "Comparison",
+		  "values": {
+			    "0": {"name": "equals (=)"},
+				"1": {"name": "higher than (>)"},
+				"2": {"name": "lower than (<)"},
+				"3": {"name": "higher or equals (>=)"},
+				"4": {"name": "lower or equals (<=)"}
+		  },
+	      "description": "Comparison type"
 	    },
 	  ],
-	  "description": "true if unit's level is equal to param1 (param2 can modify the statement)"
+	  "description": "If {target}'s level {pram2value:choose(0|1|2|3|4):=|>|<|>=|<=} {pram1}"
 	},
 
 	{
@@ -453,12 +467,12 @@
 	  "name": "CONDITION_QUEST_COMPLETE",
 	  "parameters": [
 	    {
-	      "type": "Parameter",
-	      "name": "quest_id",
-	      "description": "DEF"
+	      "type": "QuestParameter",
+	      "name": "Quest",
+	      "description": "Quest id which player has to have completed with all objectives, but not yet rewarded"
 	    },
 	  ],
-	  "description": "true if player has quest_id with all objectives complete, but not yet rewarded"
+	  "description": "If {target} has completed quest {pram1} (but not yet rewarded)"
 	},
 
 	{
@@ -466,17 +480,15 @@
 	  "name": "CONDITION_NEAR_CREATURE",
 	  "parameters": [
 	    {
-	      "type": "Parameter",
-	      "name": "creature_entry",
-	      "description": "DEF"
+	      "type": "CreatureParameter",
+	      "name": "Creature"
 	    },
 	    {
 	      "type": "Parameter",
-	      "name": "distance",
-	      "description": "DEF"
+	      "name": "Distance"
 	    },
 	  ],
-	  "description": "true if there is a creature of entry in range"
+	  "description": "If there is creature {pram1} within range {pram2} yards to {target}"
 	},
 
 	{
@@ -484,17 +496,15 @@
 	  "name": "CONDITION_NEAR_GAMEOBJECT",
 	  "parameters": [
 	    {
-	      "type": "Parameter",
-	      "name": "gameobject_entry",
-	      "description": "DEF"
+	      "type": "GameObjectParameter",
+	      "name": "Gameobject"
 	    },
 	    {
 	      "type": "Parameter",
-	      "name": "distance",
-	      "description": "DEF"
+	      "name": "Distance"
 	    },
 	  ],
-	  "description": "true if there is a gameobject of entry in range"
+	  "description": "If there is gameobject {pram1} within range {pram2} yards to {target}"
 	},
 
 	{
@@ -502,22 +512,31 @@
 	  "name": "CONDITION_OBJECT_ENTRY_GUID",
 	  "parameters": [
 	    {
-	      "type": "Parameter",
-	      "name": "TypeID",
-	      "description": "DEF"
+	      "type": "SwitchParameter",
+	      "name": "Type ID",
+	      "values": {
+			"0": {"name": "TYPEID_OBJECT"},
+			"1": {"name": "TYPEID_ITEM"},
+			"2": {"name": "TYPEID_CONTAINER"},
+			"3": {"name": "TYPEID_UNIT"},
+			"4": {"name": "TYPEID_PLAYER"},
+			"5": {"name": "TYPEID_GAMEOBJECT"},
+			"6": {"name": "TYPEID_DYNAMICOBJECT"},
+			"7": {"name": "TYPEID_CORPSE"},
+			"8": {"name": "TYPEID_AREATRIGGER"}
+		  }
 	    },
 	    {
 	      "type": "Parameter",
-	      "name": "entry",
-	      "description": "DEF"
+	      "name": "Entry",
+	      "description": "Creature or gameobject entry"
 	    },
 	    {
 	      "type": "Parameter",
-	      "name": "guid",
-	      "description": "DEF"
+	      "name": "Guid from DB"
 	    }
 	  ],
-	  "description": "true if object is type TypeID and the entry is 0 or matches entry of the object or matches guid of the object"
+	  "description": "If {target} is {pram1}{pram2value:choose(0):|, entry is {pram2}} and guid is {pram3}"
 	},
 
 	{
@@ -525,12 +544,23 @@
 	  "name": "CONDITION_TYPE_MASK",
 	  "parameters": [
 	    {
-	      "type": "Parameter",
-	      "name": "TypeMask",
-	      "description": "DEF"
-	    },
+	      "type": "FlagParameter",
+	      "name": "Type Mask",
+		  "values": {
+				"1": {"name": "TYPEMASK_OBJECT"},
+				"2": {"name": "TYPEMASK_ITEM"},
+				"6": {"name": "TYPEMASK_CONTAINER", "description": "TYPEMASK_ITEM | 0x0004"},
+				"8": {"name": "TYPEMASK_UNIT"},
+				"16": {"name": "TYPEMASK_PLAYER"},
+				"32": {"name": "TYPEMASK_GAMEOBJECT"},
+				"64": {"name": "TYPEMASK_DYNAMICOBJECT"},
+				"128": {"name": "TYPEMASK_CORPSE"},
+				"256": {"name": "TYPEMASK_AREATRIGGER"},
+				"88": {"name": "TYPEMASK_SEER", "description": "TYPEMASK_PLAYER | TYPEMASK_UNIT | TYPEMASK_DYNAMICOBJECT"}
+		   },
+		}
 	  ],
-	  "description": "true if object is type object's TypeMask matches provided TypeMask"
+	  "description": "If {target} is of type {pram1}"
 	},
 
 	{
@@ -538,17 +568,27 @@
 	  "name": "CONDITION_RELATION_TO",
 	  "parameters": [
 	    {
-	      "type": "Parameter",
-	      "name": "ConditionTarget",
-	      "description": "DEF"
+	      "type": "SwitchParameter",
+	      "name": "Condition Target",
+	      "values": {
+				"0": {"name": "Invoker"},
+				"1": {"name": "Object"}
+		  }	      
 	    },
 	    {
-	      "type": "Parameter",
-	      "name": "RelationType",
-	      "description": "DEF"
+	      "type": "SwitchParameter",
+	      "name": "Relation",
+	      "values": {
+				"0": {"name": "RELATION_SELF"},
+				"1": {"name": "RELATION_IN_PARTY"},
+				"2": {"name": "RELATION_IN_RAID_OR_PARTY"},
+				"3": {"name": "RELATION_OWNED_BY"},
+				"4": {"name": "RELATION_PASSENGER_OF"},
+				"5": {"name": "RELATION_CREATED_BY"}
+		  },
 	    },
 	  ],
-	  "description": "true if object is in given relation with object specified by ConditionTarget"
+	  "description": "If {target} {pram2value:choose(0|1|2|3|4|5):is {pram1}|is in party with {pram2}|is in raid or party with {pram2}|is owned by {pram1}|is passenger of {pram1}|is summoned by {pram1}}"
 	},
 
 	{
@@ -556,46 +596,65 @@
 	  "name": "CONDITION_REACTION_TO",
 	  "parameters": [
 	    {
-	      "type": "Parameter",
-	      "name": "ConditionTarget",
-	      "description": "DEF"
+	      "type": "SwitchParameter",
+	      "name": "Condition Target",
+	      "values": {
+				"0": {"name": "Invoker"},
+				"1": {"name": "Object"}
+		  }	
 	    },
 	    {
-	      "type": "Parameter",
-	      "name": "rankMask",
-	      "description": "DEF"
+	      "type": "FlagParameter",
+	      "name": "Rank",
+	      "values": {
+			"1": {"name": "REP_HATED"},
+			"2": {"name": "REP_HOSTILE"},
+			"4": {"name": "REP_UNFRIENDLY"},
+			"8": {"name": "REP_NEUTRAL"},
+			"16": {"name": "REP_FRIENDLY"},
+			"32": {"name": "REP_HONORED"},
+			"64": {"name": "REP_REVERED"},
+			"128": {"name": "REP_EXALTED"},
+		  }
 	    },
 	  ],
-	  "description": "true if object's reaction matches rankMask object specified by ConditionTarget"
+	  "description": "If {target} reaction to {pram1} is {pram2}"
 	},
-
 	{
 	  "id": 35,
 	  "name": "CONDITION_DISTANCE_TO",
 	  "parameters": [
 	    {
-	      "type": "Parameter",
-	      "name": "ConditionTarget",
-	      "description": "DEF"
+	      "type": "SwitchParameter",
+	      "name": "Condition Target",
+	      "values": {
+				"0": {"name": "Invoker"},
+				"1": {"name": "Object"}
+		  }	
 	    },
 	    {
 	      "type": "Parameter",
-	      "name": "distance",
-	      "description": "DEF"
+	      "name": "Distance"
 	    },
 	    {
-	      "type": "Parameter",
-	      "name": "ComparisonType",
-	      "description": "DEF"
+	      "type": "SwitchParameter",
+	      "name": "Comparison",
+		  "values": {
+			    "0": {"name": "equals (=)"},
+				"1": {"name": "higher than (>)"},
+				"2": {"name": "lower than (<)"},
+				"3": {"name": "higher or equals (>=)"},
+				"4": {"name": "lower or equals (<=)"}
+		  },
 	    }
 	  ],
-	  "description": "true if object and ConditionTarget are within distance given by parameters"
+	  "description": "If {target} distance to {pram1} {pram3value:choose(0|1|2|3|4):=|>|<|>=|<=} {pram2} yards"
 	},
 
 	{
 	  "id": 36,
 	  "name": "CONDITION_ALIVE",
-	  "description": "true if unit is alive"
+	  "description": "If {target} is alvie"
 	},
 
 	{
@@ -604,16 +663,21 @@
 	  "parameters": [
 	    {
 	      "type": "Parameter",
-	      "name": "hpVal",
-	      "description": "DEF"
+	      "name": "HP"
 	    },
 	    {
-	      "type": "Parameter",
-	      "name": "ComparisonType",
-	      "description": "DEF"
+	      "type": "SwitchParameter",
+	      "name": "Comparison",
+		  "values": {
+			    "0": {"name": "equals (=)"},
+				"1": {"name": "higher than (>)"},
+				"2": {"name": "lower than (<)"},
+				"3": {"name": "higher or equals (>=)"},
+				"4": {"name": "lower or equals (<=)"}
+		  },
 	    },
 	  ],
-	  "description": "true if unit's hp matches given value"
+	  "description": "If {target}'s HP {pram2value:choose(0|1|2|3|4):=|>|<|>=|<=} {pram1}"
 	},
 
 	{
@@ -621,17 +685,22 @@
 	  "name": "CONDITION_HP_PCT",
 	  "parameters": [
 	    {
-	      "type": "Parameter",
-	      "name": "hpPct",
-	      "description": "DEF"
+	      "type": "PercentageParameter",
+	      "name": "HP %"
 	    },
 	    {
-	      "type": "Parameter",
-	      "name": "ComparisonType",
-	      "description": "DEF"
+	      "type": "SwitchParameter",
+	      "name": "Comparison",
+		  "values": {
+			    "0": {"name": "equals (=)"},
+				"1": {"name": "higher than (>)"},
+				"2": {"name": "lower than (<)"},
+				"3": {"name": "higher or equals (>=)"},
+				"4": {"name": "lower or equals (<=)"}
+		  },
 	    },
 	  ],
-	  "description": "true if unit's hp matches given pct"
+	  "description": "If {target}'s HP {pram2value:choose(0|1|2|3|4):=|>|<|>=|<=} {pram1}%"
 	},
 
 	{
@@ -640,11 +709,11 @@
 	  "parameters": [
 	    {
 	      "type": "Parameter",
-	      "name": "terrainSwap",
-	      "description": "DEF"
+	      "name": "Terrain Swap",
+	      "description": "To explain"
 	    },
 	  ],
-	  "description": "true if object is in terrainswap"
+	  "description": "If {target} in terrain swap {pram1}"
 	}
 
 ]

@@ -23,17 +23,21 @@ namespace VisualSAIStudio.SkinableControls
 
         private void SkinableTextBox_LostFocus(object sender, EventArgs e)
         {
-            if (this.Text == "")
+            if (base.Text == "")
             {
-                this.Text = Placeholder;
+                base.Text = Placeholder;
                 this.ForeColor = PlaceholderColor;
             }
         }
 
         private void SkinableTextBox_GotFocus(object sender, EventArgs e)
         {
-            this.Text = "";
-            this.ForeColor = NormalColor;
+            if (base.Text == Placeholder)
+            {
+                Text = " ";
+                Text = "";
+                this.ForeColor = NormalColor;
+            }
         }
 
         ~SkinableTextBox()
@@ -44,8 +48,13 @@ namespace VisualSAIStudio.SkinableControls
         public void ReloadTheme()
         {
             this.BackColor = ThemeMgr.Instance.getColor(IKnownColors.FormBackground);
-            this.ForeColor = ThemeMgr.Instance.getColor(IKnownColors.FormText);
             this.NormalColor = ThemeMgr.Instance.getColor(IKnownColors.FormText);
+
+            if (this.Focused)
+                this.ForeColor = NormalColor;
+            else
+                this.ForeColor = PlaceholderColor;
+
             this.Refresh();
         }
         //
@@ -67,7 +76,23 @@ namespace VisualSAIStudio.SkinableControls
                 base.Text = value;
             } 
         }
-        public string Placeholder { get; set; }
+        private string _Placeholder;
+        public string Placeholder
+        {
+            get
+            {
+                return _Placeholder;
+            }
+            set
+            {
+                _Placeholder = value;
+                if (base.Text == "")
+                {
+                    base.Text = Placeholder;
+                    this.ForeColor = PlaceholderColor;
+                }
+            }
+        }
         public Color PlaceholderColor { get; set; }
         public Color NormalColor { get; set; }
     }

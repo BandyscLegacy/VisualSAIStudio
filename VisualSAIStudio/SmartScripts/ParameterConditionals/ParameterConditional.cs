@@ -198,7 +198,7 @@ namespace VisualSAIStudio.SmartScripts
         {
             if (compared.GetValue() == 0)
                 return true;
-            return StringsDB.GetInstance().Exists(storage, compared.GetValue());
+            return DB.GetInstance().Exists(storage, compared.GetValue());
         }
     }
 

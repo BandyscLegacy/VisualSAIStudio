@@ -1014,7 +1014,7 @@
 
   {
     "id": 63,
-    "name": "SMART_ACTION_STORE_VARIABLE_DECIMAL",
+    "name": "SMART_ACTION_SET_COUNTER",
     "parameters": [
       {
         "type": "Parameter",
@@ -1023,7 +1023,11 @@
       {
         "type": "Parameter",
         "name": "Value"
-      }
+      },
+	  {
+        "type": "Parameter",
+        "name": "Reset"	  
+	  }
     ],
     "description": "Self: Variable_{pram1} = {pram2}"
   },

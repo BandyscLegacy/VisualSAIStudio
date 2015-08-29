@@ -52,7 +52,7 @@
             this.items.MultiSelect = false;
             this.items.Name = "items";
             this.items.ShowGroups = false;
-            this.items.Size = new System.Drawing.Size(396, 299);
+            this.items.Size = new System.Drawing.Size(493, 349);
             this.items.TabIndex = 0;
             this.items.UseCompatibleStateImageBehavior = false;
             this.items.View = System.Windows.Forms.View.Details;
@@ -73,7 +73,7 @@
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(331, 347);
+            this.btnOk.Location = new System.Drawing.Point(428, 397);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 20);
             this.btnOk.TabIndex = 1;
@@ -87,7 +87,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSearch.Location = new System.Drawing.Point(10, 10);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(396, 20);
+            this.txtSearch.Size = new System.Drawing.Size(493, 20);
             this.txtSearch.TabIndex = 2;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
@@ -95,7 +95,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(418, 379);
+            this.ClientSize = new System.Drawing.Size(515, 429);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.items);
