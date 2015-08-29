@@ -72,6 +72,9 @@
     <Reference Include="ObjectListView">
       <HintPath>..\packages\ObjectListView.Official.2.8.1\lib\net20\ObjectListView.dll</HintPath>
     </Reference>
+    <Reference Include="PSTaskDialog">
+      <HintPath>..\PSTaskDialog.dll</HintPath>
+    </Reference>
     <Reference Include="SmartFormat">
       <HintPath>..\packages\SmartFormat.NET.1.6.1.0\lib\net40\SmartFormat.dll</HintPath>
     </Reference>
@@ -178,6 +181,12 @@
     </Compile>
     <Compile Include="SkinableControls\SkinableVScrollBar.Designer.cs">
       <DependentUpon>SkinableVScrollBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkinableControls\ToolBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkinableControls\ToolBox.Designer.cs">
+      <DependentUpon>ToolBox.cs</DependentUpon>
     </Compile>
     <Compile Include="SmartScripts\CommentGenerator.cs" />
     <Compile Include="SmartScripts\Events\EVENT_LINK.cs" />
@@ -304,6 +313,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SkinableControls\SkinableVScrollBar.resx">
       <DependentUpon>SkinableVScrollBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkinableControls\ToolBox.resx">
+      <DependentUpon>ToolBox.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="data\actions.json">

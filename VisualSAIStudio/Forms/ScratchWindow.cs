@@ -136,6 +136,8 @@ namespace VisualSAIStudio
 
             cmd = connect.Query("SELECT * FROM smart_scripts WHERE source_type = "+(int)type+" and entryorguid = "+entryorguid + " order by id");
             SmartEvent prev = null;
+            bool keep_legacy_comments = false;
+            bool keep_lagacy_comments_asked = false;
             using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
             {
                 int next_link = -1;
@@ -144,13 +146,12 @@ namespace VisualSAIStudio
                     //(`entryorguid`,`source_type`,`id`,`link`,`event_type`,`event_phase_mask`,`event_chance`,`event_flags`,`event_param1`,`event_param2`,`event_param3`,`event_param4`,`action_type`,`action_param1`,`action_param2`,`action_param3`,`action_param4`,`action_param5`,`action_param6`,`target_type`,`target_param1`,`target_param2`,`target_param3`,`target_x`,`target_y`,`target_z`,`target_o`,`comment`)
                     int id = Convert.ToInt32(reader["id"]);
                     int entry = Convert.ToInt32(reader["entryorguid"]);
+                    string comment = Convert.ToString(reader["comment"]);
                     SmartAction a = SmartFactory.GetInstance().ActionFactory(Convert.ToInt32(reader["action_type"]));
-                    int asad = Convert.ToInt32(reader["target_type"]);
                     SmartTarget target = SmartFactory.GetInstance().TargetFactory(Convert.ToInt32(reader["target_type"]));
 
                     for (int i = 0; i < 6; i++)
                         a.UpdateParams(i, Convert.ToInt32(reader["action_param" + (i + 1)]));
-
 
                     for (int i = 0; i < 3; i++)
                         target.UpdateParams(i, Convert.ToInt32(reader["target_param" + (i + 1)]));
@@ -160,8 +161,37 @@ namespace VisualSAIStudio
                     target.position[2] = (float)Convert.ToDouble(reader["target_z"]);
                     target.position[3] = (float)Convert.ToDouble(reader["target_o"]);
 
-                    a.target = target;
-                    
+                    a.Target = target;
+
+
+                    if (comment.IndexOf(" // ") > -1)
+                        a.Comment = comment.Substring(comment.IndexOf(" // ") + 4);
+                    else if (!Properties.Settings.Default.DiscardLegacyComments)
+                    {
+                        if (!keep_lagacy_comments_asked)
+                        {
+                            DialogResult res =
+                              PSTaskDialog.cTaskDialog.ShowTaskDialogBox("Legacy comments",
+                                                        "Legacy comments",
+                                                        "Visual SAI Studio has detected script you loaded doesn't have comments created with SAI Studio.\n",
+                                                        "",
+                                                        "",
+                                                        "Never propose keeping legacy comments",
+                                                        "",
+                                                        "Keep legacy comments|Discard legacy comments",
+                                                        PSTaskDialog.eTaskDialogButtons.Cancel,
+                                                        PSTaskDialog.eSysIcons.Question, PSTaskDialog.eSysIcons.Information);
+                            if (PSTaskDialog.cTaskDialog.VerificationChecked)
+                                Properties.Settings.Default.DiscardLegacyComments = true;
+                            if (PSTaskDialog.cTaskDialog.CommandButtonResult == 0)
+                                keep_legacy_comments = true;
+                            keep_lagacy_comments_asked = true;
+                        }
+
+                        if (keep_legacy_comments)
+                            a.Comment = comment;
+                    }
+
                     if (id == next_link)
                     {
                         prev.AddAction(a);
@@ -224,8 +254,8 @@ namespace VisualSAIStudio
             SmartEvent el = events.EventAt(mouse.X, mouse.Y);
             SmartAction action = (SmartAction)el.GetElementFromPos(mouse.X, mouse.Y);
             SmartTarget target = SmartFactory.GetInstance().TargetFactory(str);
-            target.UpdateParams(action.target);
-            action.target = target;
+            target.UpdateParams(action.Target);
+            action.Target = target;
         }
 
         private void DropCondition(string str, Point mouse)

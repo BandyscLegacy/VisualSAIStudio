@@ -40,7 +40,7 @@ namespace VisualSAIStudio.SkinableControls
 
         public void ReloadTheme()
         {
-            this.BackColor = ThemeMgr.Instance.getColor(IKnownColors.FormBackground);
+            this.BackColor = ThemeMgr.Instance.getColor(IKnownColors.contentBackcolor);
             this.ForeColor = ThemeMgr.Instance.getColor(IKnownColors.FormText);
         }
     }

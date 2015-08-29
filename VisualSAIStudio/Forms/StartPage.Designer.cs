@@ -86,17 +86,23 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.BackgroundImage = global::VisualSAIStudio.Properties.Resources.start;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(790, 475);
             this.Controls.Add(this.LoadTimedActionList);
             this.Controls.Add(this.LoadAreaTrigger);
             this.Controls.Add(this.LoadGameObject);
             this.Controls.Add(this.LoadCreature);
+            this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)((((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.Document)));
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Name = "StartPage";
+            this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Unknown;
             this.Text = "Start Page";
             this.Load += new System.EventHandler(this.StartPage_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.StartPage_Paint);
             this.ResumeLayout(false);
             this.PerformLayout();
 

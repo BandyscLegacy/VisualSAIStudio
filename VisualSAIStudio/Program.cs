@@ -26,7 +26,12 @@ namespace VisualSAIStudio
         protected override void OnCreateSplashScreen()
         {
             this.SplashScreen = new SplashScreen();
-            DB.GetInstance().LoadAll();
+            DB.GetInstance().FinishedLoading += MyApp_FinishedLoading;
+        }
+
+        void MyApp_FinishedLoading(object sender, EventArgs e)
+        {
+
         }
         protected override void OnCreateMainForm()
         {

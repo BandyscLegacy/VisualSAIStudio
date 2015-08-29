@@ -10,8 +10,22 @@ namespace VisualSAIStudio
 {
     public class SmartAction : SmartElement
     {
+        private string _comment;
+        public string Comment
+        {
+            get
+            {
+                return this._comment;
+            }
+            set
+            {
+                this._comment = value;
+                Invalide();
+            }
+        }
+
         private SmartTarget _target;
-        public SmartTarget target
+        public SmartTarget Target
         { 
             get
             {
@@ -25,13 +39,13 @@ namespace VisualSAIStudio
         }
 
         public SmartAction(SmartGenericJSONData data) : base(data, 6) {
-            this.target = new SMART_TARGET_NONE();
+            this.Target = new SMART_TARGET_NONE();
         }
 
         public override void Copy(SmartElement prev)
         {
             base.Copy(prev);
-            this.target = ((SmartAction)prev).target;
+            this.Target = ((SmartAction)prev).Target;
         }
 
         public object[] SerializeToArray()
@@ -40,51 +54,59 @@ namespace VisualSAIStudio
             array[0] = ID;
             for (int i = 0; i < 6;++i)
                 array[i+1] = parameters[i].GetValue();
-            array[7] = target.ID;
+            array[7] = Target.ID;
             for (int i = 0; i < 3;++i)
-                array[i+8] = target.parameters[i].GetValue();
+                array[i+8] = Target.parameters[i].GetValue();
             for (int i = 0; i < 4;++i)
-                array[i+11] = target.position[i];
+                array[i+11] = Target.position[i];
             return array;
         }
 
         public static SmartAction DeserializeFromArray(string[] array)
         {
             SmartAction action = SmartFactory.GetInstance().ActionFactory(int.Parse(array[0]));
-            action.target = SmartFactory.GetInstance().TargetFactory(int.Parse(array[7]));
+            action.Target = SmartFactory.GetInstance().TargetFactory(int.Parse(array[7]));
             for (int i = 0; i < 6; ++i)
                 action.parameters[i].SetValue(int.Parse(array[i + 1]));
             for (int i = 0; i < 3; ++i)
-                action.target.parameters[i].SetValue(int.Parse(array[i + 8]));
+                action.Target.parameters[i].SetValue(int.Parse(array[i + 8]));
             for (int i = 0; i < 4; ++i)
-                action.target.position[i] = float.Parse(array[i + 11]);
+                action.Target.position[i] = float.Parse(array[i + 11]);
             return action;
         }
 
-        public override Size Draw(Graphics graphics, int x, int y, int width, int height, Brush default_brush, Pen pen, Font font, Font mini_font, bool setRect = true)
+        public override Size Draw(Graphics graphics, int x, int start_y, int width, int height, Brush default_brush, Pen pen, Font font, Font mini_font, bool setRect = true)
         {
             SizeF size = graphics.MeasureString(ToString(), font);
             Brush brush = default_brush;
-            graphics.DrawString(ToString(), font, brush, x + 5, y + 3);
+            int y = start_y+3;
+            if (!String.IsNullOrEmpty(Comment))
+            {
+                graphics.DrawString("//" + Comment, font, Brushes.CadetBlue, x + 5, y);
+                y += (int)size.Height;
+                size.Height *= 2;
+            }
+            
+            graphics.DrawString(ToString(), font, brush, x + 5, y);
 
             if (setRect)
-                SetRect(x, y, width, (int)size.Height + 6);
+                SetRect(x, start_y, width, (int)size.Height + 6);
 
             if (selected)
-                graphics.DrawLine(pen, x, y, x, y + size.Height);
+                graphics.DrawLine(pen, x, start_y, x, start_y + size.Height);
 
             return new Size(width, (int)size.Height+6);
         }
 
         protected override void ParameterValueChanged(object sender, EventArgs e)
         {
-            if (readable == null || target == null)
+            if (readable == null || Target == null)
                 return;
             output = Smart.Format(readable, new
             {
-                                                               target = target.ToString(),
-                                                               targetcoords = target.GetCoords(), 
-                                                               targetid = target.ID,
+                                                               target = Target.ToString(),
+                                                               targetcoords = Target.GetCoords(), 
+                                                               targetid = Target.ID,
                                                                pram1 = parameters[0],
                                                                pram2 = parameters[1],
                                                                pram3 = parameters[2],
@@ -103,7 +125,7 @@ namespace VisualSAIStudio
         public override List<Warning> Validate()
         {
             List<Warning> warnings = base.Validate();
-            if (!(target.ID == 0 || target.ID == 1) &&
+            if (!(Target.ID == 0 || Target.ID == 1) &&
                 !readable.Contains("{target}") && !readable.Contains("{targetcoords}")
                 )
                 warnings.Add(new Warning(WarningType.INVALID_TARGET, "Target will be ignored", this));

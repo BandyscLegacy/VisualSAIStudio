@@ -3,23 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VisualSAIStudio.SmartScripts;
 
 namespace VisualSAIStudio.History
 {
-    public enum RecentType
-    {
-        Creature,
-        Gameobject,
-    }
 
     public struct OpenedHistoryAction
     {
-        public RecentType type { set; get; }
+        public SAIType type { set; get; }
         public int entry { set; get; }
         public string name { set; get; }
+        public OpenedHistoryAction(SAIType type, int entry, string name) : this()
+        {
+            this.type = type;
+            this.entry = entry;
+            this.name = name;
+        }
     }
 
-    class OpenedHistory
+    class OpenedHistory : IEnumerable<OpenedHistoryAction>
     {
         private List<OpenedHistoryAction> history = new List<OpenedHistoryAction>();
         private static OpenedHistory instance;
@@ -41,7 +43,7 @@ namespace VisualSAIStudio.History
             System.IO.File.WriteAllText("data/history.json", data);
         }
 
-        public void insert(RecentType type, int entry, string name)
+        public void insert(SAIType type, int entry, string name)
         {
             OpenedHistoryAction action = new OpenedHistoryAction();
             action.type = type;
@@ -53,19 +55,16 @@ namespace VisualSAIStudio.History
         public void insert(OpenedHistoryAction action)
         {
             history.Add(action);
-            // TODO: truncate history to X elements..
+            if (history.Count > 10)
+                history.RemoveAt(0);
             save();
         }
 
         public void InvokeMethod(Delegate method, int limit = 3)
         {
-            int newLimit = history.Count - limit;
-            if (newLimit < 0)
-                newLimit = 0;
-
-            for (int i = newLimit; i < history.Count; ++i)
+            for (int i = 0; i < history.Count; ++i)
             {
-                method.DynamicInvoke(history[i], newLimit - i);
+                method.DynamicInvoke(history[i], history.Count-i);
             }
         }
 
@@ -79,6 +78,17 @@ namespace VisualSAIStudio.History
                 }
                 return instance;
             }
+        }
+
+        public IEnumerator<OpenedHistoryAction> GetEnumerator()
+        {
+            foreach (OpenedHistoryAction action in history)
+                yield return action;
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

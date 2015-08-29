@@ -16,6 +16,7 @@ namespace VisualSAIStudio.SmartScripts
             comment.Append(ev);
             comment.Append(" - ");
             comment.Append(action);
+            comment.Append(" // " + action.Comment);
 
 
             return comment.ToString();

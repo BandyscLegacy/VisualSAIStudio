@@ -100,13 +100,13 @@ namespace VisualSAIStudio.SmartScripts
                 action_param5 = action.parameters[4].GetValue().ToString(),
                 action_param6 = action.parameters[5].GetValue().ToString(),
 
-                target_id = action.target.ID.ToString(),
-                target_param1 = action.target.parameters[0].GetValue().ToString(),
-                target_param2 = action.target.parameters[1].GetValue().ToString(),
-                target_param3 = action.target.parameters[2].GetValue().ToString(),
+                target_id = action.Target.ID.ToString(),
+                target_param1 = action.Target.parameters[0].GetValue().ToString(),
+                target_param2 = action.Target.parameters[1].GetValue().ToString(),
+                target_param3 = action.Target.parameters[2].GetValue().ToString(),
 
 
-                target_position = String.Join(", ", action.target.position),
+                target_position = String.Join(", ", action.Target.position),
 
                 comment = CommentGenerator.GenerateComment(ev, action)
             };

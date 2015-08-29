@@ -47,7 +47,6 @@
             this.Text = "SplashScreen";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SplashScreen_FormClosing);
-            this.Load += new System.EventHandler(this.SplashScreen_Load);
             this.Shown += new System.EventHandler(this.SplashScreen_Shown);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SplashScreen_MouseClick);
             this.ResumeLayout(false);

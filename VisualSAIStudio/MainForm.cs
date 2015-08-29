@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using Newtonsoft.Json;
 using WeifenLuo.WinFormsUI.Docking.Themes;
+using VisualSAIStudio.History;
 
 namespace VisualSAIStudio
 {
@@ -45,11 +46,10 @@ namespace VisualSAIStudio
             else
                 PlaceWindows();
 
-            NewSAIWindow(0, SmartScripts.SAIType.Creature);
-
             startPage = new StartPage();
             startPage.Show(dockPanel1);
             startPage.LoadRequest += startPage_LoadRequest;
+            startPage.LoadDialogRequest += startPage_LoadDialogRequest;
 
             //only with new lib!
             ThemeMgr.Instance.SetColorTable(new WeifenLuo.WinFormsUI.Docking.Colors.Light());
@@ -59,11 +59,31 @@ namespace VisualSAIStudio
             this.menuStrip1.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
             this.menuStrip1.ForeColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormText);
             //no commit yet
+
+            foreach(StorageType type in Enum.GetValues(typeof(StorageType)).Cast<StorageType>())
+            {
+                ToolStripMenuItem item = new ToolStripMenuItem(type.ToString());
+                item.Tag = type;
+                item.Click += item_Click;
+                dBCToolStripMenuItem.DropDownItems.Add(item);
+            }
+            
+        }
+
+        void startPage_LoadDialogRequest(object sender, EventArgs e)
+        {
+            ShowOpenDialog(((LoadRequestEventArgs)e).type);
+        }
+
+        void item_Click(object sender, EventArgs e)
+        {
+            ChooseRowFromDBForm db_window = new ChooseRowFromDBForm(((StorageType)((ToolStripMenuItem)sender).Tag));
+            db_window.Show();
         }
 
         private void startPage_LoadRequest(object sender, EventArgs e)
         {
-            //((LoadRequestEventArgs)e).type
+            NewSAIWindow(((LoadRequestEventArgs)e).entry, ((LoadRequestEventArgs)e).type);
         }
 
         private void NewSAIWindow(int entryorguid, SmartScripts.SAIType type)
@@ -185,19 +205,19 @@ namespace VisualSAIStudio
             scratch.GenerateSQLOutput();
         }
 
-        private void textBox8_KeyDown(object sender, KeyEventArgs e)
+        private void loadFromDBToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           if (e.KeyCode == Keys.Return)
-               scratch.LoadFromDB(Convert.ToInt32(textBox8.Text));
+            ShowOpenDialog(SmartScripts.SAIType.Creature);
         }
 
-        private void loadFromDBToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowOpenDialog(SmartScripts.SAIType type)
         {
             SelectSAI c = new SelectSAI();
             c.ShowDialog();
             if (c.DialogResult == System.Windows.Forms.DialogResult.OK)
             {
-                NewSAIWindow(c.Value, SmartScripts.SAIType.Creature);
+                NewSAIWindow(c.Value, type);
+                OpenedHistory.Instance.insert(new OpenedHistoryAction(type, c.Value, DB.GetInstance().GetString(StorageType.Creature, c.Value)));
             }
 
         }
@@ -259,6 +279,9 @@ namespace VisualSAIStudio
             }
             
             errors.Clear();
+            if (scratch == null)
+                return;
+
             foreach (SmartEvent ev in scratch.GetEvents())
                 errors.AddWarnings(ev.Validate());           
         }

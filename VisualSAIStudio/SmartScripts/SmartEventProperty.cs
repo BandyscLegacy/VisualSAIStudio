@@ -182,36 +182,44 @@ namespace VisualSAIStudio.SmartScripts
     public class SmartActionProperty : SmartElementProperty
     {
         SmartAction action;
+        [CategoryAttribute("Action"),
+        DisplayName("Comment")]
+        public string comment
+        {
+            get { return ((SmartAction)element).Comment; }
+            set { action.Comment = value; action.Invalide(); }
+        }
+
         [CategoryAttribute("Target Position"),
          DisplayName("X")]
         public float target_x
         {
-            get { return ((SmartAction)element).target.position[0]; }
-            set { action.target.position[0] = value; action.target.Invalide(); action.Invalide(); }
+            get { return ((SmartAction)element).Target.position[0]; }
+            set { action.Target.position[0] = value; action.Target.Invalide(); action.Invalide(); }
         }
 
         [CategoryAttribute("Target Position"),
         DisplayName("Y")]
         public float target_y
         {
-            get { return ((SmartAction)element).target.position[1]; }
-            set { action.target.position[1] = value; action.target.Invalide();  action.Invalide(); }
+            get { return ((SmartAction)element).Target.position[1]; }
+            set { action.Target.position[1] = value; action.Target.Invalide();  action.Invalide(); }
         }
 
         [CategoryAttribute("Target Position")]
         [DisplayName("Z")]
         public float target_z
         {
-            get { return ((SmartAction)element).target.position[2]; }
-            set { action.target.position[2] = value; action.target.Invalide(); action.Invalide(); }
+            get { return ((SmartAction)element).Target.position[2]; }
+            set { action.Target.position[2] = value; action.Target.Invalide(); action.Invalide(); }
         }
 
         [CategoryAttribute("Target Position")]
         [DisplayName("O")]
         public float target_o
         {
-            get { return ((SmartAction)element).target.position[3]; }
-            set { action.target.position[3] = value; action.target.Invalide(); action.Invalide(); }
+            get { return ((SmartAction)element).Target.position[3]; }
+            set { action.Target.position[3] = value; action.Target.Invalide(); action.Invalide(); }
         }
 
 
@@ -221,8 +229,8 @@ namespace VisualSAIStudio.SmartScripts
         [Browsable(false)]
         public int targetpram1
         {
-            get { return ((SmartAction)element).target.parameters[0].GetValue(); }
-            set { ((SmartAction)element).target.UpdateParams(0, value); element.Invalide(); }
+            get { return ((SmartAction)element).Target.parameters[0].GetValue(); }
+            set { ((SmartAction)element).Target.UpdateParams(0, value); element.Invalide(); }
         }
 
         [CategoryAttribute("Target"),
@@ -230,8 +238,8 @@ namespace VisualSAIStudio.SmartScripts
         [Browsable(false)]
         public int targetpram2
         {
-            get { return ((SmartAction)element).target.parameters[1].GetValue(); }
-            set { ((SmartAction)element).target.UpdateParams(1, value); element.Invalide(); }
+            get { return ((SmartAction)element).Target.parameters[1].GetValue(); }
+            set { ((SmartAction)element).Target.UpdateParams(1, value); element.Invalide(); }
         }
 
         [CategoryAttribute("Target")]
@@ -239,8 +247,8 @@ namespace VisualSAIStudio.SmartScripts
         [Browsable(false)]
         public int targetpram3
         {
-            get { return ((SmartAction)element).target.parameters[2].GetValue(); }
-            set { ((SmartAction)element).target.UpdateParams(2, value); element.Invalide(); }
+            get { return ((SmartAction)element).Target.parameters[2].GetValue(); }
+            set { ((SmartAction)element).Target.UpdateParams(2, value); element.Invalide(); }
         }
 
 
@@ -250,7 +258,7 @@ namespace VisualSAIStudio.SmartScripts
             this.action = action;
             m_dctd.GetProperty("name").SetCategory("Action");
             m_dctd.GetProperty("name").SetDisplayName("Action name");
-            Parameter[] parameters = action.target.parameters;
+            Parameter[] parameters = action.Target.parameters;
             for (int i = 0; i < 3; ++i)
             {
                 CustomPropertyDescriptor property = m_dctd.GetProperty("targetpram" + (i + 1));

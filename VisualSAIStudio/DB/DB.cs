@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace VisualSAIStudio
 {
@@ -14,9 +15,13 @@ namespace VisualSAIStudio
         private Dictionary<StorageType, ClientData<string>> dbString = new Dictionary<StorageType, ClientData<string>>();
         private Dictionary<StorageType, ClientData<int>> dbInt = new Dictionary<StorageType, ClientData<int>>();
         public event EventHandler CurrentAction = delegate { };
+        public event EventHandler FinishedLoading = delegate { };
 
         public void LoadAll()
         {
+
+            CheckForDBCSettings();
+
             CurrentAction(this, new LoadingEventArgs("actions"));
             Load(SmartScripts.SmartType.SMART_ACTION, "data/actions.json");
 
@@ -40,7 +45,7 @@ namespace VisualSAIStudio
             dbString.Add(StorageType.CreatureEntryWithAI, new ClientDataDB<string>("entry", "name", "creature_template", "AIName = \"SmartAI\""));
 
             //dbInt.Add(StorageType.CreatureGuid, new ClientDataDB<int>("guid", "entry", "creature"));
-            
+
 
 
             /*MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SELECT guid, creature.id, map, position_x, position_z, position_y, count(source_type) as smartAI FROM creature left join smart_scripts on source_type=0 and entryorguid=(-guid) group by guid "));
@@ -67,7 +72,7 @@ namespace VisualSAIStudio
             CurrentAction(this, new LoadingEventArgs("gameobjects"));
             dbString.Add(StorageType.GameObject, new ClientDataDB<string>("entry", "name", "gameobject_template"));
             dbString.Add(StorageType.GameObjectEntryWithAI, new ClientDataDB<string>("entry", "name", "gameobject_template", "AIName = \"SmartAI\""));
-            
+
             CurrentAction(this, new LoadingEventArgs("game events"));
             dbString.Add(StorageType.GameEvent, new ClientDataDB<string>("EventEntry", "description", "game_event"));
 
@@ -76,6 +81,7 @@ namespace VisualSAIStudio
 
             CurrentAction(this, new LoadingEventArgs("sounds"));
             dbString.Add(StorageType.Sound, new ClientDataDBC("SoundEntries.dbc", 1));
+
 
             CurrentAction(this, new LoadingEventArgs("movies"));
             dbString.Add(StorageType.Movie, new ClientDataDBC("movie.dbc", 0));
@@ -107,6 +113,37 @@ namespace VisualSAIStudio
             CurrentAction(this, new LoadingEventArgs("skills"));
             dbString.Add(StorageType.Skill, new ClientDataDBC("SkillLine.dbc", 1));
 
+            FinishedLoading(this, new EventArgs());
+        }
+
+        private void CheckForDBCSettings()
+        {
+            if ((Properties.Settings.Default.DBC == "" || !Directory.Exists(Properties.Settings.Default.DBC))
+                            && !Properties.Settings.Default.IgnoreMissingDBC)
+            {
+                DialogResult res =
+                  PSTaskDialog.cTaskDialog.ShowTaskDialogBox("DBC",
+                                            "Missing DBC",
+                                            "Visual SAI Studio makes big use of DBC (client database).",
+                                            "",
+                                            "",
+                                            "Don't check for DBC any more",
+                                            "",
+                                            "Locate WoW DBC Folder|Ignore for now",
+                                            PSTaskDialog.eTaskDialogButtons.Cancel,
+                                            PSTaskDialog.eSysIcons.Question, PSTaskDialog.eSysIcons.Information);
+                if (PSTaskDialog.cTaskDialog.VerificationChecked)
+                    Properties.Settings.Default.IgnoreMissingDBC = true;
+                if (PSTaskDialog.cTaskDialog.CommandButtonResult == 0)
+                {
+                    FolderBrowserDialog fbd = new FolderBrowserDialog();
+                    if (fbd.ShowDialog() == DialogResult.OK)
+                    {
+                        Properties.Settings.Default.DBC = fbd.SelectedPath;
+                    }
+                }
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void Load(SmartScripts.SmartType type, string file)
@@ -284,13 +321,13 @@ namespace VisualSAIStudio
     {
         public ClientDataDBC(string filename, int fields_to_skip)
         {
-            if (!File.Exists("dbc\\" + filename))
+            if (!File.Exists(Properties.Settings.Default.DBC + "\\" + filename))
                 return;
             IWowClientDBReader m_reader;
             if (filename.Contains(".dbc"))
-                m_reader = new DBCReader(@"dbc\" + filename);
+                m_reader = new DBCReader(Properties.Settings.Default.DBC +"\\"+ filename);
             else
-                m_reader = new DB2Reader(@"dbc\" + filename);
+                m_reader = new DB2Reader(Properties.Settings.Default.DBC +"\\"+ filename);
 
             for (int i = 0; i < m_reader.RecordsCount; ++i)
             {
