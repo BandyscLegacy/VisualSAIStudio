@@ -120,14 +120,13 @@ namespace VisualSAIStudio.SmartScripts
 
         public static string GenerateConditionsSQL(SAIType source_type, int entryorguid, SmartEventsCollection events)
         {
-            int event_id = 0;
             List<string> lines = new List<string>();
             foreach (SmartEvent e in events)
             {
                 int else_group = 0;
                 foreach(SmartCondition condition in e.conditions)
                 {
-                    if (condition.ID == CONDITION_LOGICAL_OR.ID)
+                    if (condition.ID == CONDITION_LOGICAL_OR._ID)
                     {
                         else_group++;
                     }

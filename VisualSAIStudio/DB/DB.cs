@@ -251,7 +251,7 @@ namespace VisualSAIStudio
                 }
                 db.CloseConnection();
             }
-            catch (System.InvalidOperationException e)
+            catch (System.InvalidOperationException /*e*/)
             {
             }
         }

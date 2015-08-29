@@ -62,7 +62,7 @@ namespace VisualSAIStudio
 
     public class CONDITION_LOGICAL_OR : SmartCondition
     {
-        public static int ID = -1;
-        public CONDITION_LOGICAL_OR() : base(ID, "CONDITION_LOGICAL_OR", "or") { }
+        public static int _ID = -1;
+        public CONDITION_LOGICAL_OR() : base(_ID, "CONDITION_LOGICAL_OR", "or") { }
     }
 }

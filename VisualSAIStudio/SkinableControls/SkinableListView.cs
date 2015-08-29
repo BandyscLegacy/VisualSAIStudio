@@ -22,11 +22,6 @@ namespace VisualSAIStudio.SkinableControls
 
         }
 
-        void OnPaint(PaintEventArgs e)
-        {
-            e.Graphics.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
-        }
-
         void SkinableListView_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
         {
             e.Graphics.FillRectangle(new SolidBrush(this.BackColor), e.Bounds.X, 0, this.Width, e.Bounds.Height);

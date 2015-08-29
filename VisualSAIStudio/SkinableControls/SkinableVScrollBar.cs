@@ -16,28 +16,6 @@ namespace VisualSAIStudio.SkinableControls
     {
         public event  EventHandler ValueChanged = delegate { };
 
-        //
-        // Summary:
-        //     Gets or sets a value indicating whether the control and all its child controls
-        //     are displayed.
-        //
-        // Returns:
-        //     true if the control and all its child controls are displayed; otherwise,
-        //     false. The default is true.
-        [Localizable(true)]
-        public bool Visible 
-        {
-            get
-            {
-                return base.Visible;
-            }
-            set
-            {
-                base.Visible = value;
-                this.Refresh();
-            }
-        }
-
         private int _value;
         public int Value
         {

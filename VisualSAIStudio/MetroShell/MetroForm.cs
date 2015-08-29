@@ -18,7 +18,6 @@ namespace MetroForm
     {
         private Dwm.MARGINS dwmMargins;
         private bool _marginOk;
-        private Panel panel1;
 
         private bool _aeroEnabled = false;
 
@@ -81,7 +80,7 @@ namespace MetroForm
 
         private IntPtr HitTestNCA(IntPtr hwnd, IntPtr wparam, IntPtr lparam)
         {
-            int HTNOWHERE = 0;
+            //int HTNOWHERE = 0; // never used
             int HTCLIENT = 1;
             int HTCAPTION = 2;
             int HTGROWBOX = 4;
@@ -257,7 +256,7 @@ namespace MetroForm
         //     An System.Drawing.Icon that represents the icon for the form.
         [AmbientValue("")]
         [Localizable(true)]
-        public Icon Icon 
+        public new Icon Icon 
         {
             get
             {
@@ -278,7 +277,7 @@ namespace MetroForm
         //     of controls contained within the control.
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Control.ControlCollection Controls 
+        public new Control.ControlCollection Controls 
         {
             get
             {

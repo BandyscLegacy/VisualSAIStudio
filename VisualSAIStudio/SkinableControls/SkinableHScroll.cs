@@ -57,7 +57,7 @@ namespace VisualSAIStudio.SkinableControls
             drag.Location = new Point((int)((Value - Minimum) * 1f / (Maximum - Minimum) * (panel1.Size.Width - drag.Size.Width)), drag.Location.Y);
         }
 
-        protected virtual void UpdateDragSize()
+        protected override void UpdateDragSize()
         {
             drag.Size = new Size((int)(0.2f * this.Width),drag.Size.Height );
         }
