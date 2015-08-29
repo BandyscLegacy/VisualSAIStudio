@@ -41,7 +41,8 @@ namespace VisualSAIStudio.SkinableControls
             set
             {
                 _Maximum = value;
-                UpdateDragFromValue();
+                if (!dragging)
+                    UpdateDragFromValue();
                 this.Refresh();
             }
         }
@@ -278,6 +279,11 @@ namespace VisualSAIStudio.SkinableControls
             DragHoverColor = ThemeMgr.Instance.getColor(IKnownColors.ScrollBarDragHoverBackground);
             DragDownColor = ThemeMgr.Instance.getColor(IKnownColors.ScrollBarDragDownBackground);
             this.Refresh();
+        }
+
+        private void drag_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

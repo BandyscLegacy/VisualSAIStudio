@@ -20,6 +20,7 @@ namespace VisualSAIStudio.SkinableControls
         public int Indent {get; set;}
         public bool DrawTag { get; set; }
         public ToolBoxNode SelectedNode { get; set; }
+        public Padding ItemPadding { get; set; }
 
         private Brush SelectionBGBrush;
         private Brush HoverBGBrush;
@@ -52,7 +53,7 @@ namespace VisualSAIStudio.SkinableControls
             Nodes = new ObservableCollection<ToolBoxNode>();
             Nodes.CollectionChanged += Nodes_CollectionChanged;
             Indent = 17;
-            Padding = new Padding(3);
+            ItemPadding = new Padding(3);
             toolTip = new ToolTip();
             ThemeMgr.Instance.RegisterControl(this);
         }
@@ -82,7 +83,7 @@ namespace VisualSAIStudio.SkinableControls
 
                 int start_y = y;
                 SizeF measure = graphics.MeasureString(node.Text, Font);
-                measure.Height += Padding.Vertical;
+                measure.Height += ItemPadding.Vertical;
 
                 if (node == SelectedNode)
                 {
@@ -94,7 +95,7 @@ namespace VisualSAIStudio.SkinableControls
                 }
 
                 node.Level = Indent;
-                y += Padding.Top;
+                y += ItemPadding.Top;
                 graphics.DrawString(node.Text, Font, (node == SelectedNode)?SelectionForeColorBrush:ForeColorBrush, level * Indent+10, y);
                 if (DrawTag && node.Tag!= null)
                     graphics.DrawString(node.Tag.ToString().Replace("SMART_","").ToLower(), Font, Brushes.Gray, level * Indent + 20 + measure.Width, y);
@@ -123,7 +124,7 @@ namespace VisualSAIStudio.SkinableControls
                 }
                 
                 
-                y += (int)measure.Height-Padding.Top;
+                y += (int)measure.Height-ItemPadding.Top;
 
 
                 if (node.IsExpanded)

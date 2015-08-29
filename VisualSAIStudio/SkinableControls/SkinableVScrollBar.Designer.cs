@@ -55,6 +55,7 @@
             this.drag.Name = "drag";
             this.drag.Size = new System.Drawing.Size(10, 76);
             this.drag.TabIndex = 1;
+            this.drag.Click += new System.EventHandler(this.drag_Click);
             this.drag.MouseDown += new System.Windows.Forms.MouseEventHandler(this.drag_MouseDown);
             this.drag.MouseEnter += new System.EventHandler(this.drag_MouseEnter);
             this.drag.MouseLeave += new System.EventHandler(this.drag_MouseLeave);
