@@ -34,6 +34,7 @@ namespace VisualSAIStudio
         ToolWindow conditions;
         ToolWindow events;
         ErrorsWindow errors;
+        List<ScratchWindow> scratches;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -47,19 +48,14 @@ namespace VisualSAIStudio
             else
                 PlaceWindows();
 
+            scratches = new List<ScratchWindow>();
+
             startPage = new StartPage();
             startPage.Show(dockPanel1);
             startPage.LoadRequest += startPage_LoadRequest;
             startPage.LoadDialogRequest += startPage_LoadDialogRequest;
 
-            //only with new lib!
-            ThemeMgr.Instance.SetColorTable(new WeifenLuo.WinFormsUI.Docking.Colors.Light());
-            this.dockPanel1.Theme = ThemeMgr.Instance.DockPanelTheme;
-            this.dockPanel1.Skin = ThemePanel.CreatePanelThemeValues();
-            this.menuStrip1.Renderer = ThemeMgr.Instance.Renderer;
-            this.menuStrip1.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
-            this.menuStrip1.ForeColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormText);
-            //no commit yet
+            SetTheme(Properties.Settings.Default.Theme);
 
             foreach(StorageType type in Enum.GetValues(typeof(StorageType)).Cast<StorageType>())
             {
@@ -80,6 +76,23 @@ namespace VisualSAIStudio
 
             this.Location = Properties.Settings.Default.LastPos;
             this.Size =Properties.Settings.Default.LastSize;
+
+ 
+        }
+
+        private void SetTheme(string theme)
+        {
+            WeifenLuo.WinFormsUI.Docking.Colors.IColor colors = null;
+            if (theme == "Dark")
+                colors = new WeifenLuo.WinFormsUI.Docking.Colors.Dark();
+            else
+                colors = new WeifenLuo.WinFormsUI.Docking.Colors.Light();
+            ThemeMgr.Instance.SetColorTable(colors);
+            this.dockPanel1.Theme = ThemeMgr.Instance.DockPanelTheme;
+            this.dockPanel1.Skin = ThemePanel.CreatePanelThemeValues();
+            this.menuStrip1.Renderer = ThemeMgr.Instance.Renderer;
+            this.menuStrip1.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
+            this.menuStrip1.ForeColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormText);
         }
 
         private void saiType_Click(object sender, EventArgs e)
@@ -117,10 +130,10 @@ namespace VisualSAIStudio
             scratch.RequestWarnings += this_RequestWarnings;
             scratch.RequestNewSAIWindow += scratch_RequestNewSAIWindow;
             scratch.Type = type;
-            if (entryorguid > 0)
-            {
-                scratch.LoadFromDB(entryorguid);
-            }
+            scratch.LoadFromDB(entryorguid);
+            
+            events.SetSAIType(type);
+            scratches.Add(scratch);
         }
 
         void scratch_RequestNewSAIWindow(object sender, EventArgs e)
@@ -228,21 +241,33 @@ namespace VisualSAIStudio
             scratch.GenerateSQLOutput();
         }
 
-        private void loadFromDBToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ShowOpenDialog(SmartScripts.SAIType.Creature);
-        }
 
         private void ShowOpenDialog(SmartScripts.SAIType type)
         {
-            SelectSAI c = new SelectSAI();
+            SelectSAI c = new SelectSAI(type);
             c.ShowDialog();
             if (c.DialogResult == System.Windows.Forms.DialogResult.OK)
             {
                 NewSAIWindow(c.Value, type);
-                OpenedHistory.Instance.insert(new OpenedHistoryAction(type, c.Value, DB.GetInstance().GetString(StorageType.Creature, c.Value)));
+                OpenedHistory.Instance.insert(new OpenedHistoryAction(type, c.Value, GetName(type, c.Value)));
             }
 
+        }
+
+        private string GetName(SAIType type, int entry)
+        {
+            switch (type)
+            {
+                case SAIType.Creature:
+                    if (entry >= 0)
+                        return DB.GetInstance().GetString(StorageType.Creature, entry);
+                    return DB.GetInstance().GetString(StorageType.CreatureGuid, -entry); 
+                case SAIType.Gameobject:
+                    if (entry >= 0)
+                        return DB.GetInstance().GetString(StorageType.GameObject, entry);
+                    return DB.GetInstance().GetString(StorageType.GameObjectGuid, -entry); 
+            }
+            return null;
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -289,8 +314,11 @@ namespace VisualSAIStudio
         private void validateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             errors.Clear();
-            foreach (SmartEvent ev in scratch.GetEvents())
-                errors.AddWarnings(ev.Validate());
+            if (scratch != null)
+            {
+                foreach (SmartEvent ev in scratch.GetEvents())
+                    errors.AddWarnings(ev.Validate());
+            }
         }
 
         private void dockPanel1_ActiveDocumentChanged(object sender, EventArgs e)
@@ -333,35 +361,103 @@ namespace VisualSAIStudio
 
         private void lightToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ThemeMgr.Instance.SetColorTable(new WeifenLuo.WinFormsUI.Docking.Colors.Light());
-            this.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
-            this.dockPanel1.Theme = ThemeMgr.Instance.DockPanelTheme;
-            this.dockPanel1.Skin = ThemePanel.CreatePanelThemeValues();
-            this.menuStrip1.Renderer = ThemeMgr.Instance.Renderer;
-            this.menuStrip1.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
-            this.menuStrip1.ForeColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormText);
+            SetTheme("Light");
+            SetTheme("Light");
+            Properties.Settings.Default.Theme = "Light";
+            Properties.Settings.Default.Save();
         }
 
         private void darkToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            ThemeMgr.Instance.SetColorTable(new WeifenLuo.WinFormsUI.Docking.Colors.Dark());
-            this.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
-            this.dockPanel1.Theme = ThemeMgr.Instance.DockPanelTheme;
-            this.dockPanel1.Skin = ThemePanel.CreatePanelThemeValues();
-            this.menuStrip1.Renderer = ThemeMgr.Instance.Renderer;
-            this.menuStrip1.BackColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormBackground);
-            this.menuStrip1.ForeColor = ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.FormText);
+            SetTheme("Dark");
+            SetTheme("Dark");
+            Properties.Settings.Default.Theme = "Dark";
+            Properties.Settings.Default.Save();
         }
 
         private void generateSQLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Forms.CodePreview code = new Forms.CodePreview(scratch.GenerateSQLOutput(), FastColoredTextBoxNS.Language.SQL);
-            code.Show(dockPanel1);
+            if (scratch != null)
+            {
+                Forms.CodePreview code = new Forms.CodePreview(scratch.GenerateSQLOutput(), FastColoredTextBoxNS.Language.SQL);
+                code.Show(dockPanel1);
+            }
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void creatureSAIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowOpenDialog(SmartScripts.SAIType.Creature);
+ 
+        }
+
+        private void gameobjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowOpenDialog(SmartScripts.SAIType.Gameobject);
+ 
+        }
+
+        private void areatriggerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowOpenDialog(SmartScripts.SAIType.AreaTrigger);
+ 
+        }
+
+        private void timedActionListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowOpenDialog(SmartScripts.SAIType.TimedActionList);
+
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            Updater.Update.GetInstance().AsyncCheckForUpdates();
+        }
+
+        private void setEntryorguidToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Prompt", "Change entry or guid", "", -1, -1);
+            if (scratch!=null)
+            {
+                scratch.SetEntry(Convert.ToInt32(input));
+            }
+            else
+            {
+                NewSAIWindow(Convert.ToInt32(input), SAIType.Creature);
+            }
+        }
+
+        private void emptySAIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewSAIWindow(0, SAIType.Creature);
+        }
+
+        private void changeDBSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Forms.DatabaseConnectForm db = new Forms.DatabaseConnectForm();
+            db.ShowDialog();
+            MessageBox.Show("Re-run the application to connect to new db");
+        }
+
+        private void generateWholeSQLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (ScratchWindow scratch in scratches)
+            {
+                if (scratch == null)
+                    continue;
+                sb.Append(scratch.GenerateSQLOutput());
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.AppendLine();
+
+            }
+            Forms.CodePreview code = new Forms.CodePreview(sb.ToString(), FastColoredTextBoxNS.Language.SQL);
+            code.Show(dockPanel1);
         }
 
 

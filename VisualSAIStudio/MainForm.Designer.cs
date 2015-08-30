@@ -33,9 +33,18 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadFromDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.creatureSAIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gameobjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.areatriggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timedActionListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.emptySAIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.setEntryorguidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setSAITypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.validateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setSAITypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.styleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,12 +55,15 @@
             this.conditionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dBCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dBCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.scratch1 = new VisualSAIStudio.Scratch();
             this.vS2012ToolStripExtender1 = new VisualSAIStudio.VS2012ToolStripExtender(this.components);
+            this.changeDBSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.generateWholeSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,11 +73,11 @@
             this.fileToolStripMenuItem,
             this.styleToolStripMenuItem,
             this.windowToolStripMenuItem,
-            this.helpToolStripMenuItem,
-            this.dBCToolStripMenuItem});
+            this.dBCToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1386, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1684, 24);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -74,41 +86,111 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadFromDBToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.setEntryorguidToolStripMenuItem,
+            this.setSAITypeToolStripMenuItem,
+            this.toolStripMenuItem1,
             this.validateToolStripMenuItem,
             this.generateSQLToolStripMenuItem,
-            this.setSAITypeToolStripMenuItem});
+            this.generateWholeSQLToolStripMenuItem,
+            this.toolStripMenuItem4,
+            this.changeDBSettingsToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // loadFromDBToolStripMenuItem
             // 
+            this.loadFromDBToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.creatureSAIToolStripMenuItem,
+            this.gameobjectToolStripMenuItem,
+            this.areatriggerToolStripMenuItem,
+            this.timedActionListToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.emptySAIToolStripMenuItem});
             this.loadFromDBToolStripMenuItem.Name = "loadFromDBToolStripMenuItem";
-            this.loadFromDBToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.loadFromDBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadFromDBToolStripMenuItem.Text = "Load from DB";
-            this.loadFromDBToolStripMenuItem.Click += new System.EventHandler(this.loadFromDBToolStripMenuItem_Click);
+            // 
+            // creatureSAIToolStripMenuItem
+            // 
+            this.creatureSAIToolStripMenuItem.Name = "creatureSAIToolStripMenuItem";
+            this.creatureSAIToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.creatureSAIToolStripMenuItem.Text = "Creature";
+            this.creatureSAIToolStripMenuItem.Click += new System.EventHandler(this.creatureSAIToolStripMenuItem_Click);
+            // 
+            // gameobjectToolStripMenuItem
+            // 
+            this.gameobjectToolStripMenuItem.Name = "gameobjectToolStripMenuItem";
+            this.gameobjectToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.gameobjectToolStripMenuItem.Text = "Gameobject";
+            this.gameobjectToolStripMenuItem.Click += new System.EventHandler(this.gameobjectToolStripMenuItem_Click);
+            // 
+            // areatriggerToolStripMenuItem
+            // 
+            this.areatriggerToolStripMenuItem.Name = "areatriggerToolStripMenuItem";
+            this.areatriggerToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.areatriggerToolStripMenuItem.Text = "Areatrigger";
+            this.areatriggerToolStripMenuItem.Click += new System.EventHandler(this.areatriggerToolStripMenuItem_Click);
+            // 
+            // timedActionListToolStripMenuItem
+            // 
+            this.timedActionListToolStripMenuItem.Name = "timedActionListToolStripMenuItem";
+            this.timedActionListToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.timedActionListToolStripMenuItem.Text = "Timed action list";
+            this.timedActionListToolStripMenuItem.Click += new System.EventHandler(this.timedActionListToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(159, 6);
+            // 
+            // emptySAIToolStripMenuItem
+            // 
+            this.emptySAIToolStripMenuItem.Name = "emptySAIToolStripMenuItem";
+            this.emptySAIToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.emptySAIToolStripMenuItem.Text = "Empty SAI";
+            this.emptySAIToolStripMenuItem.Click += new System.EventHandler(this.emptySAIToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            // 
+            // setEntryorguidToolStripMenuItem
+            // 
+            this.setEntryorguidToolStripMenuItem.Name = "setEntryorguidToolStripMenuItem";
+            this.setEntryorguidToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setEntryorguidToolStripMenuItem.Text = "Set entry or guid";
+            this.setEntryorguidToolStripMenuItem.Click += new System.EventHandler(this.setEntryorguidToolStripMenuItem_Click);
+            // 
+            // setSAITypeToolStripMenuItem
+            // 
+            this.setSAITypeToolStripMenuItem.Name = "setSAITypeToolStripMenuItem";
+            this.setSAITypeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setSAITypeToolStripMenuItem.Text = "Set SAI Type";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // validateToolStripMenuItem
             // 
             this.validateToolStripMenuItem.Name = "validateToolStripMenuItem";
-            this.validateToolStripMenuItem.ShortcutKeyDisplayString = "F5";
-            this.validateToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.validateToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.validateToolStripMenuItem.ShortcutKeyDisplayString = "";
+            this.validateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.validateToolStripMenuItem.Text = "Validate";
             this.validateToolStripMenuItem.Click += new System.EventHandler(this.validateToolStripMenuItem_Click);
             // 
             // generateSQLToolStripMenuItem
             // 
             this.generateSQLToolStripMenuItem.Name = "generateSQLToolStripMenuItem";
-            this.generateSQLToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.generateSQLToolStripMenuItem.ShortcutKeyDisplayString = "F5";
+            this.generateSQLToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.generateSQLToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.generateSQLToolStripMenuItem.Text = "Generate SQL";
             this.generateSQLToolStripMenuItem.Click += new System.EventHandler(this.generateSQLToolStripMenuItem_Click);
-            // 
-            // setSAITypeToolStripMenuItem
-            // 
-            this.setSAITypeToolStripMenuItem.Name = "setSAITypeToolStripMenuItem";
-            this.setSAITypeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.setSAITypeToolStripMenuItem.Text = "Set SAI Type";
             // 
             // styleToolStripMenuItem
             // 
@@ -188,6 +270,12 @@
             this.errorsToolStripMenuItem.Text = "Warnings";
             this.errorsToolStripMenuItem.Click += new System.EventHandler(this.errorsToolStripMenuItem_Click);
             // 
+            // dBCToolStripMenuItem
+            // 
+            this.dBCToolStripMenuItem.Name = "dBCToolStripMenuItem";
+            this.dBCToolStripMenuItem.Size = new System.Drawing.Size(42, 20);
+            this.dBCToolStripMenuItem.Text = "DBC";
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -202,12 +290,6 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // dBCToolStripMenuItem
-            // 
-            this.dBCToolStripMenuItem.Name = "dBCToolStripMenuItem";
-            this.dBCToolStripMenuItem.Size = new System.Drawing.Size(42, 20);
-            this.dBCToolStripMenuItem.Text = "DBC";
             // 
             // dockPanel1
             // 
@@ -239,11 +321,30 @@
             this.vS2012ToolStripExtender1.DefaultRenderer = null;
             this.vS2012ToolStripExtender1.VS2012Renderer = null;
             // 
+            // changeDBSettingsToolStripMenuItem
+            // 
+            this.changeDBSettingsToolStripMenuItem.Name = "changeDBSettingsToolStripMenuItem";
+            this.changeDBSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changeDBSettingsToolStripMenuItem.Text = "Change DB settings";
+            this.changeDBSettingsToolStripMenuItem.Click += new System.EventHandler(this.changeDBSettingsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(177, 6);
+            // 
+            // generateWholeSQLToolStripMenuItem
+            // 
+            this.generateWholeSQLToolStripMenuItem.Name = "generateWholeSQLToolStripMenuItem";
+            this.generateWholeSQLToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.generateWholeSQLToolStripMenuItem.Text = "Generate whole SQL";
+            this.generateWholeSQLToolStripMenuItem.Click += new System.EventHandler(this.generateWholeSQLToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1386, 1054);
+            this.ClientSize = new System.Drawing.Size(1684, 1054);
             this.Controls.Add(this.dockPanel1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -253,6 +354,7 @@
             this.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -284,6 +386,18 @@
         private System.Windows.Forms.ToolStripMenuItem generateSQLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dBCToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setSAITypeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem creatureSAIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gameobjectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem areatriggerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem timedActionListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem emptySAIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem setEntryorguidToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem generateWholeSQLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem changeDBSettingsToolStripMenuItem;
     }
 }
 

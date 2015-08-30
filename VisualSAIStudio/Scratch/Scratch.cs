@@ -204,12 +204,5 @@ namespace VisualSAIStudio
                 vScrollBar.Value += Math.Min(vScrollBar.Maximum, drawableElement.rect.Top);
         }
     }
-    public static class MyExtensionMethods
-    {
-        public static int distance(this Point p1, Point p2)
-        {
-            return (int)Math.Sqrt(Math.Pow(2, (p1.X - p2.X)) + Math.Pow(2, (p1.Y - p2.Y)));
-        }
-    }
 
 }

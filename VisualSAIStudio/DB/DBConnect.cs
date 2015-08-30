@@ -22,10 +22,9 @@ namespace VisualSAIStudio
         //Initialize values
         private void Initialize()
         {
-            if (System.IO.File.Exists("data/database.json"))
+            connectionData = new DBConnectData();
+            if (!String.IsNullOrEmpty(connectionData.user))
             {
-                string file = System.IO.File.ReadAllText("data/database.json");
-                connectionData = Newtonsoft.Json.JsonConvert.DeserializeObject<DBConnectData>(file);
                 MakeNewConnection();
             }
         }
@@ -44,6 +43,9 @@ namespace VisualSAIStudio
         //open connection to database
         public bool OpenConnection()
         {
+            if (connection == null)
+                return false; // no db settings
+
             try
             {
                 connection.Open();
@@ -88,6 +90,8 @@ namespace VisualSAIStudio
 
         public MySqlCommand Query(String query)
         {
+            if (connection == null)
+                return null;// no db settings
             return new MySqlCommand(query, connection);
         }
 

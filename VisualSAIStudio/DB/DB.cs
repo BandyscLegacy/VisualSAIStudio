@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VisualSAIStudio.SmartScripts;
+
 
 namespace VisualSAIStudio
 {
@@ -19,9 +21,6 @@ namespace VisualSAIStudio
 
         public void LoadAll()
         {
-
-            CheckForDBCSettings();
-
             CurrentAction(this, new LoadingEventArgs("actions"));
             Load(SmartScripts.SmartType.SMART_ACTION, "data/actions.json");
 
@@ -34,9 +33,6 @@ namespace VisualSAIStudio
             CurrentAction(this, new LoadingEventArgs("conditions"));
             Load(SmartScripts.SmartType.SMART_CONDITION, "data/conditions.json");
 
-            CurrentAction(this, new LoadingEventArgs("spells"));
-            dbString.Add(StorageType.Spell, new ClientDataDBC("spell.dbc", 20));
-
             CurrentAction(this, new LoadingEventArgs("quests"));
             dbString.Add(StorageType.Quest, new ClientDataDB<string>("title", "quest_template"));
 
@@ -48,36 +44,57 @@ namespace VisualSAIStudio
 
 
 
-            /*MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SELECT guid, creature.id, map, position_x, position_z, position_y, count(source_type) as smartAI FROM creature left join smart_scripts on source_type=0 and entryorguid=(-guid) group by guid "));
-            using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
+            MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SELECT guid, concat(name, ' ', creature.id) as _name, count(source_type) as smartAI FROM creature left join smart_scripts on source_type=0 and entryorguid=(-guid) join creature_template on creature_template.entry=creature.id group by guid "));
+            dbString.Add(StorageType.CreatureGuid, new ClientData<String>());
+            dbString.Add(StorageType.CreatureGuidWithSAI, new ClientData<String>());
+            if (cmd!= null)
             {
-                while (reader.Read())
+                using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
                 {
-                    GuidEntry guid = new GuidEntry();
-                    guid.id = Convert.ToInt32(reader["guid"]);
-                    guid.map = Convert.ToInt32(reader["map"]);
-                    guid.position_x = (float)Convert.ToDouble(reader["position_x"]);
-                    guid.position_y = (float)Convert.ToDouble(reader["position_y"]);
-                    guid.position_z = (float)Convert.ToDouble(reader["position_z"]);
-                    guid.smartAI = (Convert.ToInt32(reader["smartAI"])>0);
-
-                    int entry = Convert.ToInt32(reader["id"]);
-
-                    if (!EntryToGuidCreature.ContainsKey(entry))
-                        EntryToGuidCreature[entry] = new List<GuidEntry>();
-                    EntryToGuidCreature[entry].Add(guid);
+                    while (reader.Read())
+                    {
+                        dbString[StorageType.CreatureGuid].Set(Convert.ToInt32(reader["guid"]), Convert.ToString(reader["_name"]));
+                        if (Convert.ToInt32(reader["smartAI"]) > 0)
+                            dbString[StorageType.CreatureGuidWithSAI].Set(Convert.ToInt32(reader["guid"]), Convert.ToString(reader["_name"]));
+                    }
                 }
-            }*/
+            }
+
 
             CurrentAction(this, new LoadingEventArgs("gameobjects"));
             dbString.Add(StorageType.GameObject, new ClientDataDB<string>("entry", "name", "gameobject_template"));
             dbString.Add(StorageType.GameObjectEntryWithAI, new ClientDataDB<string>("entry", "ScriptName", "gameobject_template", "AIName = \"SmartGameObjectAI\""));
 
-            CurrentAction(this, new LoadingEventArgs("zones and areas"));
-            dbString.Add(StorageType.Area, new ClientDataDBC("AreaTable.dbc", 10));
 
-            CurrentAction(this, new LoadingEventArgs("maps"));
-            dbString.Add(StorageType.Map, new ClientDataDBC("Map.dbc", 0));
+            cmd = DBConnect.GetInstance().Query(String.Format("SELECT guid, concat(name, ' ', gameobject.id) as _name, count(source_type) as smartAI FROM gameobject left join smart_scripts on source_type=1 and entryorguid=(-guid) join gameobject_template on gameobject_template.entry=gameobject.id group by guid "));
+            dbString.Add(StorageType.GameObjectGuid, new ClientData<String>());
+            dbString.Add(StorageType.GameObjectGuidWithAI, new ClientData<String>());
+            if (cmd!= null)
+            {
+                using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        dbString[StorageType.GameObjectGuid].Set(Convert.ToInt32(reader["guid"]), Convert.ToString(reader["_name"]));
+                        if (Convert.ToInt32(reader["smartAI"]) > 0)
+                            dbString[StorageType.GameObjectGuidWithAI].Set(Convert.ToInt32(reader["guid"]), Convert.ToString(reader["_name"]));
+                    }
+                }
+            }
+
+
+            cmd = DBConnect.GetInstance().Query(String.Format("SELECT entryorguid FROM smart_scripts where source_type=9 group by entryorguid"));
+            dbString.Add(StorageType.TimedActionList, new ClientData<String>());
+            if (cmd != null)
+            {
+                using (MySql.Data.MySqlClient.MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        dbString[StorageType.TimedActionList].Set(Convert.ToInt32(reader["entryorguid"]), null);
+                    }
+                }
+            }
 
             CurrentAction(this, new LoadingEventArgs("area triggers"));
             dbString.Add(StorageType.AreaTrigger, new ClientDataDBC("AreaTrigger.dbc", 
@@ -100,68 +117,69 @@ namespace VisualSAIStudio
             CurrentAction(this, new LoadingEventArgs("game events"));
             dbString.Add(StorageType.GameEvent, new ClientDataDB<string>("EventEntry", "description", "game_event"));
 
-            CurrentAction(this, new LoadingEventArgs("items"));
-            dbString.Add(StorageType.Item, new ClientDataDBC("item-sparse.db2", 98));
-
-            CurrentAction(this, new LoadingEventArgs("sounds"));
-            dbString.Add(StorageType.Sound, new ClientDataDBC("SoundEntries.dbc", 1));
 
 
-            CurrentAction(this, new LoadingEventArgs("movies"));
-            dbString.Add(StorageType.Movie, new ClientDataDBC("movie.dbc", 0));
+            Dictionary<String, DBCConfig> dbc_config = JsonConvert.DeserializeObject<Dictionary<String, DBCConfig>>(File.ReadAllText(@"data\dbc.json"));
 
-            CurrentAction(this, new LoadingEventArgs("classes"));
-            dbString.Add(StorageType.Class, new ClientDataDBC("chrClasses.dbc", 2));
+            if (string.IsNullOrEmpty(Properties.Settings.Default.DBCVersion))
+            {
+                Properties.Settings.Default.DBCVersion = GuessDBCVersion(dbc_config);
+                Properties.Settings.Default.Save();
+            }
 
-            CurrentAction(this, new LoadingEventArgs("races"));
-            dbString.Add(StorageType.Race, new ClientDataDBC("chrRaces.dbc", 10));
+            foreach (StorageType type in dbc_config[Properties.Settings.Default.DBCVersion].offsets.Keys)
+            {
+                if (dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].unsupported)
+                    continue;
+                CurrentAction(this, new LoadingEventArgs(type.ToString()));
+                dbString.Add(type, new ClientDataDBC(dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].file, dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].offset));
+            }
 
-            CurrentAction(this, new LoadingEventArgs("achievement"));
-            dbString.Add(StorageType.Achievement, new ClientDataDBC("achievement.dbc", 3));
 
-            CurrentAction(this, new LoadingEventArgs("creature types"));
-            dbString.Add(StorageType.CreatureType, new ClientDataDBC("CreatureType.dbc", 0));
-
-            CurrentAction(this, new LoadingEventArgs("phases"));
-            dbString.Add(StorageType.Phase, new ClientDataDBC("Phase.dbc", 0));
-
-            CurrentAction(this, new LoadingEventArgs("emotes"));
-            dbString.Add(StorageType.Emote, new ClientDataDBC("Emotes.dbc", 0));
-
-            CurrentAction(this, new LoadingEventArgs("skills"));
-            dbString.Add(StorageType.Skill, new ClientDataDBC("SkillLine.dbc", 1));
 
             FinishedLoading(this, new EventArgs());
         }
 
-        private void CheckForDBCSettings()
+        public StorageType StorageForType(SAIType type, bool guid)
         {
-            if ((Properties.Settings.Default.DBC == "" || !Directory.Exists(Properties.Settings.Default.DBC))
-                            && !Properties.Settings.Default.IgnoreMissingDBC)
+            switch (type)
             {
-                DialogResult res =
-                  PSTaskDialog.cTaskDialog.ShowTaskDialogBox("DBC",
-                                            "Missing DBC",
-                                            "Visual SAI Studio makes big use of DBC (client database).",
-                                            "",
-                                            "",
-                                            "Don't check for DBC any more",
-                                            "",
-                                            "Locate WoW DBC Folder|Ignore for now",
-                                            PSTaskDialog.eTaskDialogButtons.Cancel,
-                                            PSTaskDialog.eSysIcons.Question, PSTaskDialog.eSysIcons.Information);
-                if (PSTaskDialog.cTaskDialog.VerificationChecked)
-                    Properties.Settings.Default.IgnoreMissingDBC = true;
-                if (PSTaskDialog.cTaskDialog.CommandButtonResult == 0)
-                {
-                    FolderBrowserDialog fbd = new FolderBrowserDialog();
-                    if (fbd.ShowDialog() == DialogResult.OK)
-                    {
-                        Properties.Settings.Default.DBC = fbd.SelectedPath;
-                    }
-                }
-                Properties.Settings.Default.Save();
+                case SAIType.Creature:
+                    if (guid)
+                        return StorageType.CreatureGuid;
+                    return StorageType.Creature;
+                case SAIType.Gameobject:
+                    if (guid)
+                        return StorageType.GameObjectGuid;
+                    return StorageType.GameObject;
+                case SAIType.AreaTrigger:
+                    return StorageType.AreaTrigger;
+                case SAIType.TimedActionList:
+                    return StorageType.TimedActionList;
             }
+            return StorageType.Creature;
+        }
+
+        private string GuessDBCVersion(Dictionary<String, DBCConfig> dbc_config)
+        {
+            foreach (string dbc_version in dbc_config.Keys)
+            {
+                if (!File.Exists(Properties.Settings.Default.DBC + "\\" + dbc_config[dbc_version].offsets[StorageType.Spell].file))
+                    break;
+                IWowClientDBReader m_reader;
+                m_reader = new DBCReader(Properties.Settings.Default.DBC + "\\" + dbc_config[dbc_version].offsets[StorageType.Spell].file);
+                BinaryReader br = m_reader[0];
+                int id = br.ReadInt32();
+                for (int i = 0; i < dbc_config[dbc_version].offsets[StorageType.Spell].offset; i++)
+                    br.ReadInt32();
+
+                id =br.ReadInt32();
+                if (m_reader.StringTable.ContainsKey(id) && !String.IsNullOrEmpty(m_reader.StringTable[id]))
+                {
+                    return dbc_version;
+                }
+            }
+            return null;
         }
 
         private void Load(SmartScripts.SmartType type, string file)
@@ -175,7 +193,9 @@ namespace VisualSAIStudio
 
         public string GetString(StorageType storage, int id)
         {
-            return dbString[storage].Get(id);
+            if (dbString.ContainsKey(storage))
+                return dbString[storage].Get(id);
+            return null;
         }
 
         public int GetInt(StorageType storage, int id)
@@ -251,11 +271,15 @@ namespace VisualSAIStudio
         GameObjectEntryWithAI,
         CreatureGuid,
         AreaTrigger,
-        AreaTriggerWithSAI
+        AreaTriggerWithSAI,
+        TimedActionList,
+        GameObjectGuid,
+        CreatureGuidWithSAI,
+        GameObjectGuidWithAI
     }
 
 
-    public abstract class ClientData<T> : IEnumerable<int>
+    public class ClientData<T> : IEnumerable<int>
     {
         protected Dictionary<int, T> values = new Dictionary<int, T>();
 
@@ -327,7 +351,7 @@ namespace VisualSAIStudio
                 }
                 db.CloseConnection();
             }
-            catch (System.InvalidOperationException /*e*/)
+            catch (System.Exception /*e*/)
             {
             }
         }
@@ -343,7 +367,7 @@ namespace VisualSAIStudio
                 id_column = (string)reader["field"];
                 reader.Close();
             }
-            catch (System.InvalidOperationException e)
+            catch (System.Exception e)
             {
                 // TODO: show config option to configure sql connection
             }
@@ -364,10 +388,12 @@ namespace VisualSAIStudio
                 delegate(BinaryReader br,Dictionary<int, string> strings )
                 {
                     string name = "";
-                    if (fields_to_skip > 0)
+                    if (fields_to_skip >= 0)
                     {
                         for (int j = 0; j < fields_to_skip; ++j)
+                        {
                             br.ReadInt32();
+                        }
                         name = strings[br.ReadInt32()];
                     }
                     return name;

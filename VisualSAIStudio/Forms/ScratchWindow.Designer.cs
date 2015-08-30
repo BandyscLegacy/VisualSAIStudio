@@ -57,6 +57,7 @@
             this.Name = "ScratchWindow";
             this.Text = "ScratchWindow";
             this.Load += new System.EventHandler(this.ScratchWindow_Load);
+            this.Shown += new System.EventHandler(this.ScratchWindow_Shown);
             this.ResumeLayout(false);
 
         }

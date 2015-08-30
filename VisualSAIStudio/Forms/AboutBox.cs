@@ -49,7 +49,7 @@ namespace VisualSAIStudio
         {
             get
             {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                return Application.ProductVersion;
             }
         }
 

@@ -402,7 +402,7 @@ namespace VisualSAIStudio
 
         private void scratch1_Load(object sender, EventArgs e)
         {
-
+            ReloadTheme();
         }
 
         private void scratch1_MouseDown(object sender, MouseEventArgs e)
@@ -419,6 +419,17 @@ namespace VisualSAIStudio
                     }
                 }
             }
+        }
+
+        public void SetEntry(int entryorguid)
+        {
+            this.entryorguid = entryorguid;
+        }
+
+        private void ScratchWindow_Shown(object sender, EventArgs e)
+        {
+            scratch1.ReloadTheme();
+            ReloadTheme();
         }
     }
     public class EventArgsRequestNewSAIWindow : EventArgs

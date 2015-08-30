@@ -38,6 +38,7 @@ namespace VisualSAIStudio
             iconRect = new Rectangle(37, 40, 48, 48);
             recents = new List<LinkLabel>();
             ThemeMgr.Instance.RegisterControl(this);
+           
         }
 
         ~StartPage()
@@ -56,6 +57,7 @@ namespace VisualSAIStudio
         {
             OpenedHistory.Instance.InvokeMethod(new OpenedHistory.DelgateMethod(AddRecent));
             OpenedHistory.Instance.RecentAdded += Instance_RecentAdded;
+
         }
 
         void Instance_RecentAdded(object sender, EventArgs e)
@@ -73,7 +75,7 @@ namespace VisualSAIStudio
             ll.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             ll.LinkColor = System.Drawing.Color.FromArgb(41, 90, 160);
             ll.Location = new System.Drawing.Point(59, 260 + num * 24);
-            ll.Text = action.type.ToString() + "  - " + action.name + " (" + action.entry + ")";
+            ll.Text = action.type.ToString() + (String.IsNullOrEmpty(action.name)?"":"  - " + action.name )+ " (" + action.entry + ")";
             ll.Tag = action;
             ll.Click += ll_Click;
             recents.Add(ll);
@@ -105,6 +107,16 @@ namespace VisualSAIStudio
             e.Graphics.DrawString("Recent", headerFont, Brushes.DarkGray, 37, 247);
             e.Graphics.DrawIcon(icon48, iconRect);
             e.Graphics.DrawString("sAI studio 2015", titleFont, titleBrush, 104, 45);
+        }
+
+        private void LoadAreaTrigger_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LoadDialogRequest(this, new LoadRequestEventArgs(SmartScripts.SAIType.AreaTrigger));
+        }
+
+        private void LoadTimedActionList_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LoadDialogRequest(this, new LoadRequestEventArgs(SmartScripts.SAIType.TimedActionList));
         }
 
     }

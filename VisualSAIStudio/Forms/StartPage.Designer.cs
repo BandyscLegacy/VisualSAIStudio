@@ -66,6 +66,7 @@
             this.LoadAreaTrigger.TabIndex = 2;
             this.LoadAreaTrigger.TabStop = true;
             this.LoadAreaTrigger.Text = "Load areatrigger SAI";
+            this.LoadAreaTrigger.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LoadAreaTrigger_LinkClicked);
             // 
             // LoadTimedActionList
             // 
@@ -80,6 +81,7 @@
             this.LoadTimedActionList.TabIndex = 3;
             this.LoadTimedActionList.TabStop = true;
             this.LoadTimedActionList.Text = "Load timed action list";
+            this.LoadTimedActionList.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LoadTimedActionList_LinkClicked);
             // 
             // StartPage
             // 

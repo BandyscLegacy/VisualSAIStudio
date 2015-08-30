@@ -99,6 +99,7 @@
             this.cmbType.Size = new System.Drawing.Size(103, 21);
             this.cmbType.TabIndex = 7;
             this.cmbType.Text = "Entry";
+            this.cmbType.SelectedIndexChanged += new System.EventHandler(this.cmbType_SelectedIndexChanged);
             // 
             // SelectSAI
             // 

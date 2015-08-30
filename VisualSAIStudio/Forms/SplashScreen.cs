@@ -56,5 +56,10 @@ namespace VisualSAIStudio
             DB.GetInstance().CurrentAction -= this_eventHandler;       
         }
 
+        private void SplashScreen_Load(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

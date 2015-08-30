@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +41,13 @@ namespace VisualSAIStudio
 
         }
 
+        public static string MD5(string str)
+        {
+            byte[] encoded = new UTF8Encoding().GetBytes(str);
+            byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encoded);
+            return  BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
+        }
+
         //http://stackoverflow.com/a/13100389/1616645
         public static T GetAttribute<T>(Enum enumValue) where T : Attribute
         {
@@ -53,6 +62,11 @@ namespace VisualSAIStudio
                 return attribute;
             }
             return null;
+        }
+
+        public static int distance(this Point p1, Point p2)
+        {
+            return (int)Math.Sqrt(Math.Pow((p1.X - p2.X), 2) + Math.Pow((p1.Y - p2.Y), 2));
         }
 
         public static R Single<R>(this MySqlDataReader reader, Func<MySqlDataReader, R> selector)

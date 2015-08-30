@@ -85,6 +85,7 @@ namespace VisualSAIStudio
         public List<SmartAction> actions = new List<SmartAction>();
         private ContextMenuStrip contextMenu = new ContextMenuStrip();
         private Point mouse;
+        private Point mouse_start;
         private bool dragging;
         public int actualID { get; set; }
 
@@ -275,6 +276,8 @@ namespace VisualSAIStudio
 
         private void this_mouseDown(object sender, MouseEventArgs e)
         {
+            mouse_start.X = e.X;
+            mouse_start.Y = e.Y;
             if (e.Button == MouseButtons.Right)
             {
                 mouse.X = e.X;
@@ -311,7 +314,7 @@ namespace VisualSAIStudio
         {
             mouse.X = e.X;
             mouse.Y = e.Y;
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && mouse_start.distance(mouse) > 20)
                 dragging = true;
         }
 

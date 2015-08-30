@@ -90,6 +90,8 @@ namespace VisualSAIStudio
                     return new StringParameter(StorageType.Phase);
                 case "AchievementParameter":
                     return new StringParameter(StorageType.Achievement);
+                case "GameobjectGUIDParameter":
+                    return new StringParameter(StorageType.GameObjectGuid);
                 case "BoolParameter":
                     return new BoolParameter();
                 case "SwitchParameter":
@@ -102,6 +104,8 @@ namespace VisualSAIStudio
                     return new PercentageParameter();
                 case "SummonTypeParameter":
                     return new SummonTypeParameter();
+                case "CreatureGUIDParameter":
+                    return new StringParameter(StorageType.CreatureGuid);
                 case "Parameter":
                     return new Parameter();
             }

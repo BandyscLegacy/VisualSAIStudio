@@ -16,6 +16,7 @@ namespace VisualSAIStudio.SmartScripts
 
         //private readonly static string SAI_SQL = "                            ({entryorguid,13}, {source_type,13}, {id,4}, {linkto,6}, {event_id, 12}, {phasemask,18}, {chance, 3}, {flags}, {event_param1,5}, {event_param2,5}, {event_param3,5}, {event_param4,5}, {action_id}, {action_param1,5}, {action_param2,5}, {action_param3,5}, {action_param4,5}, {action_param5,2}, {action_param6,2}, {target_id}, {target_param1,5}, {target_param2,5}, {target_param3,5}, {target_position}, \"{comment}\")";
 
+        // @TODO; so messy xd
         private static string GenerateHeader(SAIType source_type, int entryorguid)
         {
             StringBuilder ret = new StringBuilder();
@@ -23,27 +24,37 @@ namespace VisualSAIStudio.SmartScripts
             int guid = 0;
             int entry = entryorguid;
 
+            string name = DB.GetInstance().GetString(DB.GetInstance().StorageForType(source_type, (entryorguid < 0)), entryorguid);
+
             if (entryorguid < 0)
             {
                 guid = -entryorguid;
                 entry = 0;
             }
 
-            string name = null;
+
+
+            ret.AppendLine("-- " +source_type.ToString() + " " + name + " " + entryorguid + " SAI");
+            ret.AppendLine("SET @ENTRY := "+entry+";");
+            if (guid > 0)
+                ret.AppendLine("SET @GUID := " + entryorguid + ";");
 
             switch (source_type)
             {
                 case SAIType.Creature:
-                    name = DB.GetInstance().GetString(StorageType.Creature, entry);
+                    ret.AppendLine("UPDATE `creature_template` SET `AIName`=\"SmartAI\" WHERE `entry`= @ENTRY;");
                     break;
                 case SAIType.Gameobject:
-                    name = DB.GetInstance().GetString(StorageType.GameObject, entry);
+                    ret.AppendLine("UPDATE `gameobject_template` SET `AIName`=\"SmartGameObjectAI\" WHERE `entry`= @ENTRY;");
+                    break;
+                case SAIType.AreaTrigger:
+                    ret.AppendLine("DELETE FROM `areatrigger_scripts` WHERE `entry`=@ENTRY;");
+                    ret.AppendLine("INSERT INTO `areatrigger_scripts` (`entry`,`ScriptName`) VALUES (@ENTRY,\"SmartTrigger\");");
                     break;
             }
-            
-            ret.AppendLine("-- "+name+" "+entry +" SAI");
-            ret.AppendLine("SET @ENTRY := "+entry+";");
-            ret.AppendLine("UPDATE `creature_template` SET `AIName`=\"SmartAI\" WHERE `entry`= "+entry+";");
+
+
+
             ret.AppendLine("DELETE FROM `smart_scripts` WHERE `entryorguid`=@ENTRY AND `source_type`="+(int)source_type+";");
             ret.AppendLine("INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_type`, `event_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action_type`, `action_param1`, `action_param2`, `action_param3`, `action_param4`, `action_param5`, `action_param6`, `target_type`, `target_param1`, `target_param2`, `target_param3`, `target_x`, `target_y`, `target_z`, `target_o`, `comment`) VALUES");
             return ret.ToString();
@@ -70,7 +81,7 @@ namespace VisualSAIStudio.SmartScripts
                 }
 
             }
-            return GenerateHeader(source_type, entryorguid)+"\n"+String.Join(",\n", lines) + ";";
+            return GenerateHeader(source_type, entryorguid)+String.Join(",\n", lines) + ";";
         }
 
 
@@ -78,7 +89,7 @@ namespace VisualSAIStudio.SmartScripts
         {
             object data = new
             {
-                entryorguid = entry.ToString(),
+                entryorguid = (entry<0?"@GUID":"@ENTRY"),
                 source_type = ((int)sourcetype).ToString(),
                 id = id.ToString(),
                 linkto = link.ToString(),
@@ -136,7 +147,9 @@ namespace VisualSAIStudio.SmartScripts
                     }
                 }
             }
-            return String.Join(",\n", lines) + ";";
+            if (lines.Count > 0)
+                return String.Join(",\n", lines) + ";";
+            return null;
         }
 
         private static string GenerateSingleCondition(SmartCondition condition, SAIType type, int entryorguid, int id, int else_group)

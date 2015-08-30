@@ -1,0 +1,40 @@
+{
+	"15595": {
+		"version": 15595,
+		"definition": "Cataclysm 4.3.4",
+		"offsets": {
+    			"Spell": {"file": "spell.dbc", "offset": 20},
+    			"Area": {"file": "AreaTable.dbc", "offset": 10},
+    			"Map": {"file": "Map.dbc", "offset": 0},
+    			"Item": {"file": "item-sparse.db2", "offset": 98},
+    			"Sound": {"file": "SoundEntries.dbc", "offset": 1},
+    			"Movie": {"file": "movie.dbc", "offset": 0},
+    			"Class": {"file": "chrClasses.dbc", "offset": 2},
+    			"Race": {"file": "chrRaces.dbc", "offset": 10},
+    			"Achievement": {"file": "achievement.dbc", "offset": 3},
+    			"CreatureType": {"file": "CreatureType.dbc", "offset": 0},
+    			"Phase": {"file": "Phase.dbc", "offset": 0},
+    			"Emote": {"file": "Emotes.dbc", "offset": 0},
+    			"Skill": {"file": "SkillLine.dbc", "offset": 1}    
+		}
+	},
+	"12340": {
+		"version": 12340,
+		"definition": "Wrath of The Lich King 3.3.5",
+		"offsets": {
+    			"Spell": {"file": "spell.dbc", "offset": 135},
+    			"Area": {"file": "AreaTable.dbc", "offset": 10},
+    			"Map": {"file": "Map.dbc", "offset": 0},
+    			"Item": {"file": "ItemDisplayInfo.dbc", "offset": 4},
+    			"Sound": {"file": "SoundEntries.dbc", "offset": 1},
+    			"Movie": {"file": "movie.dbc", "offset": 0},
+    			"Class": {"file": "chrClasses.dbc", "offset": 3},
+    			"Race": {"file": "chrRaces.dbc", "offset": 10},
+    			"Achievement": {"file": "achievement.dbc", "offset": 20},
+    			"CreatureType": {"file": "CreatureType.dbc", "offset": 0},
+    			"Phase": {"unsupported": true},
+    			"Emote": {"file": "Emotes.dbc", "offset": 0},
+    			"Skill": {"file": "SkillLine.dbc", "offset": 2}    
+		}
+	}
+}

@@ -223,6 +223,14 @@ namespace VisualSAIStudio.SmartScripts
         }
 
 
+        [ReadOnly(true),
+        CategoryAttribute("Target"),
+        DisplayName("Target name")]
+        public string target_name
+        {
+            get { return ((SmartAction)element).Target.name; }
+            private set { }
+        }
 
         [CategoryAttribute("Target"),
         Id(0, 0)]
