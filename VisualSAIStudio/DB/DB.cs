@@ -127,13 +127,17 @@ namespace VisualSAIStudio
                 Properties.Settings.Default.Save();
             }
 
-            foreach (StorageType type in dbc_config[Properties.Settings.Default.DBCVersion].offsets.Keys)
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.DBCVersion))
             {
-                if (dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].unsupported)
-                    continue;
-                CurrentAction(this, new LoadingEventArgs(type.ToString()));
-                dbString.Add(type, new ClientDataDBC(dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].file, dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].offset));
+                foreach (StorageType type in dbc_config[Properties.Settings.Default.DBCVersion].offsets.Keys)
+                {
+                    if (dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].unsupported)
+                        continue;
+                    CurrentAction(this, new LoadingEventArgs(type.ToString()));
+                    dbString.Add(type, new ClientDataDBC(dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].file, dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].offset));
+                }
             }
+
 
 
 

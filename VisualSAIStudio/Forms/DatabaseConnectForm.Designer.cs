@@ -74,7 +74,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label1.Location = new System.Drawing.Point(38, 0);
+            this.label1.Location = new System.Drawing.Point(37, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 26);
             this.label1.TabIndex = 0;
@@ -84,7 +84,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label2.Location = new System.Drawing.Point(41, 26);
+            this.label2.Location = new System.Drawing.Point(40, 26);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(26, 26);
             this.label2.TabIndex = 1;
@@ -94,7 +94,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label3.Location = new System.Drawing.Point(38, 52);
+            this.label3.Location = new System.Drawing.Point(37, 52);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 26);
             this.label3.TabIndex = 2;
@@ -104,7 +104,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label4.Location = new System.Drawing.Point(14, 78);
+            this.label4.Location = new System.Drawing.Point(13, 78);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 26);
             this.label4.TabIndex = 3;
@@ -113,41 +113,41 @@
             // txtHost
             // 
             this.txtHost.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtHost.Location = new System.Drawing.Point(73, 3);
+            this.txtHost.Location = new System.Drawing.Point(72, 3);
             this.txtHost.Name = "txtHost";
-            this.txtHost.Size = new System.Drawing.Size(399, 20);
+            this.txtHost.Size = new System.Drawing.Size(400, 20);
             this.txtHost.TabIndex = 4;
             // 
             // txtPort
             // 
             this.txtPort.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtPort.Location = new System.Drawing.Point(73, 29);
+            this.txtPort.Location = new System.Drawing.Point(72, 29);
             this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(399, 20);
+            this.txtPort.Size = new System.Drawing.Size(400, 20);
             this.txtPort.TabIndex = 5;
             // 
             // txtUser
             // 
             this.txtUser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtUser.Location = new System.Drawing.Point(73, 55);
+            this.txtUser.Location = new System.Drawing.Point(72, 55);
             this.txtUser.Name = "txtUser";
-            this.txtUser.Size = new System.Drawing.Size(399, 20);
+            this.txtUser.Size = new System.Drawing.Size(400, 20);
             this.txtUser.TabIndex = 6;
             // 
             // txtPassword
             // 
             this.txtPassword.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtPassword.Location = new System.Drawing.Point(73, 81);
+            this.txtPassword.Location = new System.Drawing.Point(72, 81);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(399, 20);
+            this.txtPassword.Size = new System.Drawing.Size(400, 20);
             this.txtPassword.TabIndex = 7;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label5.Location = new System.Drawing.Point(14, 104);
+            this.label5.Location = new System.Drawing.Point(13, 104);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 33);
             this.label5.TabIndex = 8;
@@ -156,9 +156,9 @@
             // txtDatabse
             // 
             this.txtDatabse.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDatabse.Location = new System.Drawing.Point(73, 107);
+            this.txtDatabse.Location = new System.Drawing.Point(72, 107);
             this.txtDatabse.Name = "txtDatabse";
-            this.txtDatabse.Size = new System.Drawing.Size(399, 20);
+            this.txtDatabse.Size = new System.Drawing.Size(400, 20);
             this.txtDatabse.TabIndex = 9;
             // 
             // button1
