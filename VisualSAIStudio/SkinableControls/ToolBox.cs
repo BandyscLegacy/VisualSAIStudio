@@ -26,21 +26,7 @@ namespace VisualSAIStudio.SkinableControls
         private Brush HoverBGBrush;
         private Brush SelectionForeColorBrush;
         private Brush ForeColorBrush;
-        private string _Filter;
-        public string Filter 
-        {
-            get
-            {
-                return _Filter;
-            }
-            set
-            {
-                _Filter = value;
-                foreach (ToolBoxNode node in Nodes)
-                    node.Filter(value);
-                this.Refresh();
-            }
-        }
+        public ObservableCollection<IFilter> Filters {get; set;} 
 
         private ToolBoxNode HoverNode { get; set; }
         private ToolTip toolTip;
@@ -55,7 +41,27 @@ namespace VisualSAIStudio.SkinableControls
             Indent = 17;
             ItemPadding = new Padding(3);
             toolTip = new ToolTip();
+            Filters= new ObservableCollection<IFilter>();
+            Filters.CollectionChanged += Filters_CollectionChanged;
             ThemeMgr.Instance.RegisterControl(this);
+        }
+
+        void Filters_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            foreach (ToolBoxNode node in Nodes)
+                node.Filter(Filters);
+
+            foreach (IFilter newFilter in e.NewItems)
+                newFilter.RequestFilter += newFilter_RequestFilter;
+            
+            this.Refresh();
+        }
+
+        void newFilter_RequestFilter(object sender, EventArgs e)
+        {
+            foreach (ToolBoxNode node in Nodes)
+                node.Filter(Filters);
+            this.Refresh();
         }
 
         ~ToolBox()
@@ -247,6 +253,37 @@ namespace VisualSAIStudio.SkinableControls
 
     }
 
+    public abstract class IFilter
+    {
+        public event EventHandler RequestFilter = delegate { };
+        public abstract bool Show(ToolBoxNode node);
+        protected void Request()
+        {
+            RequestFilter(this, new EventArgs());
+        }
+    }
+
+    public class StringFilter : IFilter
+    {
+        private string _Text;
+        public string Text
+        {
+            get
+            {
+                return _Text;
+            }
+            set
+            {
+                _Text = value;
+                Request();
+            }
+        }
+        public override bool Show(ToolBoxNode node)
+        {
+            return (Text == null || node.Text.ToLower().Contains(Text) || (node.Tag != null && node.Tag.ToString().ToLower().Contains(Text)));
+        }
+    }
+
     public class ToolBoxNode
     {
         public bool IsExpanded { get; set; }
@@ -284,11 +321,16 @@ namespace VisualSAIStudio.SkinableControls
             IsExpanded = true;
         }
 
-        public bool Filter(string filter)
+        public bool Filter(ICollection<IFilter> filters)
         {
-            if (filter!=null)
-                filter = filter.ToLower();
-            if (filter == null || this.Text.ToLower().Contains(filter) || (this.Tag != null && this.Tag.ToString().ToLower().Contains(filter)))
+
+            bool filter_ok = true;
+
+            foreach (IFilter filter in filters)
+                if (!filter.Show(this))
+                    filter_ok = false;
+
+            if (filter_ok)
             {
                 foreach (ToolBoxNode node in Nodes)
                     node.IsVisible = true;
@@ -300,13 +342,17 @@ namespace VisualSAIStudio.SkinableControls
             {
                 bool show = false;
                 foreach (ToolBoxNode node in Nodes)
-                    if (node.Filter(filter))
+                    if (node.Filter(filters))
                         show = true;
 
                 this.IsVisible = show;
                 return show;
             }
+        }
 
+        public bool Filter(IFilter filter)
+        {
+            return Filter(new List<IFilter>() { filter });
         }
 
 

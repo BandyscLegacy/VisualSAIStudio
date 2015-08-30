@@ -39,6 +39,22 @@ namespace VisualSAIStudio
 
         }
 
+        //http://stackoverflow.com/a/13100389/1616645
+        public static T GetAttribute<T>(Enum enumValue) where T : Attribute
+        {
+            T attribute;
+
+            System.Reflection.MemberInfo memberInfo = enumValue.GetType().GetMember(enumValue.ToString())
+                                            .FirstOrDefault();
+
+            if (memberInfo != null)
+            {
+                attribute = (T)memberInfo.GetCustomAttributes(typeof(T), false).FirstOrDefault();
+                return attribute;
+            }
+            return null;
+        }
+
         public static R Single<R>(this MySqlDataReader reader, Func<MySqlDataReader, R> selector)
         {
             R result = default(R);

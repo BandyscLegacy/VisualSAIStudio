@@ -28,6 +28,8 @@ namespace VisualSAIStudio.History
 
         public delegate void DelgateMethod(OpenedHistoryAction action, int num);
 
+        public event EventHandler RecentAdded = delegate { };
+
         OpenedHistory()
         {
             if (System.IO.File.Exists("data/history.json"))
@@ -54,10 +56,16 @@ namespace VisualSAIStudio.History
 
         public void insert(OpenedHistoryAction action)
         {
+            if (history.Contains(action))
+                history.Remove(action);
+
             history.Add(action);
+
             if (history.Count > 10)
                 history.RemoveAt(0);
             save();
+
+            RecentAdded(this, new EventArgs());
         }
 
         public void InvokeMethod(Delegate method, int limit = 3)

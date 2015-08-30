@@ -16,22 +16,27 @@ namespace VisualSAIStudio
 {
     public partial class ToolWindow : DockContent
     {
-        SAIType saitype;
         SmartType type;
+
+        private StringFilter stringFilter;
+        private SAITypeFilter saiTypeFilter;
         public ToolWindow(String file, String title, SmartType type)
         {
+            stringFilter = new StringFilter();
+            saiTypeFilter = new SAITypeFilter();
             InitializeComponent();
             this.Text = title;
             this.textBox.Placeholder = "Search " + title;
             this.HideOnClose = true;
             this.type = type;
-
+            label1.Filters.Add(stringFilter);
+            label1.Filters.Add(saiTypeFilter);
             LoadSmartFromFile(file);
         }
 
         public void SetSAIType(SAIType type)
         {
-            this.saitype = type;
+            saiTypeFilter.Type = type;
         }
 
         protected override string GetPersistString()
@@ -75,7 +80,7 @@ namespace VisualSAIStudio
 
         private void textBox_TextChanged(object sender, EventArgs e)
         {
-            label1.Filter = textBox.Text;
+            stringFilter.Text = textBox.Text;
         }
 
         private void label1_MouseDown(object sender, MouseEventArgs e)
@@ -89,5 +94,26 @@ namespace VisualSAIStudio
 
         }
 
+    }
+
+    public class SAITypeFilter : IFilter
+    {
+        private SAIType _type;
+        public SAIType Type
+        {
+            get
+            {
+                return _type;
+            }
+            set
+            {
+                _type = value;
+                Request();
+            }
+        }
+        public override bool Show(ToolBoxNode node)
+        {
+            return (node.Tag != null && SmartFactory.GetInstance().IsEventValidType(node.Tag.ToString(), Type));
+        }
     }
 }

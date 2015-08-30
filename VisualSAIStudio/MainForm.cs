@@ -15,6 +15,7 @@ using WeifenLuo.WinFormsUI.Docking;
 using Newtonsoft.Json;
 using WeifenLuo.WinFormsUI.Docking.Themes;
 using VisualSAIStudio.History;
+using VisualSAIStudio.SmartScripts;
 
 namespace VisualSAIStudio
 {
@@ -67,8 +68,30 @@ namespace VisualSAIStudio
                 item.Click += item_Click;
                 dBCToolStripMenuItem.DropDownItems.Add(item);
             }
-            
+
+            foreach(SAIType type in Enum.GetValues(typeof(SAIType)).Cast<SAIType>())
+            {
+                bool unsupported = Extensions.GetAttribute<UnsupportedAttribute>(type) != null;
+                ToolStripMenuItem item = new ToolStripMenuItem(type.ToString() + (unsupported?" (unsupported)":""));
+                item.Tag = type;
+                item.Click += saiType_Click;
+                setSAITypeToolStripMenuItem.DropDownItems.Add(item);
+            }
+
+            this.Location = Properties.Settings.Default.LastPos;
+            this.Size =Properties.Settings.Default.LastSize;
         }
+
+        private void saiType_Click(object sender, EventArgs e)
+        {
+            if (scratch!=null)
+            {
+                scratch.Type = (SAIType)((ToolStripMenuItem)sender).Tag;
+                events.SetSAIType(scratch.Type);
+            }
+        }
+
+
 
         void startPage_LoadDialogRequest(object sender, EventArgs e)
         {
@@ -93,7 +116,7 @@ namespace VisualSAIStudio
             scratch.ElementSelected += this_callback;
             scratch.RequestWarnings += this_RequestWarnings;
             scratch.RequestNewSAIWindow += scratch_RequestNewSAIWindow;
-            scratch.type = type;
+            scratch.Type = type;
             if (entryorguid > 0)
             {
                 scratch.LoadFromDB(entryorguid);
@@ -272,10 +295,13 @@ namespace VisualSAIStudio
 
         private void dockPanel1_ActiveDocumentChanged(object sender, EventArgs e)
         {
+            if (dockPanel1.ActiveDocument == null)
+                return;
+
             if (dockPanel1.ActiveDocument.DockHandler.Form is ScratchWindow)
             {
                 scratch = (ScratchWindow)dockPanel1.ActiveDocument.DockHandler.Form;
-                events.SetSAIType(scratch.type);
+                events.SetSAIType(scratch.Type);
             }
             
             errors.Clear();
@@ -285,16 +311,13 @@ namespace VisualSAIStudio
             foreach (SmartEvent ev in scratch.GetEvents())
                 errors.AddWarnings(ev.Validate());           
         }
-        private void gOTestToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ScratchWindow w = new ScratchWindow();
-            w.type = SmartScripts.SAIType.Gameobject;
-            w.Show(dockPanel1);
-        }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             dockPanel1.SaveAsXml("data/layout.xml");
+            Properties.Settings.Default.LastPos = this.Location;
+            Properties.Settings.Default.LastSize = this.Size;
+            Properties.Settings.Default.Save();
         }
 
         private void darkToolStripMenuItem_Click(object sender, EventArgs e)
@@ -340,6 +363,8 @@ namespace VisualSAIStudio
         {
 
         }
+
+
 
     }
 }

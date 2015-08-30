@@ -273,7 +273,7 @@
     "id": 23,
     "name": "SMART_TARGET_OWNER_OR_SUMMONER",
     "description": "Owner/Summoner",
-    "help": "Unit's owner or summoner. Keep in mind in action Summon Creature, target is NOT summoner, the summoner is still SAI creature"
+    "help": "Unit's owner or summoner. Keep in mind in action Summon Creature, target is NOT summoner, the summoner is still scripted creature"
   },
   {
     "id": 24,

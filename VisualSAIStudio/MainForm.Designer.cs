@@ -35,6 +35,7 @@
             this.loadFromDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.validateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setSAITypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.styleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +65,7 @@
             this.dBCToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1466, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1386, 24);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -74,7 +75,8 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadFromDBToolStripMenuItem,
             this.validateToolStripMenuItem,
-            this.generateSQLToolStripMenuItem});
+            this.generateSQLToolStripMenuItem,
+            this.setSAITypeToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -101,6 +103,12 @@
             this.generateSQLToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.generateSQLToolStripMenuItem.Text = "Generate SQL";
             this.generateSQLToolStripMenuItem.Click += new System.EventHandler(this.generateSQLToolStripMenuItem_Click);
+            // 
+            // setSAITypeToolStripMenuItem
+            // 
+            this.setSAITypeToolStripMenuItem.Name = "setSAITypeToolStripMenuItem";
+            this.setSAITypeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.setSAITypeToolStripMenuItem.Text = "Set SAI Type";
             // 
             // styleToolStripMenuItem
             // 
@@ -235,7 +243,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1290, 1054);
+            this.ClientSize = new System.Drawing.Size(1386, 1054);
             this.Controls.Add(this.dockPanel1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -275,6 +283,7 @@
         private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateSQLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dBCToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setSAITypeToolStripMenuItem;
     }
 }
 

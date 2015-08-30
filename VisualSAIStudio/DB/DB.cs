@@ -42,7 +42,7 @@ namespace VisualSAIStudio
 
             CurrentAction(this, new LoadingEventArgs("creatures"));
             dbString.Add(StorageType.Creature, new ClientDataDB<string>("entry", "name", "creature_template"));
-            dbString.Add(StorageType.CreatureEntryWithAI, new ClientDataDB<string>("entry", "name", "creature_template", "AIName = \"SmartAI\""));
+            dbString.Add(StorageType.CreatureEntryWithAI, new ClientDataDB<string>("entry", "ScriptName", "creature_template", "AIName = \"SmartAI\""));
 
             //dbInt.Add(StorageType.CreatureGuid, new ClientDataDB<int>("guid", "entry", "creature"));
 
@@ -71,7 +71,31 @@ namespace VisualSAIStudio
 
             CurrentAction(this, new LoadingEventArgs("gameobjects"));
             dbString.Add(StorageType.GameObject, new ClientDataDB<string>("entry", "name", "gameobject_template"));
-            dbString.Add(StorageType.GameObjectEntryWithAI, new ClientDataDB<string>("entry", "name", "gameobject_template", "AIName = \"SmartAI\""));
+            dbString.Add(StorageType.GameObjectEntryWithAI, new ClientDataDB<string>("entry", "ScriptName", "gameobject_template", "AIName = \"SmartGameObjectAI\""));
+
+            CurrentAction(this, new LoadingEventArgs("zones and areas"));
+            dbString.Add(StorageType.Area, new ClientDataDBC("AreaTable.dbc", 10));
+
+            CurrentAction(this, new LoadingEventArgs("maps"));
+            dbString.Add(StorageType.Map, new ClientDataDBC("Map.dbc", 0));
+
+            CurrentAction(this, new LoadingEventArgs("area triggers"));
+            dbString.Add(StorageType.AreaTrigger, new ClientDataDBC("AreaTrigger.dbc", 
+                    delegate(BinaryReader br,Dictionary<int, string> strings )
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        br.ReadInt32();
+                        sb.Append("(");
+                        sb.Append(br.ReadSingle());
+                        sb.Append(", ");
+                        sb.Append(br.ReadSingle());
+                        sb.Append(", ");
+                        sb.Append(br.ReadSingle());
+                        sb.Append(")");
+                        return sb.ToString();
+                    }            
+                ));
+            dbString.Add(StorageType.AreaTriggerWithSAI, new ClientDataDB<string>("entry", "ScriptName", "areatrigger_scripts", "ScriptName = \"SmartTrigger\""));
 
             CurrentAction(this, new LoadingEventArgs("game events"));
             dbString.Add(StorageType.GameEvent, new ClientDataDB<string>("EventEntry", "description", "game_event"));
@@ -94,12 +118,6 @@ namespace VisualSAIStudio
 
             CurrentAction(this, new LoadingEventArgs("achievement"));
             dbString.Add(StorageType.Achievement, new ClientDataDBC("achievement.dbc", 3));
-
-            CurrentAction(this, new LoadingEventArgs("zones and areas"));
-            dbString.Add(StorageType.Area, new ClientDataDBC("AreaTable.dbc", 10));
-
-            CurrentAction(this, new LoadingEventArgs("maps"));
-            dbString.Add(StorageType.Map, new ClientDataDBC("Map.dbc", 0));
 
             CurrentAction(this, new LoadingEventArgs("creature types"));
             dbString.Add(StorageType.CreatureType, new ClientDataDBC("CreatureType.dbc", 0));
@@ -231,11 +249,13 @@ namespace VisualSAIStudio
         Phase,
         CreatureEntryWithAI,
         GameObjectEntryWithAI,
-        CreatureGuid
+        CreatureGuid,
+        AreaTrigger,
+        AreaTriggerWithSAI
     }
 
 
-    public abstract class ClientData<T>
+    public abstract class ClientData<T> : IEnumerable<int>
     {
         protected Dictionary<int, T> values = new Dictionary<int, T>();
 
@@ -252,9 +272,28 @@ namespace VisualSAIStudio
                 return default(T);
         }
 
+        public void Set(int id, T value)
+        {
+            if (values.ContainsKey(id))
+                values[id] = value;
+            else
+                values.Add(id, value);
+        }
+
         public  Dictionary<int, T> GetDictionary()
         {
             return values;
+        }
+
+        public IEnumerator<int> GetEnumerator()
+        {
+            foreach (int key in values.Keys.ToList())
+                yield return key;
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 
@@ -295,7 +334,7 @@ namespace VisualSAIStudio
 
         public ClientDataDB(string string_column, string table)
         {
-           /* string id_column = null;
+            string id_column = null;
             try
             {
                 MySql.Data.MySqlClient.MySqlCommand cmd = DBConnect.GetInstance().Query(String.Format("SHOW columns FROM {0}", table));
@@ -308,7 +347,7 @@ namespace VisualSAIStudio
             {
                 // TODO: show config option to configure sql connection
             }
-            Load(id_column, string_column, table);*/
+            Load(id_column, string_column, table, null);
         }
 
         public ClientDataDB(string id_column, string string_column, string table, string where)
@@ -321,22 +360,39 @@ namespace VisualSAIStudio
     {
         public ClientDataDBC(string filename, int fields_to_skip)
         {
+            Load(filename,
+                delegate(BinaryReader br,Dictionary<int, string> strings )
+                {
+                    string name = "";
+                    if (fields_to_skip > 0)
+                    {
+                        for (int j = 0; j < fields_to_skip; ++j)
+                            br.ReadInt32();
+                        name = strings[br.ReadInt32()];
+                    }
+                    return name;
+                }
+            );
+        }
+        public ClientDataDBC(string filename, Func<BinaryReader,Dictionary<int, string>, string> func)
+        {
+            Load(filename, func);
+        }
+        private void Load(string filename, Func<BinaryReader, Dictionary<int, string>, string> func)
+        {
             if (!File.Exists(Properties.Settings.Default.DBC + "\\" + filename))
                 return;
             IWowClientDBReader m_reader;
             if (filename.Contains(".dbc"))
-                m_reader = new DBCReader(Properties.Settings.Default.DBC +"\\"+ filename);
+                m_reader = new DBCReader(Properties.Settings.Default.DBC + "\\" + filename);
             else
-                m_reader = new DB2Reader(Properties.Settings.Default.DBC +"\\"+ filename);
+                m_reader = new DB2Reader(Properties.Settings.Default.DBC + "\\" + filename);
 
             for (int i = 0; i < m_reader.RecordsCount; ++i)
             {
                 BinaryReader br = m_reader[i];
                 int id = br.ReadInt32();
-                for (int j = 0; j < fields_to_skip; ++j)
-                    br.ReadInt32();
-                string name = m_reader.StringTable[br.ReadInt32()];
-                values[id] = name;
+                values[id] = func(br, m_reader.StringTable);
             }
         }
     }

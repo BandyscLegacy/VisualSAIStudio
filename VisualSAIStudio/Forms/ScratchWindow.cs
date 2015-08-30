@@ -26,7 +26,7 @@ namespace VisualSAIStudio
         public event EventHandler RequestWarnings = delegate { };
 
         private SAIType _type;
-        public SAIType type
+        public SAIType Type
         {
             get
             {
@@ -55,7 +55,7 @@ namespace VisualSAIStudio
 
         private void UpdateCaption()
         {
-            this.Text = type.ToString();
+            this.Text = Type.ToString();
             if (entryorguid > 0)
                 this.Text += " (" + entryorguid + ")";
         }
@@ -134,7 +134,7 @@ namespace VisualSAIStudio
                 }
             }
 
-            cmd = connect.Query("SELECT * FROM smart_scripts WHERE source_type = "+(int)type+" and entryorguid = "+entryorguid + " order by id");
+            cmd = connect.Query("SELECT * FROM smart_scripts WHERE source_type = "+(int)Type+" and entryorguid = "+entryorguid + " order by id");
             SmartEvent prev = null;
             bool keep_legacy_comments = false;
             bool keep_lagacy_comments_asked = false;
@@ -325,7 +325,7 @@ namespace VisualSAIStudio
 
         public String GenerateSQLOutput()
         {
-            return SQLGenerator.GenerateSAISQL(type, entryorguid, events)+"\n\n\n"+SQLGenerator.GenerateConditionsSQL(type, entryorguid, events);
+            return SQLGenerator.GenerateSAISQL(Type, entryorguid, events)+"\n\n\n"+SQLGenerator.GenerateConditionsSQL(Type, entryorguid, events);
         }
 
         public void DetectConflicts()

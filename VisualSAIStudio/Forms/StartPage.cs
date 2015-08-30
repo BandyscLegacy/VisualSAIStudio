@@ -27,6 +27,8 @@ namespace VisualSAIStudio
         private Brush titleBrush;
         private Rectangle iconRect;
 
+        private List<LinkLabel> recents;
+
         public StartPage()
         {
             InitializeComponent();
@@ -34,6 +36,7 @@ namespace VisualSAIStudio
             titleFont = new Font("Tahoma", 32, FontStyle.Regular);
             icon48 = new Icon(Resources.sai_icon, 48, 48);
             iconRect = new Rectangle(37, 40, 48, 48);
+            recents = new List<LinkLabel>();
             ThemeMgr.Instance.RegisterControl(this);
         }
 
@@ -52,6 +55,14 @@ namespace VisualSAIStudio
         private void StartPage_Load(object sender, EventArgs e)
         {
             OpenedHistory.Instance.InvokeMethod(new OpenedHistory.DelgateMethod(AddRecent));
+            OpenedHistory.Instance.RecentAdded += Instance_RecentAdded;
+        }
+
+        void Instance_RecentAdded(object sender, EventArgs e)
+        {
+            recents.ForEach(l => Controls.Remove(l));
+            recents.Clear();
+            OpenedHistory.Instance.InvokeMethod(new OpenedHistory.DelgateMethod(AddRecent));
         }
 
         private void AddRecent(OpenedHistoryAction action, int num)
@@ -65,6 +76,7 @@ namespace VisualSAIStudio
             ll.Text = action.type.ToString() + "  - " + action.name + " (" + action.entry + ")";
             ll.Tag = action;
             ll.Click += ll_Click;
+            recents.Add(ll);
             this.Controls.Add(ll);
         }
 

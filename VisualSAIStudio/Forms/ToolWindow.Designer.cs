@@ -39,7 +39,6 @@ namespace VisualSAIStudio
             this.label1.BackColor = System.Drawing.SystemColors.Control;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.DrawTag = false;
-            this.label1.Filter = null;
             this.label1.Indent = 7;
             this.label1.Location = new System.Drawing.Point(0, 13);
             this.label1.Margin = new System.Windows.Forms.Padding(0);

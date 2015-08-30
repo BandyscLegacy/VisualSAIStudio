@@ -6,17 +6,27 @@ using System.Threading.Tasks;
 
 namespace VisualSAIStudio.SmartScripts
 {
+    class UnsupportedAttribute : Attribute
+    {
+    }
+
     public enum SAIType
     {
         Creature = 0, 
         Gameobject = 1, 
         AreaTrigger = 2, 
-        Event = 3, 
-        Gossip = 4, 
-        Quest = 5, 
-        Spell = 6, 
-        Transport = 7, 
-        Instance = 8, 
+        [Unsupported]
+        Event = 3,
+        [Unsupported]
+        Gossip = 4,
+        [Unsupported]
+        Quest = 5,
+        [Unsupported]
+        Spell = 6,
+        [Unsupported]
+        Transport = 7,
+        [Unsupported]
+        Instance = 8,
         TimedActionList = 9, 
     }
 
