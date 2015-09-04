@@ -266,6 +266,14 @@ namespace VisualSAIStudio
             if (selectedChildren != null)
             {
                 children.Remove(selectedChildren);
+                if (selectedChildren is SmartAction)
+                {
+                    actions.Remove((SmartAction)selectedChildren);
+                }
+                else
+                {
+                    conditions.Remove((SmartCondition)selectedChildren);
+                }
             }
             else
             {

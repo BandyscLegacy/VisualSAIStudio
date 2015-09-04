@@ -16,9 +16,16 @@ namespace VisualSAIStudio.SkinableControls
 {
     public partial class ToolBox : UserControl, IReloadable
     {
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ObservableCollection<ToolBoxNode> Nodes { get; private set; }
         public int Indent {get; set;}
         public bool DrawTag { get; set; }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ToolBoxNode SelectedNode { get; set; }
         public Padding ItemPadding { get; set; }
 
@@ -26,6 +33,10 @@ namespace VisualSAIStudio.SkinableControls
         private Brush HoverBGBrush;
         private Brush SelectionForeColorBrush;
         private Brush ForeColorBrush;
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ObservableCollection<IFilter> Filters {get; set;} 
 
         private ToolBoxNode HoverNode { get; set; }
@@ -44,6 +55,7 @@ namespace VisualSAIStudio.SkinableControls
             Filters= new ObservableCollection<IFilter>();
             Filters.CollectionChanged += Filters_CollectionChanged;
             ThemeMgr.Instance.RegisterControl(this);
+            ReloadTheme();
         }
 
         void Filters_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -195,13 +207,17 @@ namespace VisualSAIStudio.SkinableControls
             if (SelectedNode == null)
                 return;
 
-            if (SelectedNode.Nodes.Count > 0 && (SelectedNode.AlwaysExpand || e.X < SelectedNode.Level * Indent - 10))
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-                if (SelectedNode.IsExpanded)
-                    SelectedNode.Collapse();
-                else
-                    SelectedNode.Expand();
+                if (SelectedNode.Nodes.Count > 0 && (SelectedNode.AlwaysExpand || e.X < SelectedNode.Level * Indent - 10))
+                {
+                    if (SelectedNode.IsExpanded)
+                        SelectedNode.Collapse();
+                    else
+                        SelectedNode.Expand();
+                }
             }
+
             this.Refresh();
         }
 
@@ -219,7 +235,8 @@ namespace VisualSAIStudio.SkinableControls
             ToolBoxNode node = GetNodeAt(e.X, e.Y);
             if (node == null || node.Tag == null)
             {
-                toolTip.Hide(this);
+                if (ShowTooltip)
+                    toolTip.Hide(this);
                 HoverNode = node;
                 this.Refresh();
                 return;
@@ -230,13 +247,17 @@ namespace VisualSAIStudio.SkinableControls
 
             HoverNode = node;
             this.Refresh();
-            toolTip.ToolTipTitle = node.Text;
-            toolTip.Show(node.Tag.ToString(), this, 0, node.Bounds.Bottom+15); 
+            if (ShowTooltip)
+            {
+                toolTip.ToolTipTitle = node.Text;
+                toolTip.Show(node.Tag.ToString() + " ("+node.Tag2.ToString()+")", this, 0, node.Bounds.Bottom+15); 
+            }
         }
 
         private void ToolBox_MouseLeave(object sender, EventArgs e)
         {
-            toolTip.Hide(this);
+            if (ShowTooltip)
+                toolTip.Hide(this);
             HoverNode = null;
             this.Refresh();
         }
@@ -251,6 +272,8 @@ namespace VisualSAIStudio.SkinableControls
             this.Refresh();
         }
 
+
+        public bool ShowTooltip { get; set; }
     }
 
     public abstract class IFilter
@@ -280,7 +303,7 @@ namespace VisualSAIStudio.SkinableControls
         }
         public override bool Show(ToolBoxNode node)
         {
-            return (Text == null || node.Text.ToLower().Contains(Text) || (node.Tag != null && node.Tag.ToString().ToLower().Contains(Text)));
+            return (Text == null || node.Text.ToLower().Contains(Text) || (node.Tag != null && node.Tag.ToString().ToLower().Contains(Text)) || (node.Tag2 != null && node.Tag2.ToString().ToLower().Contains(Text)));
         }
     }
 
@@ -296,6 +319,10 @@ namespace VisualSAIStudio.SkinableControls
 
         public object Tag { get; set; }
 
+        public ToolBoxNode Parent { get; set; }
+
+        public object Tag2 { get; set; }
+
         public Rectangle Bounds {get; set;}
 
         public ObservableCollection<ToolBoxNode> Nodes { get; private set; }
@@ -303,7 +330,17 @@ namespace VisualSAIStudio.SkinableControls
         public ToolBoxNode()
         {
             Nodes = new ObservableCollection<ToolBoxNode>();
+            Nodes.CollectionChanged += Nodes_CollectionChanged;
             IsVisible = true;
+        }
+
+        void Nodes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (ToolBoxNode newNode in e.NewItems)
+                    newNode.Parent = this;
+            }
         }
 
         public ToolBoxNode(String text) : this()

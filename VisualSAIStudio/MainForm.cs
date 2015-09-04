@@ -74,10 +74,27 @@ namespace VisualSAIStudio
                 setSAITypeToolStripMenuItem.DropDownItems.Add(item);
             }
 
+            foreach (Sessions.Session session in Sessions.SessionManager.GetInstance())
+            {
+                ToolStripMenuItem item = new ToolStripMenuItem(session.title);
+                item.Tag = session;
+                item.Click += openSession_Click;
+                savedSessionsToolStripMenuItem.DropDownItems.Add(item);
+            }
+
             this.Location = Properties.Settings.Default.LastPos;
             this.Size =Properties.Settings.Default.LastSize;
 
  
+        }
+
+        private void openSession_Click(object sender, EventArgs e)
+        {
+            Sessions.Session session = (Sessions.Session)((ToolStripMenuItem)sender).Tag;
+            foreach (Sessions.OpenedScratch opened in session.list)
+            {
+                NewSAIWindow(opened.entry, opened.type);
+            }
         }
 
         private void SetTheme(string theme)
@@ -131,9 +148,16 @@ namespace VisualSAIStudio
             scratch.RequestNewSAIWindow += scratch_RequestNewSAIWindow;
             scratch.Type = type;
             scratch.LoadFromDB(entryorguid);
-            
+            scratch.FormClosed += scratch_FormClosed;
+
             events.SetSAIType(type);
             scratches.Add(scratch);
+
+        }
+
+        void scratch_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            scratches.Remove((ScratchWindow)sender);
         }
 
         void scratch_RequestNewSAIWindow(object sender, EventArgs e)
@@ -458,6 +482,35 @@ namespace VisualSAIStudio
             }
             Forms.CodePreview code = new Forms.CodePreview(sb.ToString(), FastColoredTextBoxNS.Language.SQL);
             code.Show(dockPanel1);
+        }
+
+        private void saveActiveSessionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Prompt", "Name of the current session (opened windows)", "", -1, -1);
+            if (!String.IsNullOrEmpty(input))
+            {
+                Sessions.Session session = new Sessions.Session(input);
+                foreach (ScratchWindow window in scratches)
+                {
+                    session.list.Add(new Sessions.OpenedScratch(window.Type, window.entryorguid));
+                }
+                Sessions.SessionManager.GetInstance().Add(session);
+                ToolStripMenuItem item = new ToolStripMenuItem(session.title);
+                item.Tag = session;
+                item.Click += openSession_Click;
+                savedSessionsToolStripMenuItem.DropDownItems.Add(item);
+            }
+        }
+
+        private void toolStripMenuItem6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void manageSessionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Forms.SessionsForm sessionsform = new Forms.SessionsForm();
+            sessionsform.Show();
         }
 
 

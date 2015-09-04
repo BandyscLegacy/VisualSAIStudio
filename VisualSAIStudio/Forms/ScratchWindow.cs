@@ -40,7 +40,7 @@ namespace VisualSAIStudio
         }
 
         private int _entryorguid;
-        private int entryorguid
+        public int entryorguid
         {
             get
             {
@@ -55,9 +55,11 @@ namespace VisualSAIStudio
 
         private void UpdateCaption()
         {
-            this.Text = Type.ToString();
-            if (entryorguid > 0)
-                this.Text += " (" + entryorguid + ")";
+            if (Type == SAIType.AreaTrigger || Type == SAIType.TimedActionList)
+                this.Text = Type.ToString();
+            else
+                this.Text = DB.GetInstance().GetString(DB.GetInstance().StorageForType(Type, (entryorguid < 0)), entryorguid);
+            this.Text += " (" + entryorguid + ")";
         }
 
         public ScratchWindow()

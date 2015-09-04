@@ -29,5 +29,21 @@ namespace VisualSAIStudio.SkinableControls
             this.ForeColor = ThemeMgr.Instance.getColor(IKnownColors.FormText);
             this.LineNumberColor = ThemeMgr.Instance.getColor(IKnownColors.FormText);
         }
+
+        private void InitializeComponent()
+        {
+            ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // SkinableFastColoredTextBox
+            // 
+            this.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.Name = "SkinableFastColoredTextBox";
+            ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+
     }
 }

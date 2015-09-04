@@ -27,7 +27,8 @@ namespace VisualSAIStudio.SkinableControls
             {
                 _value = Math.Min(Maximum, Math.Max(Minimum, value));
                 ValueChanged(this, new EventArgs());
-                UpdateDragFromValue();
+                if (!dragging)
+                    UpdateDragFromValue();
             }
         }
         private int _Maximum;
@@ -40,7 +41,10 @@ namespace VisualSAIStudio.SkinableControls
             }
             set
             {
+                if (value == _Maximum)
+                    return;
                 _Maximum = value;
+                Value = Value;     
                 if (!dragging)
                     UpdateDragFromValue();
                 this.Refresh();
@@ -54,8 +58,12 @@ namespace VisualSAIStudio.SkinableControls
             }
             set
             {
+                if (value == _Maximum)
+                    return;
                 _Minimum = value;
-                UpdateDragFromValue();
+                Value = Value;     
+                if (!dragging)
+                    UpdateDragFromValue();
                 this.Refresh();
             }
         }
@@ -168,7 +176,7 @@ namespace VisualSAIStudio.SkinableControls
 
         protected virtual void UpdateDragFromValue()
         {
-            drag.Location = new Point(drag.Location.X, (int)((Value - Minimum) * 1f / (Maximum - Minimum) * (panel1.Size.Height - drag.Size.Height)));
+            drag.Location = new Point(drag.Location.X, Math.Min(panel1.Size.Height-drag.Size.Height, (int)((Value - Minimum) * 1f / (Maximum - Minimum) * (panel1.Size.Height - drag.Size.Height))));
         }
 
         private void SkinableVScrollBar_MouseUp(object sender, MouseEventArgs e)

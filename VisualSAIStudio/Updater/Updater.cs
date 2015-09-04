@@ -69,7 +69,7 @@ namespace VisualSAIStudio.Updater
                                                     "",
                                                     "",
                                                     "",
-                                                    "Download now|Download later",
+                                                    "Download now|Show changelog|Download later",
                                                     PSTaskDialog.eTaskDialogButtons.Cancel,
                                                     PSTaskDialog.eSysIcons.Question, PSTaskDialog.eSysIcons.Information);
 
@@ -85,6 +85,10 @@ namespace VisualSAIStudio.Updater
                             {
                                 MessageBox.Show("Updater not found!");
                             }
+                        } else if (PSTaskDialog.cTaskDialog.CommandButtonResult == 1)
+                        {
+                            Forms.ChangelogForm changelog = new Forms.ChangelogForm();
+                            changelog.Show();
                         }
                     }
 

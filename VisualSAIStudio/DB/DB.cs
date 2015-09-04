@@ -19,20 +19,16 @@ namespace VisualSAIStudio
         public event EventHandler CurrentAction = delegate { };
         public event EventHandler FinishedLoading = delegate { };
 
+        public void LoadSmarts()
+        {
+            Load(SmartScripts.SmartType.SMART_ACTION, "data/actions.json");
+            Load(SmartScripts.SmartType.SMART_EVENT, "data/events.json");
+            Load(SmartScripts.SmartType.SMART_TARGET, "data/targets.json");
+            Load(SmartScripts.SmartType.SMART_CONDITION, "data/conditions.json");
+        }
+
         public void LoadAll()
         {
-            CurrentAction(this, new LoadingEventArgs("actions"));
-            Load(SmartScripts.SmartType.SMART_ACTION, "data/actions.json");
-
-            CurrentAction(this, new LoadingEventArgs("events"));
-            Load(SmartScripts.SmartType.SMART_EVENT, "data/events.json");
-
-            CurrentAction(this, new LoadingEventArgs("targets"));
-            Load(SmartScripts.SmartType.SMART_TARGET, "data/targets.json");
-
-            CurrentAction(this, new LoadingEventArgs("conditions"));
-            Load(SmartScripts.SmartType.SMART_CONDITION, "data/conditions.json");
-
             CurrentAction(this, new LoadingEventArgs("quests"));
             dbString.Add(StorageType.Quest, new ClientDataDB<string>("title", "quest_template"));
 

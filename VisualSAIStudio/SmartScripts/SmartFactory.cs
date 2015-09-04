@@ -33,6 +33,13 @@ namespace VisualSAIStudio.SmartScripts
 
         }
 
+        public int NameToId(SmartType type, string id)
+        {
+            if (!smart_name_to_id.ContainsKey(type))
+                return -1;
+            return smart_name_to_id[type][id];
+        }
+
         public bool SmartExist(SmartType type, string id)
         {
             if (!smart_id_data.ContainsKey(type))

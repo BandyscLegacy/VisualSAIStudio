@@ -108,6 +108,15 @@ namespace VisualSAIStudio
 
 
             vScrollBar.Maximum = Math.Max(0, cury - this.Height + startY+20);
+            Console.WriteLine(cury + " " + this.Height + " " + startY);
+            if (startY > 0)
+            {
+                if (cury+30 < this.Height)
+                {
+                    vScrollBar.Value = Math.Max(0, startY - this.Height - cury);
+                    this.Refresh();
+                }
+            }
             hScrollBar.Maximum = Math.Max(0, maxX - this.Width  + 20);
             if (vScrollBar.Maximum == 0)
                 vScrollBar.Visible = false;
@@ -202,6 +211,11 @@ namespace VisualSAIStudio
         {
             if (drawableElement.rect.Top < 0 || drawableElement.rect.Top > this.Height)
                 vScrollBar.Value += Math.Min(vScrollBar.Maximum, drawableElement.rect.Top);
+        }
+
+        private void Scratch_SizeChanged(object sender, EventArgs e)
+        {
+            this.Refresh();
         }
     }
 

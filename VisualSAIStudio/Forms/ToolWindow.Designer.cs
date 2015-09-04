@@ -40,10 +40,11 @@ namespace VisualSAIStudio
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.DrawTag = false;
             this.label1.Indent = 7;
+            this.label1.ItemPadding = new System.Windows.Forms.Padding(3);
             this.label1.Location = new System.Drawing.Point(0, 13);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.SelectedNode = null;
+            this.label1.ShowTooltip = true;
             this.label1.Size = new System.Drawing.Size(284, 248);
             this.label1.TabIndex = 3;
             this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label1_MouseDown);
@@ -76,7 +77,6 @@ namespace VisualSAIStudio
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Name = "ToolWindow";
-            this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Unknown;
             this.Text = "ToolWindow";
             this.Load += new System.EventHandler(this.ToolWindow_Load);
             this.ResumeLayout(false);

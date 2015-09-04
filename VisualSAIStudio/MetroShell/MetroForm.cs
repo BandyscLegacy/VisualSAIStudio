@@ -226,7 +226,28 @@ namespace MetroForm
                 Refresh();
             }
         }
+        public string HeaderText { get; set; }
+        public string HeaderSubText { get; set; }
 
+        private Font headerFont;
+        private Brush headerBrush;
+        private Pen titlePen;
+        private Brush titleBrush;
+        private bool _ShowHeader;
+        public bool ShowHeader {
+            get
+            {
+                return _ShowHeader;
+            }
+            set
+            {
+                _ShowHeader = value;
+                if (value)
+                    content.Location = new Point(10, 100);
+                else
+                    content.Location = new Point(10, 28);
+            }
+        }
         protected Color _AccentColor;
         protected Pen AccentPen;
         protected Brush AccentBrush;
@@ -289,6 +310,11 @@ namespace MetroForm
         {
             TitleColor = Color.Black;
             TitleFont = new Font("Tahoma", 9);
+            headerFont = new Font("Calibri Light", 20, FontStyle.Regular);
+            this.titleBrush = new SolidBrush(ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.ListSelectionForeColor));
+            this.titlePen = new Pen(titleBrush);
+            this.headerBrush = new SolidBrush(ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.ListSelectionBackColor));
+
             SetStyle(ControlStyles.ResizeRedraw, true);
             DoubleBuffered = true;
             this.content = new System.Windows.Forms.Panel();
@@ -302,6 +328,7 @@ namespace MetroForm
             this.Paint += MetroForm_Paint;
             this.MouseLeave += MetroForm_MouseLeave;
             this.AccentColor = Color.FromArgb(0, 122, 204);
+            this.WindowControlsPen = new Pen(new SolidBrush(this.TitleColor));
             ThemeMgr.Instance.RegisterControl(this);
         }
 
@@ -324,7 +351,10 @@ namespace MetroForm
         {
 
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-
+            
+            
+            if (ShowHeader)
+                e.Graphics.FillRectangle(headerBrush, 0, 0, this.Width, 100);
 
 
             if (mouse.Y < 26 && mouse.X > e.ClipRectangle.Width - 102)
@@ -342,31 +372,39 @@ namespace MetroForm
                     e.Graphics.FillRectangle(mouse_down ? AccentBrush : Brushes.Gray, e.ClipRectangle.Width - 102, 0, 34, 26);
                 }
             }
-
-
-            e.Graphics.FillRectangle(WindowControlsPen.Brush, e.ClipRectangle.Width - 89, 16, 9, 3);
-
+            //minimize
+            e.Graphics.FillRectangle((ShowHeader ? titleBrush : WindowControlsPen.Brush), e.ClipRectangle.Width - 89, 16, 9, 3);
 
 
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            e.Graphics.DrawLine(WindowControlsPen, e.ClipRectangle.Width - 21, 11, e.ClipRectangle.Width - 14, 18);
-            e.Graphics.DrawLine(WindowControlsPen, e.ClipRectangle.Width - 21, 18, e.ClipRectangle.Width - 14, 11);
+            //close
+            e.Graphics.DrawLine((ShowHeader ? titlePen : WindowControlsPen), e.ClipRectangle.Width - 21, 11, e.ClipRectangle.Width - 14, 18);
+            e.Graphics.DrawLine((ShowHeader ? titlePen : WindowControlsPen), e.ClipRectangle.Width - 21, 18, e.ClipRectangle.Width - 14, 11);
 
-            e.Graphics.DrawRectangle(WindowControlsPen, e.ClipRectangle.Width - 55, 10, 9, 9);
-            e.Graphics.DrawRectangle(WindowControlsPen, e.ClipRectangle.Width - 55, 11, 9, 1);
+            //maximize
+            e.Graphics.DrawRectangle((ShowHeader ? titlePen : WindowControlsPen), e.ClipRectangle.Width - 55, 10, 9, 9);
+            e.Graphics.DrawRectangle((ShowHeader ? titlePen : WindowControlsPen), e.ClipRectangle.Width - 55, 11, 9, 1);
+
+
+            if (ShowHeader)
+            {
+                e.Graphics.DrawString(HeaderText, headerFont, titleBrush, 20, 35);
+                e.Graphics.DrawString(HeaderSubText, TitleFont, titleBrush, 20, 70);
+            }
+            
 
 
             if (IconResized != null)
                 e.Graphics.DrawImage(IconResized, 5, 5);
-            e.Graphics.DrawString(this.Text, this.TitleFont, new SolidBrush(this.TitleColor), 5+16+5, 7);
+            e.Graphics.DrawString(this.Text, this.TitleFont, (ShowHeader ? titleBrush : new SolidBrush(this.TitleColor)), 5 + 16 + 5, 7);
 
             e.Graphics.DrawRectangle(AccentPen, 0, 0, e.ClipRectangle.Width - 1, e.ClipRectangle.Height - 1);
         }
 
         private void Form1_Resized(object sender, EventArgs e)
         {
-            this.content.Size = new Size(this.Width - 20, this.Height - 40);  
+            this.content.Size = new Size(this.Width - 20, this.Height - (ShowHeader?112:40));  
         }
 
 
@@ -565,6 +603,9 @@ namespace MetroForm
 
         public void ReloadTheme()
         {
+            this.titleBrush = new SolidBrush(ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.ListSelectionForeColor));
+            this.titlePen = new Pen(titleBrush);
+            this.headerBrush = new SolidBrush(ThemeMgr.Instance.getColor(WeifenLuo.WinFormsUI.Docking.Colors.IKnownColors.ListSelectionBackColor));
             this.BackColor = ThemeMgr.Instance.getColor(IKnownColors.FormBackground);
             this.TitleColor = ThemeMgr.Instance.getColor(IKnownColors.FormText);
             this.WindowControlsPen = new Pen(new SolidBrush(this.TitleColor));

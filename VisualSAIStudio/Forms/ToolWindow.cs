@@ -68,6 +68,8 @@ namespace VisualSAIStudio
             {
                 child = new ToolBoxNode(line.Substring(0, comma));
                 child.Tag = line.Substring(comma + 1);
+                Dictionary<SmartType, Dictionary<string, int>> smart_name_to_id = SmartFactory.GetInstance().smart_name_to_id;
+                child.Tag2 = SmartFactory.GetInstance().NameToId(type, line.Substring(comma + 1));
             }
             else
             {
