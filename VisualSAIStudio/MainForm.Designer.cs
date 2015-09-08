@@ -69,6 +69,7 @@
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.changeDBSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.locateDBCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.styleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,7 +98,7 @@
             this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
             this.dockPanel1.Location = new System.Drawing.Point(0, 24);
             this.dockPanel1.Name = "dockPanel1";
-            this.dockPanel1.Size = new System.Drawing.Size(1692, 1038);
+            this.dockPanel1.Size = new System.Drawing.Size(1772, 1038);
             dockPanelGradient1.EndColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             dockPanelGradient1.StartColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
             autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
@@ -144,6 +145,7 @@
             this.dockPanel1.Skin = dockPanelSkin1;
             this.dockPanel1.TabIndex = 12;
             this.dockPanel1.ActiveDocumentChanged += new System.EventHandler(this.dockPanel1_ActiveDocumentChanged);
+            this.dockPanel1.ActiveContentChanged += new System.EventHandler(this.dockPanel1_ActiveContentChanged_1);
             // 
             // menuStrip1
             // 
@@ -155,7 +157,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1692, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1772, 24);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -175,7 +177,8 @@
             this.saveActiveSessionToolStripMenuItem,
             this.savedSessionsToolStripMenuItem,
             this.toolStripMenuItem5,
-            this.changeDBSettingsToolStripMenuItem});
+            this.changeDBSettingsToolStripMenuItem,
+            this.locateDBCToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -326,6 +329,13 @@
             this.changeDBSettingsToolStripMenuItem.Text = "Change DB settings";
             this.changeDBSettingsToolStripMenuItem.Click += new System.EventHandler(this.changeDBSettingsToolStripMenuItem_Click);
             // 
+            // locateDBCToolStripMenuItem
+            // 
+            this.locateDBCToolStripMenuItem.Name = "locateDBCToolStripMenuItem";
+            this.locateDBCToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.locateDBCToolStripMenuItem.Text = "Locate DBC";
+            this.locateDBCToolStripMenuItem.Click += new System.EventHandler(this.locateDBCToolStripMenuItem_Click);
+            // 
             // styleToolStripMenuItem
             // 
             this.styleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -445,7 +455,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1692, 1062);
+            this.ClientSize = new System.Drawing.Size(1772, 1062);
             this.Controls.Add(this.dockPanel1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -504,6 +514,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem manageSessionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem locateDBCToolStripMenuItem;
     }
 }
 

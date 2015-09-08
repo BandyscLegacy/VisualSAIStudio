@@ -147,8 +147,11 @@ namespace VisualSAIStudio.SmartScripts
                     }
                 }
             }
+
+            string header = "DELETE FROM `conditions` WHERE `SourceTypeOrReferenceId`=22 AND `SourceEntry`="+entryorguid+" AND SourceId = "+(int)source_type+";\n";
+            header += "INSERT INTO `conditions` (`SourceTypeOrReferenceId`,`SourceGroup`,`SourceEntry`,`SourceId`,`ElseGroup`,`ConditionTypeOrReference`,`ConditionTarget`,`ConditionValue1`,`ConditionValue2`,`ConditionValue3`,`ErrorTextId`,`ScriptName`,`Comment`) VALUES\n";
             if (lines.Count > 0)
-                return String.Join(",\n", lines) + ";";
+                return header+String.Join(",\n", lines) + ";";
             return null;
         }
 

@@ -108,7 +108,6 @@ namespace VisualSAIStudio
 
 
             vScrollBar.Maximum = Math.Max(0, cury - this.Height + startY+20);
-            Console.WriteLine(cury + " " + this.Height + " " + startY);
             if (startY > 0)
             {
                 if (cury+30 < this.Height)

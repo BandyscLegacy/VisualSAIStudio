@@ -82,10 +82,12 @@ namespace VisualSAIStudio
                 savedSessionsToolStripMenuItem.DropDownItems.Add(item);
             }
 
-            this.Location = Properties.Settings.Default.LastPos;
-            this.Size =Properties.Settings.Default.LastSize;
 
- 
+            if (Properties.Settings.Default.LastPos.X > 0 && Properties.Settings.Default.LastPos.Y > 0)
+            {
+                this.Location = Properties.Settings.Default.LastPos;
+                this.Size = Properties.Settings.Default.LastSize;
+            }
         }
 
         private void openSession_Click(object sender, EventArgs e)
@@ -511,6 +513,19 @@ namespace VisualSAIStudio
         {
             Forms.SessionsForm sessionsform = new Forms.SessionsForm();
             sessionsform.Show();
+        }
+
+        private void dockPanel1_ActiveContentChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void locateDBCToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Loader.LoadManager.CheckForDBCSettings(true))
+            {
+                MessageBox.Show("Restarn an app to load new dbc");
+            }
         }
 
 

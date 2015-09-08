@@ -167,6 +167,7 @@
     <Compile Include="Forms\SessionsForm.Designer.cs">
       <DependentUpon>SessionsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Loader\LoadManager.cs" />
     <Compile Include="Sessions\Session.cs" />
     <Compile Include="History\EditHistory.cs" />
     <Compile Include="History\OpenedHistory.cs" />
