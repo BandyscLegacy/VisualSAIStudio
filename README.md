@@ -1,9 +1,6 @@
 # ![icon](http://i.imgur.com/hKex1nTs.png) Visual SAI Studio 2015 [![build](https://travis-ci.org/BAndysc/VisualSAIStudio.svg)](https://travis-ci.org/BAndysc/VisualSAIStudio/)
 Smart Script Editor for WoW Cores including TrinityCore and SkyFire
 
-## Description
-**This is early version and a lot of things still do not work and/or are not implemented**
-
 ## Special thanks to:
  - [Armano](https://github.com/armano2) for help
  - [TOM_RUS](https://github.com/tomrus88) for [DBC Viewer](https://github.com/tomrus88/dbcviewer)
