@@ -1,4 +1,7 @@
 # ![icon](http://i.imgur.com/hKex1nTs.png) Visual SAI Studio 2015
+
+# DEPRECATED: for a new version visit [WoW Database Editor](https://github.com/BAndysc/WoWDatabaseEditor)!
+
 Smart Script Editor for WoW Cores including TrinityCore and SkyFire
 
 ## Special thanks to:
